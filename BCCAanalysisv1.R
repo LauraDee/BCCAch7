@@ -120,12 +120,10 @@ trade = docs[trade == "TRUE",]
 print(unique(trade$Flow1Type)) # 0 
 length(trade)
 
+# ** BERNIE HERE -- make this a column where each flow-driver combo is a row
 # Drivers -*** need to figure out what to do with the others **** 
 docs$Driver <- docs$'2.4 What is the climate driver(s) or trigger(s)? Note, that the driver may not be described as below--choose the closest option(s)'
 print(unique(docs$Driver))
-
-
-
 
 #column names for each driver
 tags = unique(trimws(unlist(strsplit(docs$Driver, split=","))))
