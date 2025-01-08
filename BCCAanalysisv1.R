@@ -5,119 +5,259 @@ library(dplyr)
 library(tidyr)
 library(reshape2)
 library(data.table)
+library(readxl)
+library(dplyr)
 
-graphics.off()
-rm(list=ls())
+# Define folder paths
+main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
+data_folder <- file.path(main_folder, "data")
 
-setwd('~/Downloads/')
-# docs =fread('BCCAresponsesJan7.csv', header=T)
-docs = fread('newdocjan7.csv' ,header = T)
-# had to delete "the eg xxxx" after the additional natural disasters to get the code to work
-# one said " "Hurricanes are mentioned" but Hurricane is a category!
+data_rev <- read.csv(list.files(path = data_folder, pattern = "\\.csv$", full.names = TRUE)[1])
 
-head(docs)
-colnames(docs)
+### Step 1: Reshape by DOI - Flow (START)
+  # Identify repeating columns
+  base_names <- gsub("^.*?(2\\.[0-9]+).*", "\\1", names(data_rev))
+  place_rep <- which(base_names %in% c("2.1"))
+  differences <- diff(place_rep)
 
+  # Ensure indices are equally spaced
+  if (length(unique(differences)) != 1) {
+    stop("Indices are not equally spaced.")
+  }
+
+  # Preallocate a matrix for reshaped data
+  total_rows <- nrow(data_rev) * length(place_rep[-length(place_rep)])  # Estimate total rows
+  reshaped_data_matrix <- matrix(NA, nrow = total_rows, ncol = 97)  # 98 columns + index
+
+  # Fill the reshaped matrix
+  current_row <- 1
+  for (i in seq_along(place_rep[-length(place_rep)])) {
+    start_idx <- place_rep[i]
+    end_idx <- place_rep[i + 1] - 1
+    
+    # Select columns for the current group
+    current_group <- data_rev[, c(1:(place_rep[1]-1), start_idx:end_idx, (place_rep[10] + differences[1]+1):ncol(data_rev))]
+    
+    # Add an index column
+    current_group_with_index <- cbind(as.matrix(current_group), i)
+    
+    # Add to the reshaped matrix
+    rows_to_add <- nrow(current_group_with_index)
+    reshaped_data_matrix[current_row:(current_row + rows_to_add - 1), ] <- current_group_with_index
+    current_row <- current_row + rows_to_add
+  }
+
+  # Convert matrix to data frame and assign column names
+  reshaped_data <- as.data.frame(reshaped_data_matrix)
+  colnames(reshaped_data) <- c(colnames(data_rev)[c(1:(place_rep[2]-1), (place_rep[10] + differences[1]+1):ncol(data_rev))], "index")
+  colnames(reshaped_data) <- short_names <- c(
+    "ID", 
+    "Timestamp", 
+    "Email", 
+    "Citation", 
+    "DOI", 
+    "Has_Flow", 
+    "Its_Transboundary", 
+    "Elaboration", 
+    "Human_Socio_Flows", 
+    "Exclude_Paper", 
+    "Excluded", 
+    "Excluded_Insights", 
+    "2.1 Flow Type", 
+    "2.2 Subtype", 
+    "2.3 Flow Text", 
+    "2.4 Climate Driver", 
+    "2.5 Trigger Location", 
+    "2.6 Flow Change Text", 
+    "2.7 Altered Flow: Quantity", 
+    "2.7 Altered Flow: Direction", 
+    "2.7 Altered Flow: Location", 
+    "2.7 Altered Flow: Distance", 
+    "2.7 Altered Flow: Timing", 
+    "2.7 Altered Flow: Frequency", 
+    "2.7 Altered Flow: Duration", 
+    "2.7 Altered Flow: Speed", 
+    "2.7 Altered Flow: Feedbacks", 
+    "2.7 Altered Flow: Mechanism", 
+    "2.7 Altered Flow: Other", 
+    "2.8 Other Description", 
+    "2.9 Flow Origin/Destination", 
+    "2.10 Cited Paper DOI?", 
+    "2.11 Biodiversity Text", 
+    "2.12 Impact: None", 
+    "2.12 Impact: Abundance", 
+    "2.12 Impact: Richness", 
+    "2.12 Impact: Loss", 
+    "2.12 Impact: Disease", 
+    "2.12 Impact: Invasion", 
+    "2.12 Impact: Composition", 
+    "2.12 Impact: Genetics", 
+    "2.12 Impact: Land Use Loss", 
+    "2.12 Impact: Land Use Restore", 
+    "2.12 Impact: Urbanization", 
+    "2.12 Impact: Connectivity", 
+    "2.12 Impact: Trophic", 
+    "2.12 Impact: Indigenous Knowledge", 
+    "2.12 Impact: Management", 
+    "2.12 Impact: Other", 
+    "2.13 Biodiversity Elaboration", 
+    "2.14 Ecosystem Type", 
+    "2.15 Species Impacted", 
+    "2.16 NCP/ES: None", 
+    "2.16 NCP/ES: Habitat", 
+    "2.16 NCP/ES: Pollination", 
+    "2.16 NCP/ES: Air Quality", 
+    "2.16 NCP/ES: Climate", 
+    "2.16 NCP/ES: Acidification", 
+    "2.16 NCP/ES: Freshwater", 
+    "2.16 NCP/ES: Water Quality", 
+    "2.16 NCP/ES: Soil Protection", 
+    "2.16 NCP/ES: Hazards", 
+    "2.16 NCP/ES: Organisms", 
+    "2.16 NCP/ES: Energy", 
+    "2.16 NCP/ES: Food/Feed", 
+    "2.16 NCP/ES: Materials", 
+    "2.16 NCP/ES: Medicinal", 
+    "2.16 NCP/ES: Learning", 
+    "2.16 NCP/ES: Experiences", 
+    "2.16 NCP/ES: Identities", 
+    "2.16 NCP/ES: Options", 
+    "2.16 NCP/ES: Other", 
+    "2.17 NCP List", 
+    "2.18 NCP Text", 
+    "2.19 NCP Impact Location", 
+    "2.20 Well-being: None", 
+    "2.20 Well-being: Welfare", 
+    "2.20 Well-being: Justice", 
+    "2.20 Well-being: Relational", 
+    "2.20 Well-being: Cohesion", 
+    "2.20 Well-being: Other", 
+    "2.21 Well-being List", 
+    "2.22 Inequality Explanation", 
+    "2.23 Flow Summary", 
+    "Response Mentioned?", 
+    "Response Text", 
+    "Another Flow?", 
+    "Indigenous Nations Text", 
+    "Indigenous Info Text", 
+    "Review Notes", 
+    "Additional Notes", 
+    "Physical", 
+    "Movement", 
+    "Trade", 
+    "Sociocultural", 
+    "Biotic", 
+    "Index"
+  )
+
+
+  # Check the reshaped data
+  cat("Dimensions of reshaped data:", dim(reshaped_data), "\n")
+  cat("Unique values in index column:", levels(factor(reshaped_data$Index)), "\n")
+  glimpse(reshaped_data)
+
+
+### Step 1: Reshape by DOI - Flow (END)
+
+### Step 2 - Clean up other names  (START)
+
+docs = reshaped_data
 ## need to remove test paper flows - find and drop
-docs$Citation <- docs$'1. What is the short citation of the paper? (Author, Year, Journal)'
-docs[Citation == "test", Citation := "TEST"]
-docs = docs[Citation != "TEST",]
+glimpse(docs)
+docs <- docs %>% filter(Citation %notin% c("TEST","test"))
 
-# filter to papers included after seeing how many were excluded 
-docs$Exclude <- docs$'8. Are you excluding this paper from further screening?'
-table(docs$Exclude) #177 no, 229 yes
+table(docs$Excluded) #177 no, 229 yes
 docs$ExcludeReason <- docs$'7. Is there any reason to exclude this paper? If so, explain.'
 
-docs = docs[Exclude == "No",]
 
-#Identify flow types 
 docs$Flow1 <- docs$'2.1. What type of flow is it?'
-table(docs$Flow1)
-
+table(docs$`2.1 Flow Type`)
+glimpse(docs)
+setDT(docs) 
 #Identify subtypes 
-docs$Flow1Type <- docs$'2.2 What is the sub-type of flow (e.g., river flow, ocean current, range-shift, etc.)?'
-table(docs$Flow1Type)
+table(docs$`2.2 Subtype`)
 
 ## need to harmonize the category names
 #cover[local_provenance =="Naturalised", local_provenance:="INT"]
-print(unique(docs$Flow1Type))
-docs[Flow1Type == "test flow", Flow1Type := "TEST"]
-docs[Flow1Type == "river flow", Flow1Type := "River flow"]
-docs[Flow1Type == "River Flow", Flow1Type := "River flow"]
-docs[Flow1Type == "range-shift", Flow1Type := "Range-shift"]
-docs[Flow1Type == "range shift", Flow1Type := "Range-shift"]
-docs[Flow1Type == "Range shift", Flow1Type := "Range-shift"]
-docs[Flow1Type == "range shifts of fisheries species", Flow1Type := "Range-shift"]
-docs[Flow1Type == "Range shift of algal species northward that affects fish and shellfish and produces a toxin that is harmful when consumed. The sreener mentioned island examples but they are not relevant. However, Canada is not mentioned in the source paper.", Flow1Type := "Range-shift"]
-docs[Flow1Type == "range expansion", Flow1Type := "Range expansion"]
-docs[Flow1Type == "range-expansion", Flow1Type := "Range expansion"]
-docs[Flow1Type == "disease-spread", Flow1Type := "Disease spread"]
-docs[Flow1Type == "disease spread", Flow1Type := "Disease spread"]
-docs[Flow1Type == "migration", Flow1Type := "Migration"]
-docs[Flow1Type == "migration, displacement", Flow1Type := "Displacement; Migration"]
-docs[Flow1Type == "Fire", Flow1Type := "wildfire"]
-docs[Flow1Type == "Disease spread, range shift", Flow1Type := "Range shift; Disease spread"]
-docs[Flow1Type == "range shift, disease spread" , Flow1Type := "Range shift; Disease spread"]
-docs[Flow1Type == "disease spread, range shift", Flow1Type := "Range shift; Disease spread"]
-docs[Flow1Type == "dispersal", Flow1Type := "Dispersal"]
-docs[Flow1Type == "governance", Flow1Type := "Governance"]
+print(unique(docs$`2.2 Subtype`))
+docs[`2.2 Subtype` == "test flow", `2.2 Subtype` := "TEST"]
+docs[`2.2 Subtype` == "river flow", `2.2 Subtype` := "River flow"]
+docs[`2.2 Subtype` == "River Flow", `2.2 Subtype` := "River flow"]
+docs[`2.2 Subtype` == "range-shift", `2.2 Subtype` := "Range-shift"]
+docs[`2.2 Subtype` == "range shift", `2.2 Subtype` := "Range-shift"]
+docs[`2.2 Subtype` == "Range shift", `2.2 Subtype` := "Range-shift"]
+docs[`2.2 Subtype` == "range shifts of fisheries species", `2.2 Subtype` := "Range-shift"]
+docs[`2.2 Subtype` == "Range shift of algal species northward that affects fish and shellfish and produces a toxin that is harmful when consumed. The sreener mentioned island examples but they are not relevant. However, Canada is not mentioned in the source paper.", `2.2 Subtype` := "Range-shift"]
+docs[`2.2 Subtype` == "range expansion", `2.2 Subtype` := "Range expansion"]
+docs[`2.2 Subtype` == "range-expansion", `2.2 Subtype` := "Range expansion"]
+docs[`2.2 Subtype` == "disease-spread", `2.2 Subtype` := "Disease spread"]
+docs[`2.2 Subtype` == "disease spread", `2.2 Subtype` := "Disease spread"]
+docs[`2.2 Subtype` == "migration", `2.2 Subtype` := "Migration"]
+docs[`2.2 Subtype` == "migration, displacement", `2.2 Subtype` := "Displacement; Migration"]
+docs[`2.2 Subtype` == "Fire", `2.2 Subtype` := "wildfire"]
+docs[`2.2 Subtype` == "Disease spread, range shift", `2.2 Subtype` := "Range shift; Disease spread"]
+docs[`2.2 Subtype` == "range shift, disease spread" , `2.2 Subtype` := "Range shift; Disease spread"]
+docs[`2.2 Subtype` == "disease spread, range shift", `2.2 Subtype` := "Range shift; Disease spread"]
+docs[`2.2 Subtype` == "dispersal", `2.2 Subtype` := "Dispersal"]
+docs[`2.2 Subtype` == "governance", `2.2 Subtype` := "Governance"]
 
-unique.flow.type <- print(unique(docs$Flow1Type))
+unique.flow.type <- print(unique(docs$`2.2 Subtype`))
 write.csv(unique.flow.type, "flowsubtype_unaggregated.csv")
 
-#ones we should decide on -- groups:
-"Implied range shift"  
-## these include the impacts, I assume we want to cut the impacts from here but we should
-## make sure the form captured these impacts elsewhere:
-  "range shift causing hybridization" 
-  "range shifts, population density increases"  
+# #ones we should decide on -- groups:
+# "Implied range shift"  
+# ## these include the impacts, I assume we want to cut the impacts from here but we should
+# ## make sure the form captured these impacts elsewhere:
+#   "range shift causing hybridization" 
+#   "range shifts, population density increases"  
 
-"Climate-induced migration"   
-"Change in migration dynamics"
+# "Climate-induced migration"   
+# "Change in migration dynamics"
 
-# sea ice retreat vs sea ice
+# # sea ice retreat vs sea ice
 
-"Disease spread, range shift"                                                                                                                                                                                                                      
-"range shift, disease spread"                                                                                                                                                                                                                      
-"disease spread, range shift" 
+# "Disease spread, range shift"                                                                                                                                                                                                                      
+# "range shift, disease spread"                                                                                                                                                                                                                      
+# "disease spread, range shift" 
 
-# to discuss and decide on:
-  "Range shift and Invasion because of it" 
-  "Range shift of a invasive species"   
-  "range shift, introductions"  
-  "Invasion"  
-  "invasive species range shift"  
+# # to discuss and decide on:
+#   "Range shift and Invasion because of it" 
+#   "Range shift of a invasive species"   
+#   "range shift, introductions"  
+#   "Invasion"  
+#   "invasive species range shift"  
 
-#*** should this be rechecked bc this seems like multiple flow types in this paper?
-  #*"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region"
-  # ""Glacial retreat;; range shift" 
+# #*** should this be rechecked bc this seems like multiple flow types in this paper?
+#   #*"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region"
+#   # ""Glacial retreat;; range shift" 
   
 #print subtype by flow
+glimpse(docs)
 biotic = docs[Biotic == "TRUE",]
-print(unique(biotic$Flow1Type))
-unique.biotic.flow.type <- print(unique(biotic$Flow1Type))
+print(unique(biotic$`2.2 Subtype`))
+unique.biotic.flow.type <- print(unique(biotic$`2.2 Subtype`))
 write.csv(unique.biotic.flow.type, "bioticflowsubtype_unaggregated.csv")
 
 physical = docs[Physical == "TRUE",]
-print(unique(physical$Flow1Type))
-unique.phys.flow.type <- print(unique(physical$Flow1Type))
+print(unique(physical$`2.2 Subtype`))
+unique.phys.flow.type <- print(unique(physical$`2.2 Subtype`))
 write.csv(unique.phys.flow.type, "physflowsubtype_unaggregated.csv")
 
 sociocultural = docs[Sociocultural == "TRUE",]
-print(unique(sociocultural$Flow1Type))
-unique.socio.flow.type <- print(unique(sociocultural$Flow1Type))
+print(unique(sociocultural$`2.2 Subtype`))
+unique.socio.flow.type <- print(unique(sociocultural$`2.2 Subtype`))
 write.csv(unique.socio.flow.type, "socioflowsubtype_unaggregated.csv")
 
 docs$Human_movement <- docs$'Human movement'
 docs$trade <- docs$'Trade (transport of goods and services)'
 
 human = docs[Human_movement == "TRUE",]
-print(unique(human$Flow1Type))
-unique.human.flow.type <- print(unique(human$Flow1Type))
+print(unique(human$`2.2 Subtype`))
+unique.human.flow.type <- print(unique(human$`2.2 Subtype`))
 write.csv(unique.human.flow.type, "humanflowsubtype_unaggregated.csv")
 
 trade = docs[trade == "TRUE",]
-print(unique(trade$Flow1Type)) # 0 
+print(unique(trade$`2.2 Subtype`)) # 0 
 length(trade)
 
 # ** BERNIE HERE -- make this a column where each flow-driver combo is a row
