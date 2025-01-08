@@ -7,12 +7,38 @@ glimpse(reshaped_data)
 
 library(dplyr)
 library(tidyr)
+library(stringr)
 
-relabel_drivers <- read_excel("C:\Users\basti\Documents\GitHub\BCCAch7\data\refined_drivers\otherclimatedrivers_lookup.xlsx")
-glimpse(relabel_drive)
+relabel_drivers <- read_excel("C:\\Users\\basti\\Documents\\GitHub\\BCCAch7\\data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
+glimpse(relabel_drivers)
+
+relabel_drivers <- relabel_drivers %>%
+  mutate(raw2 = gsub("[^a-zA-Z ]", "", raw)) %>% # Keep only letters and spaces
+  mutate(raw2 = gsub("\\s+", " ", raw2)) %>%     # Replace multiple spaces with a single space
+  mutate(raw2 = trimws(raw2))                   # Trim leading and trailing spaces
+
+# Check the result
+print(relabel_drivers$raw2)
+
+# Combine cleaned terms into a search pattern with "|" (OR operator for regex)
+search_pattern <- paste(relabel_drivers$raw2, collapse = "|")
+
+# Filter rows where any string from the combined `raw` strings is found
+# Create a named vector for replacements from relabel_drivers
+replacement_map <- setNames(relabel_drivers$driver, relabel_drivers$raw2)
+
+# Replace matching strings in reshaped_data$driver
+updated_data <- reshaped_data %>%
+  rename(driver = `2.4 Climate Driver`) %>%
+  mutate(driver = str_replace_all(driver, replacement_map))
+
+
+
+
+
+
 # Rename the column for easier handling
-reshaped_data_d <- reshaped_data %>% 
-  rename(driver = `2.4 Climate Driver`) %>% select(ID,driver)%>%
+reshaped_data_d <- updated_data  %>% select(ID,driver)%>%
   group_by(ID) %>%
   slice_head(n = 1) %>% # Keep only the first row for each DOI
   ungroup() # Ungroup the data
@@ -57,7 +83,7 @@ reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="
 
 glimpse(reshaped_data_drivers)
 
-write.csv(reshaped_data_drivers, "data/reshaped_v2_drivers_jan8.csv")
+write.csv(reshaped_data_drivers, "data/reshaped_v3_driversNOOTHERS_jan8.csv")
 
 
 
