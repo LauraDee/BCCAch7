@@ -155,6 +155,8 @@ data_rev <- read.csv(list.files(path = data_folder, pattern = "\\.csv$", full.na
   cat("Dimensions of reshaped data:", dim(reshaped_data), "\n")
   cat("Unique values in index column:", levels(factor(reshaped_data$Index)), "\n")
   glimpse(reshaped_data)
+  
+write.csv(reshaped_data, "data/reshaped_v1_jan8.csv")
 
 
 ### Step 1: Reshape by DOI - Flow (END)
