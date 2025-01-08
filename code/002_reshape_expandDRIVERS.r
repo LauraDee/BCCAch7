@@ -1,13 +1,15 @@
 
 # Select and reshape relevant columns
 levels(factor(reshaped_data$"2.4 Climate Driver"))
-
+glimpse(reshaped_data)
 
 
 
 library(dplyr)
 library(tidyr)
 
+relabel_drivers <- read_excel("C:\Users\basti\Documents\GitHub\BCCAch7\data\refined_drivers\otherclimatedrivers_lookup.xlsx")
+glimpse(relabel_drive)
 # Rename the column for easier handling
 reshaped_data_d <- reshaped_data %>% 
   rename(driver = `2.4 Climate Driver`) %>% select(ID,driver)%>%
