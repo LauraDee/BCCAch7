@@ -10,7 +10,8 @@ graphics.off()
 rm(list=ls())
 
 setwd('~/Downloads/')
-docs =fread('BCCAresponsesJan7.csv', header=T)
+# docs =fread('BCCAresponsesJan7.csv', header=T)
+docs = fread('newdocjan7.csv' ,header = T)
 # had to delete "the eg xxxx" after the additional natural disasters to get the code to work
 # one said " "Hurricanes are mentioned" but Hurricane is a category!
 
@@ -61,7 +62,8 @@ docs[Flow1Type == "disease spread, range shift", Flow1Type := "Range shift; Dise
 docs[Flow1Type == "dispersal", Flow1Type := "Dispersal"]
 docs[Flow1Type == "governance", Flow1Type := "Governance"]
 
-print(unique(docs$Flow1Type))
+unique.flow.type <- print(unique(docs$Flow1Type))
+write.csv(unique.flow.type, "flowsubtype_unaggregated.csv")
 
 #ones we should decide on -- groups:
 "Implied range shift"  
@@ -89,10 +91,40 @@ print(unique(docs$Flow1Type))
 #*** should this be rechecked bc this seems like multiple flow types in this paper?
   #*"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region"
   # ""Glacial retreat;; range shift" 
+  
+#print subtype by flow
+biotic = docs[Biotic == "TRUE",]
+print(unique(biotic$Flow1Type))
+unique.biotic.flow.type <- print(unique(biotic$Flow1Type))
+write.csv(unique.biotic.flow.type, "bioticflowsubtype_unaggregated.csv")
+
+physical = docs[Physical == "TRUE",]
+print(unique(physical$Flow1Type))
+unique.phys.flow.type <- print(unique(physical$Flow1Type))
+write.csv(unique.phys.flow.type, "physflowsubtype_unaggregated.csv")
+
+sociocultural = docs[Sociocultural == "TRUE",]
+print(unique(sociocultural$Flow1Type))
+unique.socio.flow.type <- print(unique(sociocultural$Flow1Type))
+write.csv(unique.socio.flow.type, "socioflowsubtype_unaggregated.csv")
+
+docs$Human_movement <- docs$'Human movement'
+docs$trade <- docs$'Trade (transport of goods and services)'
+
+human = docs[Human_movement == "TRUE",]
+print(unique(human$Flow1Type))
+unique.human.flow.type <- print(unique(human$Flow1Type))
+write.csv(unique.human.flow.type, "humanflowsubtype_unaggregated.csv")
+
+trade = docs[trade == "TRUE",]
+print(unique(trade$Flow1Type)) # 0 
+length(trade)
 
 # Drivers -*** need to figure out what to do with the others **** 
 docs$Driver <- docs$'2.4 What is the climate driver(s) or trigger(s)? Note, that the driver may not be described as below--choose the closest option(s)'
 print(unique(docs$Driver))
+
+
 
 
 #column names for each driver
