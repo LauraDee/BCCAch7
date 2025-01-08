@@ -79,7 +79,8 @@ reshaped_data_expanded <- reshaped_data_expanded %>%
 
 glimpse(reshaped_data_expanded)
 
-reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="ID") %>% select(-c("driver:ID","driver","driver:driver",`driver:la la la`,`driver:lala`))
+reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="ID") %>%
+ select(-c("driver:ID","driver","driver:driver",`driver:la la la`,`driver:lala`,`driver:NA`))
 
 glimpse(reshaped_data_drivers)
 
