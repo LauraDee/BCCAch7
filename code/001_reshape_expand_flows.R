@@ -338,3 +338,8 @@ docs$OtherChange <- docs$'2.7. MANDATORY: Which characteristic(s) of flow is alt
 table(docs$OtherChange)
 table(docs$MechanismsChange)
 
+
+docs$NCPlist <- docs$'2.17 If applicable - list the NCP/ES in the papers words, separated with semi-colons (e.g., agricultural yield; water quality; carbon sequestration)'
+print(unique(docs$NCPlist))
+docs$HWBlist <- docs$'2.21 If applicable - list the indicators of human well-being in the papers words, separated with semi-colons (e.g., food sovereignty; aesthetic values; mental health)'
+print(unique(docs$HWBlist))
