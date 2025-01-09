@@ -81,7 +81,19 @@ glimpse(reshaped_data_drivers)
 write.csv(reshaped_data_drivers, "data/reshaped_4_drivers.csv")
 
 
+# Find duplicates in the `DOI_by_Flow` column
+duplicated_doi <- reshaped_data_drivers %>%
+  group_by(ID_DOI_by_FlowEntry) %>% # Replace with the exact column name if needed
+  filter(n() > 1) %>%               # Keep only rows where the count is greater than 1
+  ungroup()
 
+# Get the unique repeated `DOI_by_Flow` values
+repeated_doi <- duplicated_doi %>%
+  select(ID_DOI_by_FlowEntry) %>%
+  distinct()
+
+
+write.csv(duplicated_doi, "data/reshaped_4_drivers_conflictFLOW.csv")
 ################ END
 
 
