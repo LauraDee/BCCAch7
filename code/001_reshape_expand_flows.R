@@ -14,6 +14,7 @@ main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
 data_folder <- file.path(main_folder, "data")
 
 data_rev <- read.csv("data/newdocjan7.csv")
+dim(data_rev)
 
 ### Step 1: Reshape by DOI - Flow (START)
   # Identify repeating columns
@@ -37,8 +38,14 @@ data_rev <- read.csv("data/newdocjan7.csv")
     end_idx <- place_rep[i + 1] - 1
     
     # Select columns for the current group
-    current_group <- data_rev[, c(1:(place_rep[1]-1), start_idx:end_idx, (place_rep[10] + differences[1]+1):ncol(data_rev))]
+    flow_entry_group <- data_rev[, c(start_idx:end_idx)]
+    flow_entry_group[flow_entry_group == ""] <- NA
+    # Identify rows with at least one non-NA value
+    rows_with_data <- which(rowSums(!is.na(flow_entry_group)) > 0)
+
+    current_group <- data_rev[rows_with_data, c(1:(place_rep[1]-1), start_idx:end_idx, (place_rep[10] + differences[1]+1):ncol(data_rev))]
     
+
     # Add an index column
     current_group_with_index <- cbind(as.matrix(current_group), i)
     
@@ -47,12 +54,13 @@ data_rev <- read.csv("data/newdocjan7.csv")
     reshaped_data_matrix[current_row:(current_row + rows_to_add - 1), ] <- current_group_with_index
     current_row <- current_row + rows_to_add
   }
-
+  
   # Convert matrix to data frame and assign column names
+  rows_with_data <- which(rowSums(!is.na(reshaped_data_matrix)) > 0)
   reshaped_data <- as.data.frame(reshaped_data_matrix)
   colnames(reshaped_data) <- c(colnames(data_rev)[c(1:(place_rep[2]-1), (place_rep[10] + differences[1]+1):ncol(data_rev))], "index")
   colnames(reshaped_data) <- short_names <- c(
-    "ID", 
+    "ID_DOI", 
     "Timestamp", 
     "Email", 
     "Citation", 
@@ -151,6 +159,7 @@ data_rev <- read.csv("data/newdocjan7.csv")
     "Index"
   )
 
+  reshaped_data$ID_DOI_by_FlowEntry <- seq(1:dim(reshaped_data)[1])
 
   # Check the reshaped data
   cat("Dimensions of reshaped data:", dim(reshaped_data), "\n")
