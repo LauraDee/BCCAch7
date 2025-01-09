@@ -1,21 +1,21 @@
 
-# Select and reshape relevant columns
-levels(factor(reshaped_data$"2.4 Climate Driver"))
-glimpse(reshaped_data)
-
-
-
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(readxl)
 
 relabel_drivers <- read_excel("C:\\Users\\basti\\Documents\\GitHub\\BCCAch7\\data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
-glimpse(relabel_drivers)
+reshaped_data <- read.csv("data/reshaped_3_byFlow.csv")
+# Remove the "X" prefix from column names if it starts with "X" followed by a number
+names(reshaped_data) <- gsub("^X(\\d)", "\\1", names(reshaped_data))
+
+# Check the updated column names
+glimpse(reshaped_data)
 
 relabel_drivers <- relabel_drivers %>%
-  mutate(raw2 = gsub("[^a-zA-Z ]", "", raw)) %>% # Keep only letters and spaces
-  mutate(raw2 = gsub("\\s+", " ", raw2)) %>%     # Replace multiple spaces with a single space
-  mutate(raw2 = trimws(raw2))                   # Trim leading and trailing spaces
+  mutate(raw2 = gsub("[^a-zA-Z .;]", "", raw)) %>% # Keep only letters, spaces, dots, and semicolons
+  mutate(raw2 = gsub("\\s+", " ", raw2)) %>%      # Replace multiple spaces with a single space
+  mutate(raw2 = trimws(raw2))                    # Trim leading and trailing spaces
 
 # Check the result
 print(relabel_drivers$raw2)
@@ -29,26 +29,25 @@ replacement_map <- setNames(relabel_drivers$driver, relabel_drivers$raw2)
 
 # Replace matching strings in reshaped_data$driver
 updated_data <- reshaped_data %>%
-  rename(driver = `2.4 Climate Driver`) %>%
+  rename(driver = `2.4.Climate.Driver`) %>%
   mutate(driver = str_replace_all(driver, replacement_map))
+glimpse(updated_data)
 
+levels(factor(updated_data$driver))
 
-
-
-
-
-# Rename the column for easier handling
-reshaped_data_d <- updated_data  %>% select(ID,driver)%>%
-  group_by(ID) %>%
+reshaped_data_d <- updated_data  %>% select(ID_DOI,driver)%>%
+  group_by(ID_DOI) %>%
   slice_head(n = 1) %>% # Keep only the first row for each DOI
   ungroup() # Ungroup the data
 
 # Split the 'driver' column into individual components
 all_drivers <- reshaped_data_d$driver %>%
-  strsplit(",") %>%         # Split by ", " to separate categories
+  strsplit(",",";") %>%         # Split by ", " to separate categories
+  #strsplit(",") %>%         # Split by ", " to separate categories
   unlist() %>%               # Unlist to make it a vector
   unique() %>%               # Get unique values
   trimws() %>%               # Remove leading and trailing whitespaces
+  unique() %>%               # Get unique values
   sort()                     # Sort for consistency
 glimpse(all_drivers)
 # Create new columns for each unique driver
@@ -64,27 +63,22 @@ reshaped_data_expanded <- reshaped_data_d %>%
   ) %>%
   mutate(across(everything(), ~. == 1, .names = "driver:{.col}")) # Convert to TRUE/FALSE
 
-# Drop intermediate columns (optional)
-reshaped_data_expanded <- reshaped_data_expanded #%>%
-  #select(-driver)
-
-  reshaped_data_expanded %>% filter(Floods==TRUE)
-
 glimpse(reshaped_data_expanded)
 dim(reshaped_data_expanded)
-levels(factor(reshaped_data_expanded$ID))
+levels(factor(reshaped_data_expanded$ID_DOI))
 
 reshaped_data_expanded <- reshaped_data_expanded %>%
-  select(contains(c("driver","ID")))
+  select(contains(c("driver","ID_DOI")))
 
 glimpse(reshaped_data_expanded)
 
-reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="ID") %>%
- select(-c("driver:ID","driver","driver:driver",`driver:la la la`,`driver:lala`,`driver:NA`))
+reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="ID_DOI") %>%
+ select(-c("driver:ID_DOI","driver","driver:driver",`driver:NA`,`driver:NA)`,
+  `driver:additional natural disasters (e.g.`,`driver:freshwater temperature change; freshwater chemistry change`))
 
 glimpse(reshaped_data_drivers)
 
-write.csv(reshaped_data_drivers, "data/reshaped_v3_driversNOOTHERS_jan8.csv")
+write.csv(reshaped_data_drivers, "data/reshaped_4_drivers.csv")
 
 
 
