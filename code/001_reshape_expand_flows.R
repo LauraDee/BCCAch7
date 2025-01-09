@@ -9,11 +9,11 @@ library(readxl)
 library(dplyr)
 
 # Define folder paths
-#main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
-main_folder <- "~/Documents/GitHub/BCCAch7/"
+main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
+#main_folder <- "~/Documents/GitHub/BCCAch7/"
 data_folder <- file.path(main_folder, "data")
 
-data_rev <- read.csv(list.files(path = data_folder, pattern = "\\.csv$", full.names = TRUE)[1])
+data_rev <- read.csv("data/newdocjan7.csv")
 
 ### Step 1: Reshape by DOI - Flow (START)
   # Identify repeating columns

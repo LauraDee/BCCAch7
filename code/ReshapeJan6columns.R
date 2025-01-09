@@ -1,15 +1,15 @@
 
 
-#setwd('~/Downloads/')
-#docs <- fread('v3form.csv', header=T)
-
-colnames(docs)
 
 library(splitstackshape)
 library(dplyr)
 library(tidyr)
 library(reshape2)
 library(data.table)
+setwd('C:\\Users\\basti\\Documents\\GitHub\\BCCAch7')
+docs <- fread('data/v3form.csv', header=T)
+colnames(docs)
+
 
 #column names for each tag
 tags = unique(trimws(unlist(strsplit(docs$'2.1. What type of flow is it?', split=", "))))
@@ -25,4 +25,4 @@ setcolorder(docs,
                        "Biotic"
                       ),
             after = "2.1. What type of flow is it?")
-#write.csv(docs, 'newdocjan7.csv')
+write.csv(docs, 'data/newdocjan7.csv')
