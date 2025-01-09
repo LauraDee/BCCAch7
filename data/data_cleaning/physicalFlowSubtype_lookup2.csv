@@ -1,62 +1,136 @@
-"","Citation","DOI","2.1 Flow Type","2.2 Subtype","2.2.Subtype.x","2.1.Flow.Type","2.2.Subtype.y","2.2.Subtype.NEW","2.2.Subtype.OLD"
-"1"," Gleick & Chalecki, 1999, JAWRA.","DOI:10.1111/j.1752-1688.1999.tb04227.x","Physical","snow melt runoff","snow melt runoff",NA,NA,"snow melt runoff",NA
-"2","Banjoko & Eslamian, 2016, Handbook of Drought and Water Scarcity","https://www.taylorfrancis.com/chapters/edit/10.1201/9781315226781-33/environmental-evaluation-lessons-learned-case-studies-bosun-banjoko-saeid-eslamian","Physical","wind flow","wind flow",NA,NA,"wind flow",NA
-"3","Blum, 2015, Progress in Oceanography","http://dx.doi.org/10.1016/j.pocean.2015.07.011","Physical","sea ice retreat","sea ice retreat",NA,NA,"sea ice retreat",NA
-"4","Chen, 2011, Journal of Sustainable Development","https://doi.org/10.5539/jsd.v4n3p32","Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"5","Costa, D., 2021, Journal of Great Lakes Research","http://dx.doi.org/10.1016/j.jglr.2021.10.011	","Physical","groundwater","groundwater",NA,NA,"groundwater",NA
-"6","Covich et al., 1997, Hydrological Processes","https://doi.org/10.1002/(SICI)1099-1085(19970630)11:8<993::AID-HYP515>3.0.CO;2-N","Physical","River flow","River flow",NA,NA,"River flow",NA
-"7","Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT","https://doi.org/10.1002/ieam.1360","Physical","River and groundwater flows along with sediment and pollunts","River and groundwater flows along with sediment and pollunts",NA,NA,"River and groundwater flows along with sediment and pollunts",NA
-"8","Flannigan, 2000 , Science of the Total Environment","10.1016/S0048-9697(00)00524-6","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"9","Foulon (2020) Water Quality Research Journal","https://iwaponline.com/wqrj/article/55/1/1/69781/A-global-scan-of-how-the-issue-of-nutrient-loading","Physical","nutrient flow","nutrient flow",NA,NA,"nutrient flow",NA
-"10","Gimeno et al., 2019, WIREs Climate Change","10.1002/wcc.588","Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"11","Hartig, 2021, Journal of Great Lakes Research","https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf","Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"12","Hartig, 2021, Journal of Great Lakes Research","https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf","Biotic","range shift","range shift",NA,NA,"range shift",NA
-"13","Jager, 2021, Ecology and Evolution","https://doi.org/10.1002/ece3.8026","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"14","Jager, 2021, Ecology and Evolution","https://doi.org/10.1002/ece3.8026","Biotic","migration","migration",NA,NA,"migration",NA
-"15","Jenkins et al., 2013, Advances in Parasitology","https://doi.org/10.1016/B978-0-12-407706-5.00002-2","Physical","","",NA,NA,"",NA
-"16","Jenkins et al., 2013, Advances in Parasitology","https://doi.org/10.1016/B978-0-12-407706-5.00002-2","Human movement","influx of people","influx of people",NA,NA,"influx of people",NA
-"17","Jenkins et al., 2013, Advances in Parasitology","https://doi.org/10.1016/B978-0-12-407706-5.00002-2","Trade (transport of goods and services)","tourism, agriculture,  and other human activities in the North region","tourism, agriculture,  and other human activities in the North region",NA,NA,"tourism, agriculture,  and other human activities in the North region",NA
-"18","Jenkins et al., 2013, Advances in Parasitology","https://doi.org/10.1016/B978-0-12-407706-5.00002-2","Sociocultural","??","??",NA,NA,"??",NA
-"19","Jenkins et al., 2013, Advances in Parasitology","https://doi.org/10.1016/B978-0-12-407706-5.00002-2","Biotic","range shift","range shift",NA,NA,"range shift",NA
-"20","Laushman, 2020, air soil and water research","https://doi.org/10.1177/1178622120950272","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"21","Laushman, 2020, air soil and water research","https://doi.org/10.1177/1178622120950272","Biotic","biome-shift","biome-shift",NA,NA,"biome-shift",NA
-"22","Laushman, 2020, air soil and water research","https://doi.org/10.1177/1178622120950272","Biotic","Invasion","Invasion",NA,NA,"Invasion",NA
-"23","Laushman, 2020, air soil and water research","https://doi.org/10.1177/1178622120950272","Sociocultural","knowledge transfer","knowledge transfer",NA,NA,"knowledge transfer",NA
-"24","Miller et al., 2024, Biogeochemistry","https://doi.org/10.1007/s10533-023-01108-w","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"25","Mohan, 2009, Canadian Journal of Forest Research","10.1139/er-2017-0046","Physical","Winter thaws","Winter thaws",NA,NA,"Winter thaws",NA
-"26","Moore, R.D.; 2009; Hydrological Processes","10.1002/hyp.7162","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"27","Moore, R.D.; 2009; Hydrological Processes","10.1002/hyp.7162","Physical","sediment flow","sediment flow",NA,NA,"sediment flow",NA
-"28","Moore, R.D.; 2009; Hydrological Processes","10.1002/hyp.7162","Physical","Glacial melt and discharge","Glacial melt and discharge",NA,NA,"Glacial melt and discharge",NA
-"29","Mu et al., 2011, Hydrological Processes","https://onlinelibrary.wiley.com/doi/10.1002/hyp.8367","Physical","snow melt runoff","snow melt runoff",NA,NA,"snow melt runoff",NA
-"30","Nielsen, 2015, Global Change Biology","doi: 10.1111/gcb.12789","Physical","Precipiation","Precipiation",NA,NA,"Precipiation",NA
-"31","Noyes, 2009, Environment International","https://www.sciencedirect.com/science/article/pii/S0160412009000543","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"32","Noyes, 2009, Environment International","https://www.sciencedirect.com/science/article/pii/S0160412009000543","Biotic","transport of toxins through animal migration","transport of toxins through animal migration",NA,NA,"transport of toxins through animal migration",NA
-"33","Ochs, 2024, Science of the Total Environment","https://doi.org/10.1016/j.scitotenv.2024.171490","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"34","Pagano, 2014, Water","10.3390/w6102862","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"35","Peacock, 2011, Canadian Journal of Zoology","10.1139/Z11-021","Physical","sea ice change","sea ice change",NA,NA,"sea ice change",NA
-"36","Perry, 2007, Climate Change 2007",NA,"Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"37","Perry, 2007, Climate Change 2007",NA,"Biotic","range-shift","range-shift",NA,NA,"range-shift",NA
-"38","Perry, 2007, Climate Change 2007",NA,"Trade (transport of goods and services)","Energy Supply","Energy Supply",NA,NA,"Energy Supply",NA
-"39","Peters-Lidard et al, 2021, Climatic Change","https://doi.org/10.1007/s10584-021-03057-5","Physical","river flow - unclear if quantity or quality","river flow - unclear if quantity or quality",NA,NA,"river flow - unclear if quantity or quality",NA
-"40","Pitman, 2020, BioScience","doi:10.1093/biosci/biaa015","Physical","Glacial melt and discharge","Glacial melt and discharge",NA,NA,"Glacial melt and discharge",NA
-"41","Pitman, 2020, BioScience","doi:10.1093/biosci/biaa015","Biotic","range shifts","range shifts",NA,NA,"range shifts",NA
-"42","Robinne, 2020, Journal of Hydrology","https://doi.org/10.1016/j.jhydrol.2019.124360","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"43","Robinne, 2020, Journal of Hydrology","https://doi.org/10.1016/j.jhydrol.2019.124360","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"44","Sabater, 2023, Biological Reviews","doi: 10.1111/brv.12914","Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"45","Scavia, 2002, Estuaries","10.1007/BF02691304","Physical","nutrient flow","nutrient flow",NA,NA,"nutrient flow",NA
-"46","Scavia, 2002, Estuaries","10.1007/BF02691304","Physical","ocean current","ocean current",NA,NA,"ocean current",NA
-"47","Schindler, 2006, Ambio","https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"48","Schindler, 2006, Ambio","https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2","Physical","Surface water quantity","Surface water quantity",NA,NA,"Surface water quantity",NA
-"49","Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	","Physical","nutrient flow","nutrient flow",NA,NA,"nutrient flow",NA
-"50","Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	","Physical","Glacial melt and discharge","Glacial melt and discharge",NA,NA,"Glacial melt and discharge",NA
-"51","Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	","Physical","snow melt runoff","snow melt runoff",NA,NA,"snow melt runoff",NA
-"52","Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	","Physical","freshwater quantities in transboundary rivers/watersheds/groundwater aquifers","freshwater quantities in transboundary rivers/watersheds/groundwater aquifers",NA,NA,"freshwater quantities in transboundary rivers/watersheds/groundwater aquifers",NA
-"53","Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	","Sociocultural","transboundary water governance (often international)","transboundary water governance (often international)",NA,NA,"transboundary water governance (often international)",NA
-"54","Sudlow et al., 2023, Environmental Reviews","10.1139/er-2022-0114	","Physical","stream flow","stream flow",NA,NA,"stream flow",NA
-"55","Vaddey, 2010, Watershed Management","https://doi.org/10.1061/41143(394)9","Physical","","",NA,NA,"",NA
-"56","Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	","Physical","wildfire","wildfire",NA,NA,"wildfire",NA
-"57","Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	","Biotic","Range shift","Range shift",NA,NA,"Range shift",NA
-"58","Wu et al., 2022, Reviews of the Environmental Contamination and Toxicology","https://doi.org/10.1007/s44169-022-00016-8","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"59","Zak et al., 2020, Earth-Science Reviews","https://doi.org/10.1016/j.earscirev.2020.103446","Physical","pollution flow","pollution flow",NA,NA,"pollution flow",NA
-"60","de la Fontaine,  2018, Ecology","10.1002/ecy.2382","Physical","Glacial retreat","Glacial retreat",NA,NA,"Glacial retreat",NA
-"61","de la Fontaine,  2018, Ecology","10.1002/ecy.2382","Biotic","Range shift","Range shift",NA,NA,"Range shift",NA
+Citation,DOI,2.1 Flow Type,2.2.Subtype.x,2.1.Flow.Type,2.2.Subtype.NEW,2.2.Subtype.OLD,Flag_SubtypeCode,Flag_QualityCheck,Flag_FlowCode,Flag_SubflowSpit,Flag_FlowSplit ,Flag_MissingData
+" Gleick & Chalecki, 1999, JAWRA.",DOI:10.1111/j.1752-1688.1999.tb04227.x,Physical,snow melt runoff,Physical,snow melt runoff,runoff,,,,,,
+"Banjoko & Eslamian, 2016, Handbook of Drought and Water Scarcity",https://www.taylorfrancis.com/chapters/edit/10.1201/9781315226781-33/environmental-evaluation-lessons-learned-case-studies-bosun-banjoko-saeid-eslamian,Physical,wind flow,Physical,wind flow,wind flow,,,,,,
+"Blum, 2015, Progress in Oceanography",http://dx.doi.org/10.1016/j.pocean.2015.07.011,Physical,sea ice retreat,Physical,sea ice retreat,sea ice retreat,,,,,,
+"Chen, 2011, Journal of Sustainable Development",https://doi.org/10.5539/jsd.v4n3p32,Physical,Surface water quantity,Physical,Surface water quantity,river flow,,,,,,
+"Costa, D., 2021, Journal of Great Lakes Research","http://dx.doi.org/10.1016/j.jglr.2021.10.011	",Physical,groundwater,Physical,groundwater,groundwater,,,,,,
+"Covich et al., 1997, Hydrological Processes",https://doi.org/10.1002/(SICI)1099-1085(19970630)11:8<993::AID-HYP515>3.0.CO;2-N,Physical,River flow,Physical,River flow,River flow,,,,,,
+"Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT",https://doi.org/10.1002/ieam.1360,Physical,River and groundwater flows along with sediment and pollunts,Physical,River and groundwater flows along with sediment and pollunts,River and groundwater flows along with sediment and pollunts,,,,,,
+"Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT",https://doi.org/10.1002/ieam.1360,Physical,River and groundwater flows along with sediment and pollunts,Biotic,River and groundwater flows along with sediment and pollunts,River and groundwater flows along with sediment and pollunts,,,,,,
+"Flannigan, 2000 , Science of the Total Environment",10.1016/S0048-9697(00)00524-6,Physical,wildfire,Physical,wildfire,Fire,,,,,,
+Foulon (2020) Water Quality Research Journal,https://iwaponline.com/wqrj/article/55/1/1/69781/A-global-scan-of-how-the-issue-of-nutrient-loading,Physical,nutrient flow,Physical,nutrient flow,Nutrient Pollution Flow,,,,,,
+Foulon (2020) Water Quality Research Journal,https://iwaponline.com/wqrj/article/55/1/1/69781/A-global-scan-of-how-the-issue-of-nutrient-loading,Physical,nutrient flow,Biotic,nutrient flow,Nutrient Pollution Flow,,,,,,
+"Gimeno et al., 2019, WIREs Climate Change",10.1002/wcc.588,Physical,Surface water quantity,Physical,Surface water quantity,river flow,,,,,,
+"Hartig, 2021, Journal of Great Lakes Research",https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf,Physical,Surface water quantity,Physical,Surface water quantity,lake flow (?? all manner of things impacting the Great Lakes),,,,,,
+"Hartig, 2021, Journal of Great Lakes Research",https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf,Physical,Surface water quantity,Biotic,Surface water quantity,lake flow (?? all manner of things impacting the Great Lakes),,,,,,
+"Hartig, 2021, Journal of Great Lakes Research",https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf,Biotic,range shift,Physical,range shift,lake flow (?? all manner of things impacting the Great Lakes),,,,,,
+"Hartig, 2021, Journal of Great Lakes Research",https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf,Biotic,range shift,Biotic,range shift,lake flow (?? all manner of things impacting the Great Lakes),,,,,,
+"Jager, 2021, Ecology and Evolution",https://doi.org/10.1002/ece3.8026,Physical,wildfire,Physical,wildfire,river flow,,,,,,
+"Jager, 2021, Ecology and Evolution",https://doi.org/10.1002/ece3.8026,Physical,wildfire,Biotic,wildfire,migration,,,,,,
+"Jager, 2021, Ecology and Evolution",https://doi.org/10.1002/ece3.8026,Biotic,migration,Physical,migration,river flow,,,,,,
+"Jager, 2021, Ecology and Evolution",https://doi.org/10.1002/ece3.8026,Biotic,migration,Biotic,migration,migration,,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Physical,,Physical,,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Physical,,Human movement,,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Physical,,Trade (transport of goods and services),,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Physical,,Sociocultural,,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Physical,,Biotic,,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Human movement,influx of people,Physical,influx of people,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Human movement,influx of people,Human movement,influx of people,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Human movement,influx of people,Trade (transport of goods and services),influx of people,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Human movement,influx of people,Sociocultural,influx of people,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Human movement,influx of people,Biotic,influx of people,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region",Physical,"tourism, agriculture,  and other human activities in the North region","range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region",Human movement,"tourism, agriculture,  and other human activities in the North region","range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region",Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region","range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region",Sociocultural,"tourism, agriculture,  and other human activities in the North region","range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Trade (transport of goods and services),"tourism, agriculture,  and other human activities in the North region",Biotic,"tourism, agriculture,  and other human activities in the North region","range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Sociocultural,??,Physical,??,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Sociocultural,??,Human movement,??,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Sociocultural,??,Trade (transport of goods and services),??,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Sociocultural,??,Sociocultural,??,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Sociocultural,??,Biotic,??,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Biotic,range shift,Physical,range shift,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Biotic,range shift,Human movement,range shift,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Biotic,range shift,Trade (transport of goods and services),range shift,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Biotic,range shift,Sociocultural,range shift,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Jenkins et al., 2013, Advances in Parasitology",https://doi.org/10.1016/B978-0-12-407706-5.00002-2,Biotic,range shift,Biotic,range shift,"range shift, changes in freshwater run-offs, increase of tourism, agriculture,  and other human activities in the North region",,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Physical,wildfire,Physical,wildfire,wildfire,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Physical,wildfire,Biotic,wildfire,invasion,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Physical,wildfire,Biotic,wildfire,biome-shift,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Physical,wildfire,Sociocultural,wildfire,knowledge transfer,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,biome-shift,Physical,biome-shift,wildfire,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,biome-shift,Biotic,biome-shift,invasion,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,biome-shift,Biotic,biome-shift,biome-shift,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,biome-shift,Sociocultural,biome-shift,knowledge transfer,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,Invasion,Physical,Invasion,wildfire,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,Invasion,Biotic,Invasion,invasion,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,Invasion,Biotic,Invasion,biome-shift,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Biotic,Invasion,Sociocultural,Invasion,knowledge transfer,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Sociocultural,knowledge transfer,Physical,knowledge transfer,wildfire,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Sociocultural,knowledge transfer,Biotic,knowledge transfer,invasion,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Sociocultural,knowledge transfer,Biotic,knowledge transfer,biome-shift,,,,,,
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Sociocultural,knowledge transfer,Sociocultural,knowledge transfer,knowledge transfer,,,,,,
+"Miller et al., 2024, Biogeochemistry",https://doi.org/10.1007/s10533-023-01108-w,Physical,pollution flow,Physical,pollution flow,Mercury pollution,,,,,,
+"Mohan, 2009, Canadian Journal of Forest Research",10.1139/er-2017-0046,Physical,Winter thaws,Physical,Winter thaws,Winter thaws,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,pollution flow,Physical,pollution flow,river flow,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,pollution flow,Physical,pollution flow,pollutants,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,pollution flow,Physical,pollution flow,sediment flow,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,sediment flow,Physical,sediment flow,river flow,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,sediment flow,Physical,sediment flow,pollutants,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,sediment flow,Physical,sediment flow,sediment flow,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,river flow,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,pollutants,,,,,,
+"Moore, R.D.; 2009; Hydrological Processes",10.1002/hyp.7162,Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,sediment flow,,,,,,
+"Mu et al., 2011, Hydrological Processes",https://onlinelibrary.wiley.com/doi/10.1002/hyp.8367,Physical,snow melt runoff,Physical,snow melt runoff,water flow,,,,,,
+"Nielsen, 2015, Global Change Biology",doi: 10.1111/gcb.12789,Physical,Precipiation,Physical,Precipiation,Precipiation,,,,,,
+"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Physical,pollution flow,Physical,pollution flow,"River flow, pollutants",,,,,,
+"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Physical,pollution flow,Biotic,pollution flow,transport of toxins through animal migration,,,,,,
+"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Biotic,transport of toxins through animal migration,Physical,transport of toxins through animal migration,"River flow, pollutants",,,,,,
+"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Biotic,transport of toxins through animal migration,Biotic,transport of toxins through animal migration,transport of toxins through animal migration,,,,,,
+"Ochs, 2024, Science of the Total Environment",https://doi.org/10.1016/j.scitotenv.2024.171490,Physical,pollution flow,Physical,pollution flow,"riverine dishcharge, lake circulation",,,,,,
+"Ochs, 2024, Science of the Total Environment",https://doi.org/10.1016/j.scitotenv.2024.171490,Physical,pollution flow,Biotic,pollution flow,"riverine dishcharge, lake circulation",,,,,,
+"Pagano, 2014, Water",10.3390/w6102862,Physical,pollution flow,Physical,pollution flow,river flow,,,,,,
+"Peacock, 2011, Canadian Journal of Zoology",10.1139/Z11-021,Physical,sea ice change,Physical,sea ice change,sea ice,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Physical,Surface water quantity,Physical,Surface water quantity,Freshwater level change,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Physical,Surface water quantity,Biotic,Surface water quantity,range-shift,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Physical,Surface water quantity,Trade (transport of goods and services),Surface water quantity,Energy Supply,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Biotic,range-shift,Physical,range-shift,Freshwater level change,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Biotic,range-shift,Biotic,range-shift,range-shift,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Biotic,range-shift,Trade (transport of goods and services),range-shift,Energy Supply,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Trade (transport of goods and services),Energy Supply,Physical,Energy Supply,Freshwater level change,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Trade (transport of goods and services),Energy Supply,Biotic,Energy Supply,range-shift,,,,,,
+"Perry, 2007, Climate Change 2007",NA,Trade (transport of goods and services),Energy Supply,Trade (transport of goods and services),Energy Supply,Energy Supply,,,,,,
+"Peters-Lidard et al, 2021, Climatic Change",https://doi.org/10.1007/s10584-021-03057-5,Physical,river flow - unclear if quantity or quality,Physical,river flow - unclear if quantity or quality,river flow,,,,,,
+"Pitman, 2020, BioScience",doi:10.1093/biosci/biaa015,Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,Glacial runoff,,,,,,
+"Pitman, 2020, BioScience",doi:10.1093/biosci/biaa015,Physical,Glacial melt and discharge,Biotic,Glacial melt and discharge,range Shifts,,,,,,
+"Pitman, 2020, BioScience",doi:10.1093/biosci/biaa015,Biotic,range shifts,Physical,range shifts,Glacial runoff,,,,,,
+"Pitman, 2020, BioScience",doi:10.1093/biosci/biaa015,Biotic,range shifts,Biotic,range shifts,range Shifts,,,,,,
+"Robinne, 2020, Journal of Hydrology",https://doi.org/10.1016/j.jhydrol.2019.124360,Physical,wildfire,Physical,wildfire,River flow,,,,,,
+"Robinne, 2020, Journal of Hydrology",https://doi.org/10.1016/j.jhydrol.2019.124360,Physical,wildfire,Physical,wildfire,Wildfires,,,,,,
+"Robinne, 2020, Journal of Hydrology",https://doi.org/10.1016/j.jhydrol.2019.124360,Physical,wildfire,Physical,wildfire,River flow,,,,,,
+"Robinne, 2020, Journal of Hydrology",https://doi.org/10.1016/j.jhydrol.2019.124360,Physical,wildfire,Physical,wildfire,Wildfires,,,,,,
+"Sabater, 2023, Biological Reviews",doi: 10.1111/brv.12914,Physical,Surface water quantity,Physical,Surface water quantity,river flow,,,,,,
+"Scavia, 2002, Estuaries",10.1007/BF02691304,Physical,nutrient flow,Physical,nutrient flow,riverine discharge and nutrient loading,,,,,,
+"Scavia, 2002, Estuaries",10.1007/BF02691304,Physical,nutrient flow,Physical,nutrient flow,ocean current,,,,,,
+"Scavia, 2002, Estuaries",10.1007/BF02691304,Physical,ocean current,Physical,ocean current,riverine discharge and nutrient loading,,,,,,
+"Scavia, 2002, Estuaries",10.1007/BF02691304,Physical,ocean current,Physical,ocean current,ocean current,,,,,,
+"Schindler, 2006, Ambio",https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2,Physical,pollution flow,Physical,pollution flow,Hydrological flows,,,,,,
+"Schindler, 2006, Ambio",https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2,Physical,pollution flow,Physical,pollution flow,Pollutant flow,,,,,,
+"Schindler, 2006, Ambio",https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2,Physical,Surface water quantity,Physical,Surface water quantity,Hydrological flows,,,,,,
+"Schindler, 2006, Ambio",https://doi.org/10.1579/0044-7447(2006)35[160:CEOCWA]2.0.CO;2,Physical,Surface water quantity,Physical,Surface water quantity,Pollutant flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,nutrient flow,Physical,nutrient flow,nutrient flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,nutrient flow,Physical,nutrient flow,river flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,nutrient flow,Physical,nutrient flow,snow and ice,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,nutrient flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,river flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,Glacial melt and discharge,Physical,Glacial melt and discharge,snow and ice,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,snow melt runoff,Physical,snow melt runoff,nutrient flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,snow melt runoff,Physical,snow melt runoff,river flow,,,,,,
+"Shanley, C. S., 2015, Climatic Change","10.1007/s10584-015-1355-9	",Physical,snow melt runoff,Physical,snow melt runoff,snow and ice,,,,,,
+"Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	",Physical,freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,Physical,freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,,,,,,
+"Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	",Physical,freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,Sociocultural,freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,transboundary water governance (often international),,,,,,
+"Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	",Sociocultural,transboundary water governance (often international),Physical,transboundary water governance (often international),freshwater quantities in transboundary rivers/watersheds/groundwater aquifers,,,,,,
+"Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	",Sociocultural,transboundary water governance (often international),Sociocultural,transboundary water governance (often international),transboundary water governance (often international),,,,,,
+"Sudlow et al., 2023, Environmental Reviews","10.1139/er-2022-0114	",Physical,stream flow,Physical,stream flow,stream flow,,,,,,
+"Sudlow et al., 2023, Environmental Reviews","10.1139/er-2022-0114	",Physical,stream flow,Biotic,stream flow,stream flow,,,,,,
+"Vaddey, 2010, Watershed Management",https://doi.org/10.1061/41143(394)9,Physical,,Physical,,River Flow,,,,,,
+"Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	",Physical,wildfire,Physical,wildfire,Fire,,,,,,
+"Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	",Physical,wildfire,Biotic,wildfire,Range shift,,,,,,
+"Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	",Biotic,Range shift,Physical,Range shift,Fire,,,,,,
+"Weber, 1997, Environmental Reviews","http://dx.doi.org/10.1139/a97-008	",Biotic,Range shift,Biotic,Range shift,Range shift,,,,,,
+"Wu et al., 2022, Reviews of the Environmental Contamination and Toxicology",https://doi.org/10.1007/s44169-022-00016-8,Physical,pollution flow,Physical,pollution flow,Mercury pollution,,,,,,
+"Zak et al., 2020, Earth-Science Reviews",https://doi.org/10.1016/j.earscirev.2020.103446,Physical,pollution flow,Physical,pollution flow,sulfate pollution,,,,,,
+"de la Fontaine,  2018, Ecology",10.1002/ecy.2382,Physical,Glacial retreat,Physical,Glacial retreat,Glacial retreat;; range shift,,,,,,
+"de la Fontaine,  2018, Ecology",10.1002/ecy.2382,Physical,Glacial retreat,Biotic,Glacial retreat,Glacial retreat;; range shift,,,,,,
+"de la Fontaine,  2018, Ecology",10.1002/ecy.2382,Biotic,Range shift,Physical,Range shift,Glacial retreat;; range shift,,,,,,
+"de la Fontaine,  2018, Ecology",10.1002/ecy.2382,Biotic,Range shift,Biotic,Range shift,Glacial retreat;; range shift,,,,,,
