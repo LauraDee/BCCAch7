@@ -9,7 +9,8 @@ library(readxl)
 library(dplyr)
 
 # Define folder paths
-main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
+#main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
+main_folder <- "~/Documents/GitHub/BCCAch7"
 data_folder <- file.path(main_folder, "data")
 
 data_rev <- read.csv(list.files(path = data_folder, pattern = "\\.csv$", full.names = TRUE)[1])
