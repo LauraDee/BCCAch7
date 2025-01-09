@@ -1,6 +1,5 @@
 
 
-
 library(splitstackshape)
 library(dplyr)
 library(tidyr)
@@ -8,6 +7,16 @@ library(reshape2)
 library(data.table)
 setwd('C:\\Users\\basti\\Documents\\GitHub\\BCCAch7')
 docs <- fread('data/v3form.csv', header=T)
+colnames(docs)
+
+
+#setwd('~/Downloads/')
+
+
+main_folder <- "~/Documents/GitHub/BCCAch7/data/"
+#data_folder <- file.path(main_folder, "data")
+docs <- fread('v3form.csv', header=T)
+
 colnames(docs)
 
 
