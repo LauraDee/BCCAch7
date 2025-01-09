@@ -1,15 +1,20 @@
 
 
-#setwd('~/Downloads/')
-#docs <- fread('v3form.csv', header=T)
-
-colnames(docs)
-
 library(splitstackshape)
 library(dplyr)
 library(tidyr)
 library(reshape2)
 library(data.table)
+
+#setwd('~/Downloads/')
+
+
+main_folder <- "~/Documents/GitHub/BCCAch7/data/"
+#data_folder <- file.path(main_folder, "data")
+docs <- fread('v3form.csv', header=T)
+
+colnames(docs)
+
 
 #column names for each tag
 tags = unique(trimws(unlist(strsplit(docs$'2.1. What type of flow is it?', split=", "))))
