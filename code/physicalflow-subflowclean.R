@@ -17,6 +17,8 @@ colnames(phys_old)
 
 phys_new = phys_new[Excluded == "No", ]
 phys_old = phys_old[Excluded == "No", ]
+phys_old = phys_old['2.1 Flow Type' == "Physical", ]
+phys_new = phys_new['2.1 Flow Type' == "Physical", ]
 
 #df1 %>% select(A, B, E)
 
