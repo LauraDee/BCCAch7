@@ -14,8 +14,9 @@ main_folder <- "C:/Users/basti/Documents/GitHub/BCCAch7"
 data_folder <- file.path(main_folder, "data")
 
 data_rev <- read.csv("data/newdocjan7.csv")
+data_rev <- data_rev %>% rename(Citation = 'X1..What.is.the.short.citation.of.the.paper...Author..Year..Journal.')
+data_rev <- data_rev %>% filter(Citation != "TEST",Citation != "test" )
 dim(data_rev)
-
 ### Step 1: Reshape by DOI - Flow (START)
   # Identify repeating columns
   base_names <- gsub("^.*?(2\\.[0-9]+).*", "\\1", names(data_rev))
@@ -42,6 +43,9 @@ dim(data_rev)
     flow_entry_group[flow_entry_group == ""] <- NA
     # Identify rows with at least one non-NA value
     rows_with_data <- which(rowSums(!is.na(flow_entry_group)) > 0)
+    if (length(rows_with_data) == 0) {
+        next
+      }
 
     current_group <- data_rev[rows_with_data, c(1:(place_rep[1]-1), start_idx:end_idx, (place_rep[10] + differences[1]+1):ncol(data_rev))]
     
@@ -54,10 +58,10 @@ dim(data_rev)
     reshaped_data_matrix[current_row:(current_row + rows_to_add - 1), ] <- current_group_with_index
     current_row <- current_row + rows_to_add
   }
-  
+
   # Convert matrix to data frame and assign column names
   rows_with_data <- which(rowSums(!is.na(reshaped_data_matrix)) > 0)
-  reshaped_data <- as.data.frame(reshaped_data_matrix)
+  reshaped_data <- as.data.frame(reshaped_data_matrix[rows_with_data,])
   colnames(reshaped_data) <- c(colnames(data_rev)[c(1:(place_rep[2]-1), (place_rep[10] + differences[1]+1):ncol(data_rev))], "index")
   colnames(reshaped_data) <- short_names <- c(
     "ID_DOI", 
@@ -164,9 +168,11 @@ dim(data_rev)
   # Check the reshaped data
   cat("Dimensions of reshaped data:", dim(reshaped_data), "\n")
   cat("Unique values in index column:", levels(factor(reshaped_data$Index)), "\n")
-  glimpse(reshaped_data)
+  cat("Unique DOIs:", length(levels(factor(reshaped_data$ID_DOI))), "\n")
+  cat("Unique DOIs by Flow Entry:", length(levels(factor(reshaped_data$ID_DOI_by_FlowEntry))), "\n")
   
-write.csv(reshaped_data, "data/reshaped_v1_jan8.csv")
+
+write.csv(reshaped_data, "data/reshaped_byFlowEntry.csv")
 
 
 ### Step 1: Reshape by DOI - Flow (END)
