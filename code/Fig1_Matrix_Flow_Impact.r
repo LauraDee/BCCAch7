@@ -1,9 +1,17 @@
+#load libraries
+library(ggplot2)
+
+glimpse(reshaped_data)
 
 # Select and reshape relevant columns
-altered_flow_cols <- names(reshaped_data)[grepl("Altered Flow", names(reshaped_data))]
-impact_cols <- names(reshaped_data)[grepl("Impact", names(reshaped_data))]
-# Filter relevant columns for Altered Flow and Impact
+#altered_flow_cols <- names(reshaped_data)[grepl("Altered Flow", names(reshaped_data))]
+#impact_cols <- names(reshaped_data)[grepl("Impact", names(reshaped_data))]
 
+#updated col names
+altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
+impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+
+# Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
 
 interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
@@ -12,8 +20,12 @@ interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test",
   filter(!if_all(-row_id, ~ .x == ""))
 glimpse(interaction_data)
 
-flow_columns <- names(interaction_data)[grepl("Altered Flow", names(interaction_data))]
-impact_columns <- names(interaction_data)[grepl("Impact", names(interaction_data))]
+#flow_columns <- names(interaction_data)[grepl("Altered Flow", names(interaction_data))]
+#impact_columns <- names(interaction_data)[grepl("Impact", names(interaction_data))]
+
+#update column names
+flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
+impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
 
 # Generate all possible combinations of flows and impacts
 combinations <- expand.grid(
@@ -39,9 +51,7 @@ combination_counts_df <- as.data.frame(combination_counts)
 # Preview the result
 glimpse(combination_counts_df)
 
-library(ggplot2)
-
-# Create the plot
+# Create the plot of paper counts by combination
 ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
   geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
   scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
@@ -56,19 +66,6 @@ ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Count occurrences for each Impact direction
@@ -92,7 +89,6 @@ combination_counts_by_impact <- combinations %>%
   ungroup()
 
 # Plot with facets by Impact direction
-library(ggplot2)
 
 ggplot(combination_counts_by_impact, aes(x = Flow, y = Impact, size = count, color = ImpactDirection)) +
   geom_point(alpha = 0.7) +  # Add points with alpha transparency
