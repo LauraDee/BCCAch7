@@ -1,6 +1,9 @@
 #load libraries
 library(ggplot2)
 
+#setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
+reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+
 glimpse(reshaped_data)
 
 # Select and reshape relevant columns
@@ -107,7 +110,6 @@ ggplot(combination_counts_by_impact, aes(x = Flow, y = Impact, size = count, col
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
-
 
 
 # Filter out rows with count == 0
