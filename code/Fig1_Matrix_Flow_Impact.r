@@ -1,39 +1,35 @@
 #load libraries
+graphics.off()
+rm(list=ls())
+
 library(ggplot2)
 
 #setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 reshaped_data <- read.csv("reshaped_3_byFlow.csv")
-
 glimpse(reshaped_data)
 
 # Select and reshape relevant columns
-#altered_flow_cols <- names(reshaped_data)[grepl("Altered Flow", names(reshaped_data))]
-#impact_cols <- names(reshaped_data)[grepl("Impact", names(reshaped_data))]
-
-#updated col names
-altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
-impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+flow_columns <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
+impact_columns <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+hwb_cols <-names(reshaped_data)[grepl("2.20.Well.being.", names(reshaped_data))]
+NCP_cols <-names(reshaped_data)[grepl("X2.16.NCP.ES.", names(reshaped_data))]
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
 
 interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
-  select(all_of(c(altered_flow_cols, impact_cols))) %>%
+  select(all_of(c(flow_columns, impact_columns, hwb_cols, NCP_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
 glimpse(interaction_data)
 
-#flow_columns <- names(interaction_data)[grepl("Altered Flow", names(interaction_data))]
-#impact_columns <- names(interaction_data)[grepl("Impact", names(interaction_data))]
+# flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
+# impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
 
-#update column names
-flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
-impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
-
-# Generate all possible combinations of flows and impacts
+# Generate all possible combinations of flows and NCP
 combinations <- expand.grid(
   Flow = flow_columns,
-  Impact = impact_columns,
+  NCP = NCP_cols,
   stringsAsFactors = FALSE
 )
 
@@ -42,7 +38,7 @@ combination_counts <- combinations %>%
   rowwise() %>% 
   mutate(
     count = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] != "",
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] != "",
       na.rm = TRUE
     )
   ) %>%
@@ -55,13 +51,13 @@ combination_counts_df <- as.data.frame(combination_counts)
 glimpse(combination_counts_df)
 
 # Create the plot of paper counts by combination
-ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
+ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
   geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
   scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
   labs(
-    title = "Interaction Between Altered Flows and Impacts",
+    title = "Interaction Between Altered Flows and NCPs",
     x = "Altered Flow",
-    y = "Impact",
+    y = "NCP",
     size = "Count"
   ) +
   theme_minimal() +
@@ -70,40 +66,39 @@ ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 
-
-# Count occurrences for each Impact direction
-combination_counts_by_impact <- combinations %>%
+# Count occurrences for each NCP direction
+combination_counts_by_NCP <- combinations %>%
   rowwise() %>%
   mutate(
     Increase = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Increase",
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Increase",
       na.rm = TRUE
     ),
     Decrease = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Decrease",
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Decrease",
       na.rm = TRUE
     ),
     Complex = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Complex change",
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex change",
       na.rm = TRUE
     )
   ) %>%
-  pivot_longer(cols = c(Increase, Decrease, Complex), names_to = "ImpactDirection", values_to = "count") %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex), names_to = "NCPDirection", values_to = "count") %>%
   ungroup()
 
-# Plot with facets by Impact direction
+# Plot with facets by NCP direction
 
-ggplot(combination_counts_by_impact, aes(x = Flow, y = Impact, size = count, color = ImpactDirection)) +
+ggplot(combination_counts_by_NCP, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
   geom_point(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~ImpactDirection, scales = "free") +  # Create facets for each impact direction
+  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
   scale_size_continuous(range = c(3, 10)) +  # Adjust size range
   scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
   labs(
-    title = "Interaction Between Altered Flows and Impacts by Impact Direction",
+    title = "Interaction Between Altered Flows and NCPs by NCP Direction",
     x = "Altered Flow",
-    y = "Impact",
+    y = "NCP",
     size = "Count",
-    color = "Impact Direction"
+    color = "NCP Direction"
   ) +
   theme_minimal() +
   theme(
@@ -113,21 +108,21 @@ ggplot(combination_counts_by_impact, aes(x = Flow, y = Impact, size = count, col
 
 
 # Filter out rows with count == 0
-combination_counts_by_impact_filtered <- combination_counts_by_impact %>%
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
   filter(count > 0)
 
-# Plot with facets by Impact direction, excluding zero counts
-ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = count, color = ImpactDirection)) +
+# Plot with facets by NCP direction, excluding zero counts
+ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
   geom_point(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~ImpactDirection, scales = "free") +  # Create facets for each impact direction
+  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
   scale_size_continuous(range = c(3, 10)) +  # Adjust size range
   scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
   labs(
-    title = "Interaction Between Altered Flows and Impacts by Impact Direction",
+    title = "Interaction Between Altered Flows and NCPs by NCP Direction",
     x = "Altered Flow",
-    y = "Impact",
+    y = "NCP",
     size = "Count",
-    color = "Impact Direction"
+    color = "NCP Direction"
   ) +
   theme_minimal() +
   theme(
@@ -136,52 +131,30 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = c
   )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 unique_flows <- interaction_data %>%
-  select(starts_with("2.7")) %>%
+  select(starts_with("X2.7")) %>%
   unlist() %>%
   unique() %>%
   na.omit()
 
-unique_impacts <- interaction_data %>%
-  select(starts_with("2.12")) %>%
+unique_NCPs <- interaction_data %>%
+  select(starts_with("X2.16")) %>%
   unlist() %>%
   unique() %>%
   na.omit()
 
 # Print unique values to ensure we understand the data structure
 print(unique_flows)
-print(unique_impacts)
+print(unique_NCPs)
+
 # Count occurrences for each combination
-combination_counts_by_impact <- combinations %>%
+combination_counts_by_NCP <- combinations %>%
   rowwise() %>%
   mutate(
     count = sum(
       apply(interaction_data, 1, function(row) {
-        row[[Flow]] != "" && row[[Impact]] != "" && 
-        row[[Flow]] == Flow && row[[Impact]] == Impact
+        row[[Flow]] != "" && row[[NCP]] != "" && 
+        row[[Flow]] == Flow && row[[NCP]] == NCP
       })
     ),
     FlowDirection = case_when(
@@ -190,30 +163,29 @@ combination_counts_by_impact <- combinations %>%
       grepl("Complex change", Flow) ~ "Complex change",
       TRUE ~ NA_character_
     ),
-    ImpactDirection = case_when(
-      grepl("Increase", Impact) ~ "Increase",
-      grepl("Decrease", Impact) ~ "Decrease",
-      grepl("Complex change", Impact) ~ "Complex change"
+    NCPDirection = case_when(
+      grepl("Increase", NCP) ~ "Increase",
+      grepl("Decrease", NCP) ~ "Decrease",
+      grepl("Complex change", NCP) ~ "Complex change"
     )
   ) %>%
-  filter(!is.na(FlowDirection) & !is.na(ImpactDirection)) %>%  # Exclude undefined combinations
+  filter(!is.na(FlowDirection) & !is.na(NCPDirection)) %>%  # Exclude undefined combinations
   ungroup()
 
 # Plot with corrected counts
-ggplot(combination_counts_by_impact_filtered, aes(
-  x = Flow, y = Impact, size = count, color = ImpactDirection, shape = FlowDirection
-)) +
+ggplot(combination_counts_by_NCP, aes(
+  x = Flow, y = NCP, size = count, color = NCPDirection, shape = FlowDirection)) +
   geom_point(alpha = 0.7) +
-  facet_wrap(~ImpactDirection, scales = "free") +
+  facet_wrap(~NCPDirection, scales = "free") +
   scale_size_continuous(range = c(3, 10)) +
   scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
   scale_shape_manual(values = c("Increase" = 16, "Decrease" = 17, "Complex" = 15)) +
   labs(
-    title = "Interaction Between Altered Flows and Impacts by Impact Direction",
+    title = "Interaction Between Altered Flows and NCPs by NCP Direction",
     x = "Altered Flow",
-    y = "Impact",
+    y = "NCP",
     size = "Count",
-    color = "Impact Direction",
+    color = "NCP Direction",
     shape = "Flow Direction"
   ) +
   theme_minimal() +
@@ -223,5 +195,4 @@ ggplot(combination_counts_by_impact_filtered, aes(
   )
 
 
-graphics.off()
-rm(list=ls())
+
