@@ -6,7 +6,7 @@ impact_cols <- names(reshaped_data)[grepl("Impact", names(reshaped_data))]
 
 "%notin%" <- Negate("%in%")
 
-interaction_data <- reshaped_data %>% filter(`Short Citation` %notin% c("TEST","test","Test")) %>% 
+interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
   select(all_of(c(altered_flow_cols, impact_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
