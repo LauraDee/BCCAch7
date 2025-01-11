@@ -5,26 +5,46 @@ rm(list=ls())
 library(ggplot2)
 
 #setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+# reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+reshaped_data <- read.csv("reshaped_4_drivers.csv")
 glimpse(reshaped_data)
 
+#How many entries had noNCPs (sum of all of the columns)
+table(reshaped_data$X2.16.NCP.ES..None)
+ 23 + 18 + 39  # = 80 which means 153 entries had one or more NCP
+# The figure has a max of 30 and it looks like 153 had some entries so max % of papers total is ~19.6%
+
+ #Let's look
+ table(reshaped_data$X2.16.NCP.ES..Experiences)
+ table(reshaped_data$X2.16.NCP.ES..Habitat)
+ table(reshaped_data$X2.16.NCP.ES..Pollination)
+ table(reshaped_data$X2.16.NCP.ES..Air.Quality)
+ table(reshaped_data$X2.16.NCP.ES..Climate)
+ table(reshaped_data$X2.16.NCP.ES..Acidification)
+ table(reshaped_data$X2.16.NCP.ES..Freshwater)
+ table(reshaped_data$X2.16.NCP.ES..Water.Quality)
+ table(reshaped_data$X2.16.NCP.ES..Soil.Protection)
+ table(reshaped_data$X2.16.NCP.ES..Hazards)
+ #etc.
+ 
 # Select and reshape relevant columns
 flow_columns <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
 impact_columns <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+driver_columns <-  names(reshaped_data)[grepl("driver.", names(reshaped_data))]
 hwb_cols <-names(reshaped_data)[grepl("2.20.Well.being.", names(reshaped_data))]
 NCP_cols <-names(reshaped_data)[grepl("X2.16.NCP.ES.", names(reshaped_data))]
+
+#Remove the No NCP entry which is "X2.16.NCP.ES..None"  
+NCP_cols <- NCP_cols[-1]
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
 
 interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
-  select(all_of(c(flow_columns, impact_columns, hwb_cols, NCP_cols))) %>%
+  select(all_of(c(flow_columns, impact_columns, driver_columns, hwb_cols, NCP_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
 glimpse(interaction_data)
-
-# flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
-# impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
 
 # Generate all possible combinations of flows and NCP
 combinations <- expand.grid(
@@ -66,7 +86,8 @@ ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 
-# Count occurrences for each NCP direction
+
+# Count occurrences for each NCP direction 
 combination_counts_by_NCP <- combinations %>%
   rowwise() %>%
   mutate(
@@ -79,44 +100,47 @@ combination_counts_by_NCP <- combinations %>%
       na.rm = TRUE
     ),
     Complex = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex change",
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex Change",
       na.rm = TRUE
-    )
+    ),
+    NotConsidered = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "",
+                            na.rm = TRUE
+    ),
+    NoChangeMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No change (measured)',
+                           na.rm = TRUE
+  ),
+  NotMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No direction mentioned',
+                    na.rm = TRUE)
   ) %>%
-  pivot_longer(cols = c(Increase, Decrease, Complex), names_to = "NCPDirection", values_to = "count") %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex, NotConsidered, NoChangeMeasured, NotMeasured), names_to = "NCPDirection", values_to = "count") %>%
   ungroup()
 
-# Plot with facets by NCP direction
+#check & write out the summaries here - note this is just of altered flows..
+# .. .but doesn't say which flows or which drivers
+head(combination_counts_by_NCP)
+#write.csv(combination_counts_by_NCP, "NCPsummarydata.csv")
 
-ggplot(combination_counts_by_NCP, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
-  geom_point(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
-  scale_size_continuous(range = c(3, 10)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
-  labs(
-    title = "Interaction Between Altered Flows and NCPs by NCP Direction",
-    x = "Altered Flow",
-    y = "NCP",
-    size = "Count",
-    color = "NCP Direction"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
-  )
+#check 
+table(combination_counts_by_NCP$NCPDirection, combination_counts_by_NCP$count)
 
-
-# Filter out rows with count == 0
+#Remove the NCPDirection == "NotConsidered" rows -
 combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
+  filter(NCPDirection != "NotConsidered")
+#check 
+head(combination_counts_by_NCP_filtered) # yay it worked!
+
+# remove the blank NCP entries for all NCP columns
+# Filter out rows with count == 0
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
   filter(count > 0)
 
-# Plot with facets by NCP direction, excluding zero counts
+# Plot with facets by NCP direction excluding entries with NO NCPs mentioned  and zero counts
 ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
   geom_point(alpha = 0.7) +  # Add points with alpha transparency
   facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
-  scale_size_continuous(range = c(3, 10)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray")) +
   labs(
     title = "Interaction Between Altered Flows and NCPs by NCP Direction",
     x = "Altered Flow",
@@ -130,7 +154,578 @@ ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, 
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 
+### NOTE: The figure has a max count of ~30;
+# it looks like 153 had some entries so max % of papers total is ~19.6%
+# 1 paper is 0.65% of papers. 5 papers is 3.27%
 
+## Plots of basic NCP impacts by NCP
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                "NotMeasured" = "gray"))
+
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "fixed") 
+  
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "free") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray"))
+
+
+# Plosts of which flow change are having which NCP changes
+
+
+## do for each subtype
+
+#load libraries
+graphics.off()
+rm(list=ls())
+
+library(ggplot2)
+
+#setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
+# reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+reshaped_data <- read.csv("reshaped_4_drivers.csv")
+glimpse(reshaped_data)
+
+#How many entries had noNCPs (sum of all of the columns)
+table(reshaped_data$X2.16.NCP.ES..None)
+
+#BIOTIC
+biotic_combo_NCP <- reshaped_data %>%
+  filter(Biotic == "TRUE")
+
+#Let's look
+table(biotic_combo_NCP$X2.16.NCP.ES..Experiences)
+table(biotic_combo_NCP$X2.16.NCP.ES..Habitat)
+table(biotic_combo_NCP$X2.16.NCP.ES..Pollination)
+table(biotic_combo_NCP$X2.16.NCP.ES..Air.Quality)
+table(biotic_combo_NCP$X2.16.NCP.ES..Climate)
+table(biotic_combo_NCP$X2.16.NCP.ES..Acidification)
+table(biotic_combo_NCP$X2.16.NCP.ES..Freshwater)
+table(biotic_combo_NCP$X2.16.NCP.ES..Water.Quality)
+table(biotic_combo_NCP$X2.16.NCP.ES..Soil.Protection)
+table(biotic_combo_NCP$X2.16.NCP.ES..Hazards)
+#etc.
+
+# Select and reshape relevant columns
+flow_columns <- names(biotic_combo_NCP)[grepl("2.7.Altered.Flow.", names(biotic_combo_NCP))]
+impact_columns <- names(biotic_combo_NCP)[grepl("2.12.Impact.", names(biotic_combo_NCP))]
+driver_columns <-  names(biotic_combo_NCP)[grepl("driver.", names(biotic_combo_NCP))]
+hwb_cols <-names(biotic_combo_NCP)[grepl("2.20.Well.being.", names(biotic_combo_NCP))]
+NCP_cols <-names(biotic_combo_NCP)[grepl("X2.16.NCP.ES.", names(biotic_combo_NCP))]
+
+#Remove the No NCP entry which is "X2.16.NCP.ES..None"  
+NCP_cols <- NCP_cols[-1]
+
+# Filter relevant columns for Altered Flow and Impact
+"%notin%" <- Negate("%in%")
+
+interaction_data <- biotic_combo_NCP %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
+  select(all_of(c(flow_columns, impact_columns, driver_columns, hwb_cols, NCP_cols))) %>%
+  mutate(row_id = row_number())  %>%
+  filter(!if_all(-row_id, ~ .x == ""))
+glimpse(interaction_data)
+
+# Generate all possible combinations of flows and NCP
+combinations <- expand.grid(
+  Flow = flow_columns,
+  NCP = NCP_cols,
+  stringsAsFactors = FALSE
+)
+
+# Count occurrences of each combination in the data
+combination_counts <- combinations %>%
+  rowwise() %>% 
+  mutate(
+    count = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] != "",
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup()
+
+# Convert to a dataframe for easy viewing
+combination_counts_df <- as.data.frame(combination_counts)
+
+# Preview the result
+glimpse(combination_counts_df)
+
+# Create the plot of paper counts by combination
+ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+  scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
+  labs(
+    title = "Interaction Between Altered Flows and NCPs",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+
+# Count occurrences for each NCP direction 
+combination_counts_by_NCP <- combinations %>%
+  rowwise() %>%
+  mutate(
+    Increase = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Increase",
+      na.rm = TRUE
+    ),
+    Decrease = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Decrease",
+      na.rm = TRUE
+    ),
+    Complex = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex Change",
+      na.rm = TRUE
+    ),
+    NotConsidered = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "",
+                        na.rm = TRUE
+    ),
+    NoChangeMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No change (measured)',
+                           na.rm = TRUE
+    ),
+    NotMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No direction mentioned',
+                      na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex, NotConsidered, NoChangeMeasured, NotMeasured), names_to = "NCPDirection", values_to = "count") %>%
+  ungroup()
+
+#check & write out the summaries here - note this is just of altered flows..
+# .. .but doesn't say which flows or which drivers
+head(combination_counts_by_NCP)
+#write.csv(combination_counts_by_NCP, "NCPsummarydata.csv")
+
+#check 
+table(combination_counts_by_NCP$NCPDirection, combination_counts_by_NCP$count)
+
+#Remove the NCPDirection == "NotConsidered" rows -
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
+  filter(NCPDirection != "NotConsidered")
+#check 
+head(combination_counts_by_NCP_filtered) # yay it worked!
+
+# remove the blank NCP entries for all NCP columns
+# Filter out rows with count == 0
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
+  filter(count > 0)
+
+# Plot with facets by NCP direction excluding entries with NO NCPs mentioned  and zero counts
+bioticNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
+  geom_point(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray")) +
+  labs(
+    title = "Biotic Flows: Interaction Between Altered Flows and NCPs by NCP Direction",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count",
+    color = "NCP Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+bioticNCP
+
+## Plots of basic NCP impacts by NCP
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                "NotMeasured" = "gray")) +
+  labs(
+    title = "Biotic Flows: NCPs Direction",
+    x = "Effect",
+    y = "Count",
+    size = "Count",
+    color = "NCP Direction"  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted") )
+
+#basic bar plot counting the NCP entry counts by direction
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "fixed") 
+
+# PHYSICAL
+phys_combo_NCP <- reshaped_data %>%
+  filter(Physical == "TRUE")
+
+#Let's look
+table(phys_combo_NCP$X2.16.NCP.ES..Experiences)
+table(phys_combo_NCP$X2.16.NCP.ES..Habitat)
+table(phys_combo_NCP$X2.16.NCP.ES..Pollination)
+table(phys_combo_NCP$X2.16.NCP.ES..Air.Quality)
+table(phys_combo_NCP$X2.16.NCP.ES..Climate)
+table(phys_combo_NCP$X2.16.NCP.ES..Acidification)
+table(phys_combo_NCP$X2.16.NCP.ES..Freshwater)
+table(phys_combo_NCP$X2.16.NCP.ES..Water.Quality)
+table(phys_combo_NCP$X2.16.NCP.ES..Soil.Protection)
+table(phys_combo_NCP$X2.16.NCP.ES..Hazards)
+#etc.
+
+# Select and reshape relevant columns
+flow_columns <- names(phys_combo_NCP)[grepl("2.7.Altered.Flow.", names(phys_combo_NCP))]
+impact_columns <- names(phys_combo_NCP)[grepl("2.12.Impact.", names(phys_combo_NCP))]
+driver_columns <-  names(phys_combo_NCP)[grepl("driver.", names(phys_combo_NCP))]
+hwb_cols <-names(phys_combo_NCP)[grepl("2.20.Well.being.", names(phys_combo_NCP))]
+NCP_cols <-names(phys_combo_NCP)[grepl("X2.16.NCP.ES.", names(phys_combo_NCP))]
+
+#Remove the No NCP entry which is "X2.16.NCP.ES..None"  
+NCP_cols <- NCP_cols[-1]
+
+# Filter relevant columns for Altered Flow and Impact
+"%notin%" <- Negate("%in%")
+
+interaction_data <- phys_combo_NCP %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
+  select(all_of(c(flow_columns, impact_columns, driver_columns, hwb_cols, NCP_cols))) %>%
+  mutate(row_id = row_number())  %>%
+  filter(!if_all(-row_id, ~ .x == ""))
+glimpse(interaction_data)
+
+# Generate all possible combinations of flows and NCP
+combinations <- expand.grid(
+  Flow = flow_columns,
+  NCP = NCP_cols,
+  stringsAsFactors = FALSE
+)
+
+# Count occurrences of each combination in the data
+combination_counts <- combinations %>%
+  rowwise() %>% 
+  mutate(
+    count = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] != "",
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup()
+
+# Convert to a dataframe for easy viewing
+combination_counts_df <- as.data.frame(combination_counts)
+
+# Preview the result
+glimpse(combination_counts_df)
+
+# Create the plot of paper counts by combination
+ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+  scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
+  labs(
+    title = "Interaction Between Altered Flows and NCPs",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+
+# Count occurrences for each NCP direction 
+combination_counts_by_NCP <- combinations %>%
+  rowwise() %>%
+  mutate(
+    Increase = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Increase",
+      na.rm = TRUE
+    ),
+    Decrease = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Decrease",
+      na.rm = TRUE
+    ),
+    Complex = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex Change",
+      na.rm = TRUE
+    ),
+    NotConsidered = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "",
+                        na.rm = TRUE
+    ),
+    NoChangeMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No change (measured)',
+                           na.rm = TRUE
+    ),
+    NotMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No direction mentioned',
+                      na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex, NotConsidered, NoChangeMeasured, NotMeasured), names_to = "NCPDirection", values_to = "count") %>%
+  ungroup()
+
+#check & write out the summaries here - note this is just of altered flows..
+# .. .but doesn't say which flows or which drivers
+head(combination_counts_by_NCP)
+#write.csv(combination_counts_by_NCP, "NCPsummarydata.csv")
+
+#check 
+table(combination_counts_by_NCP$NCPDirection, combination_counts_by_NCP$count)
+
+#Remove the NCPDirection == "NotConsidered" rows -
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
+  filter(NCPDirection != "NotConsidered")
+#check 
+head(combination_counts_by_NCP_filtered) # yay it worked!
+
+# remove the blank NCP entries for all NCP columns
+# Filter out rows with count == 0
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
+  filter(count > 0)
+
+# Plot with facets by NCP direction excluding entries with NO NCPs mentioned  and zero counts
+physNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
+  geom_point(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray")) +
+  labs(
+    title = "Physicalc Flows: Interaction Between Altered Flows and NCPs by NCP Direction",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count",
+    color = "NCP Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+physNCP
+
+#scale fixed
+physNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
+  geom_point(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray")) +
+  labs(
+    title = "Physicalc Flows: Interaction Between Altered Flows and NCPs by NCP Direction",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count",
+    color = "NCP Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+physNCP
+
+## Plots of basic NCP impacts by NCP
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                "NotMeasured" = "gray")) +
+  labs(
+    title = "Physical Flows: NCPs Direction",
+    x = "Effect",
+    y = "Count",
+    size = "Count",
+    color = "NCP Direction"  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted") )
+
+
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "fixed") 
+
+
+# *** Human movement - how to combine with trade in this step?? *** not sure if this worked..
+human_combo_NCP <- reshaped_data %>%
+  filter(Movement=="TRUE")
+
+#Let's look
+table(human_combo_NCP$X2.16.NCP.ES..Experiences)
+table(human_combo_NCP$X2.16.NCP.ES..Habitat)
+table(human_combo_NCP$X2.16.NCP.ES..Pollination)
+table(human_combo_NCP$X2.16.NCP.ES..Air.Quality)
+table(human_combo_NCP$X2.16.NCP.ES..Climate)
+table(human_combo_NCP$X2.16.NCP.ES..Acidification)
+table(human_combo_NCP$X2.16.NCP.ES..Freshwater)
+table(human_combo_NCP$X2.16.NCP.ES..Water.Quality)
+table(human_combo_NCP$X2.16.NCP.ES..Soil.Protection)
+table(human_combo_NCP$X2.16.NCP.ES..Hazards)
+#etc.
+
+# Select and reshape relevant columns
+flow_columns <- names(human_combo_NCP)[grepl("2.7.Altered.Flow.", names(human_combo_NCP))]
+impact_columns <- names(human_combo_NCP)[grepl("2.12.Impact.", names(human_combo_NCP))]
+driver_columns <-  names(human_combo_NCP)[grepl("driver.", names(human_combo_NCP))]
+hwb_cols <-names(human_combo_NCP)[grepl("2.20.Well.being.", names(human_combo_NCP))]
+NCP_cols <-names(human_combo_NCP)[grepl("X2.16.NCP.ES.", names(human_combo_NCP))]
+
+#Remove the No NCP entry which is "X2.16.NCP.ES..None"  
+NCP_cols <- NCP_cols[-1]
+
+# Filter relevant columns for Altered Flow and Impact
+"%notin%" <- Negate("%in%")
+
+interaction_data <- human_combo_NCP %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
+  select(all_of(c(flow_columns, impact_columns, driver_columns, hwb_cols, NCP_cols))) %>%
+  mutate(row_id = row_number())  %>%
+  filter(!if_all(-row_id, ~ .x == ""))
+glimpse(interaction_data)
+
+# Generate all possible combinations of flows and NCP
+combinations <- expand.grid(
+  Flow = flow_columns,
+  NCP = NCP_cols,
+  stringsAsFactors = FALSE
+)
+
+# Count occurrences of each combination in the data
+combination_counts <- combinations %>%
+  rowwise() %>% 
+  mutate(
+    count = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] != "",
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup()
+
+# Convert to a dataframe for easy viewing
+combination_counts_df <- as.data.frame(combination_counts)
+
+# Preview the result
+glimpse(combination_counts_df)
+
+# Create the plot of paper counts by combination
+ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+  scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
+  labs(
+    title = "Interaction Between Altered Flows and NCPs",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+
+# Count occurrences for each NCP direction 
+combination_counts_by_NCP <- combinations %>%
+  rowwise() %>%
+  mutate(
+    Increase = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Increase",
+      na.rm = TRUE
+    ),
+    Decrease = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Decrease",
+      na.rm = TRUE
+    ),
+    Complex = sum(
+      interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "Complex Change",
+      na.rm = TRUE
+    ),
+    NotConsidered = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] == "",
+                        na.rm = TRUE
+    ),
+    NoChangeMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No change (measured)',
+                           na.rm = TRUE
+    ),
+    NotMeasured = sum(interaction_data[[Flow]] != "" & interaction_data[[NCP]] =='No direction mentioned',
+                      na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex, NotConsidered, NoChangeMeasured, NotMeasured), names_to = "NCPDirection", values_to = "count") %>%
+  ungroup()
+
+#check & write out the summaries here - note this is just of altered flows..
+# .. .but doesn't say which flows or which drivers
+head(combination_counts_by_NCP)
+#write.csv(combination_counts_by_NCP, "NCPsummarydata.csv")
+
+#check 
+table(combination_counts_by_NCP$NCPDirection, combination_counts_by_NCP$count)
+
+#Remove the NCPDirection == "NotConsidered" rows -
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
+  filter(NCPDirection != "NotConsidered")
+#check 
+head(combination_counts_by_NCP_filtered) # yay it worked!
+
+# remove the blank NCP entries for all NCP columns
+# Filter out rows with count == 0
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
+  filter(count > 0)
+
+# Plot with facets by NCP direction excluding entries with NO NCPs mentioned  and zero counts
+humanNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
+  geom_point(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "free") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                NotMeasured = "gray")) +
+  labs(
+    title = "Human movement/trade Flows Flows: Interaction Between Altered Flows and NCPs by NCP Direction",
+    x = "Altered Flow",
+    y = "NCP",
+    size = "Count",
+    color = "NCP Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+humanNCP
+
+## Plots of basic NCP impacts by NCP
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
+                                "NotMeasured" = "gray")) +
+  labs(
+    title = "Human movement/trade Flows: NCPs Direction",
+    x = "Effect",
+    y = "Count",
+    size = "Count",
+    color = "NCP Direction"  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted") )
+
+#basic bar plot counting the NCP entry counts by direction
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
+  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
+  facet_wrap(~NCPDirection, scales = "fixed") 
+
+
+
+
+
+
+## BERNIE -- not sure what this is? It didnt work for me -- 
 unique_flows <- interaction_data %>%
   select(starts_with("X2.7")) %>%
   unlist() %>%
