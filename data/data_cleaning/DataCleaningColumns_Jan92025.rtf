@@ -15,21 +15,36 @@ DOI
 \f0\b \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
 
-\f1\b0 \cf0 2.1.Flow.Type\
-
-\f0\b 2.2.Subtype.NEW\
-2.2.Subtype.OLD \
-\pard\pardeftab720\partightenfactor0
-\cf0 Flag_QualityCheck\
-Flag_SubtypeCode\
-Flag_FlowCode\
-Flag_SubflowSpit\
-Flag_FlowSplit \
-Flag_MissingData
+\f1\b0 \cf0 2.1.Flow.Type: this should be biotic, sociocultural, human or physical. There shouldn\'92t be any that are multiple flow types of these. If so, flag and say yes for \'93
+\f0\b Flag_FlowSplit\'94 
 \f1\b0 \
-\pard\pardeftab720\partightenfactor0
 
-\f0\b \cf0 ID_DOI_by_Flow\
-ID_DOI_byFlowEntry
+\f0\b 2.2.Subtype.NEW: 
+\f1\b0 Updated (cleaned) Subtype \'97 this should be one per entry. 
+\f0\b \
+2.2.Subtype.OLD: 
+\f1\b0 Raw subtype as entered by coder
+\f0\b \
+\pard\pardeftab720\partightenfactor0
+\cf0 Flag_QualityCheck - 
+\f1\b0 The coding and answers look suss, needs to be recoded or looked at for quality issues.
+\f0\b \
+Flag_SubtypeCode - 
+\f1\b0 The subtype needs to be checked because its not clear what it is, or if it should be multiple 
+\f0\b \
+Flag_FlowCode - 
+\f1\b0 The flow category needs to be checked (eg marked physical but is biotic), recoded potentially 
+\f0\b \
+Flag_SubflowSpit - 
+\f1\b0 there are multiple sub flows in one entry and they need to be entered again as two separate sub flows (e.g. governance and aid money) 
+\f0\b \
+Flag_FlowSplit - T
+\f1\b0 wo flow categories were listed in one entry (e.g. physical; biotic) but should be unique entries 
+\f0\b \
+Flag_MissingData - 
+\f1\b0 no data in some of the answers \
+
+\f0\b ID_DOI_by_Flow - unique identifier to track from reshaped_4_drivers.csv\
+ID_DOI_byFlowEntry - unique identifier to track from eshaped_4_drivers.csv
 \f1\b0 \
 }
