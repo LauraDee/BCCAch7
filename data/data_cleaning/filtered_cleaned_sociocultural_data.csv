@@ -1,0 +1,37 @@
+Citation,DOI,2.1.Flow.Type,2.2.Subtype,2.2.Subtype.NEW,Flag_QualityCheck,Flag_SubtypeCode,Flag_FlowCode,Flag_SubFlowSplit,Flag_FlowSplit,Flag_MissingData,ID_DOI_by_Flow,ID_DOI_by_FlowEntry,notes
+"Hori & Syugyo et al., (2020) International Environmental Agreements",https://doi.org/10.1007/s10784-020-09475-7,Sociocultural,Governance,governance,0,0,0,0,0,0,4,4,
+"Jordan & Huitema et al., (2014) Global Environmental Change",https://doi.org/10.1016/j.gloenvcha.2014.09.005,Sociocultural,Governance,governance,1,0,0,0,0,1,5,5,missing 2.8.Other.Description
+"(Mitchell et.al., 2019, Genealogy)",https://doi.org/10.3390/genealogy4020051,Sociocultural,Knowledge transfer,knowledge transfer,0,0,0,0,0,0,26,26,
+"Rayfuse, Rosemary; 2008; Review of European Community and International Environmental Law",https://doi.org/10.1111/j.1467-9388.2008.00583.x,Sociocultural,governance,governance,0,0,0,0,0,0,32,32,
+"Kehl, 2018, Journal of Water Resource and Protection",https://doi.org/10.4236/jwarp.2018.1011065,Sociocultural,Economic & political influence,governance,0,1,0,0,0,0,36,36,subtype reclassed
+"Koubrak, O.; VanderZwaag, D. L.; 2020; Ecology and Society",10.5751/ES-11835-250442,Sociocultural,governance,governance,0,0,0,0,0,0,41,40,
+"Gunderson et al., 2017, Ecology and Society",10.5751/ES-08879-220131,Sociocultural,governance,governance,0,0,0,0,0,0,46,45,
+"Craig, 2020, WIREs Water",https://doi.org/10.1002/wat2.1423,Sociocultural,"Knowledge transfer, Legal, Laws",Governance,0,1,0,0,0,0,48,47,"subtype reclassed, sylvia adjusted a few mistakes"
+"Davis et. al., 2021, Canadian Science Publishing",https://doi.org/10.1139/as-2020-0032,Sociocultural,Knowledge transfer,knowledge transfer,0,0,0,0,0,0,49,48,
+"Rossi, 2014, Agricultural Water Management",10.1016/j.agwat.2014.07.030,Sociocultural,diplomatic,governance,0,1,0,0,0,0,50,49,subtype reclassed
+"Chapman, J.; Dearden, A.; Miller, A.; 2020; Journal of Marine Science and Engineering",10.3390/jmse8100739,Sociocultural,information/knowledge exchange + collaboration,Knowledge transfer,0,1,0,0,0,0,62,61,subtype reclassed
+"Beatley, T.; 1991; COASTAL MANAGEMENT","10.1080/08920759109362128	",Sociocultural,international and transboundary governance for biodiversity conservation,governance,0,1,0,0,0,0,67,66,subtype reclassed
+"Shin et al., 2021, Global Change Biology",10.1111/gcb.16109,Sociocultural,"Governance, Diplomatic/Financial Aid", - ,0,1,0,1,0,0,76,74,"subtype split, kyle recoded"
+"Shin et al., 2021, Global Change Biology",10.1111/gcb.16109,Sociocultural,,governance,0,1,0,1,0,0,76,74,"subtype split, kyle recoded"
+"Shin et al., 2021, Global Change Biology",10.1111/gcb.16109,Sociocultural,,diplomatic/financial aid,0,1,0,1,0,0,76,74,"subtype split, kyle recoded"
+"Anderson, K.; 2022; Food Policy",10.1016/j.foodpol.2022.102253,Sociocultural,international food policies,governance,1,1,0,0,0,0,91,89,"subtype reclassed, Citation and DOI fixed as they were entered incorrectly"
+"Baldwin-Cantello, W.; Tickner, D.; Wright, M.; Clark, M.; Cornelius, S.; Ellis, K.; Francis, A.; Ghazoul, J.; Gordon, J. E.; Matthews, N.; Milner-Gulland, E. J.; Smith, P.; Walmsley, S.; Young, L.; 2023; Climate Policy",10.1080/14693062.2023.2175637,Sociocultural,integrated global policy framework to address the triple challenge (climate <-> biodiversity <-> human well-being impacts),governance,0,1,0,0,0,0,101,97,subtype reclassed
+"Thiri, M. A.; Villamayor-Tomas, S.; Scheidel, A.; Demaria, F., 2022, Ecological Economics ",10.1016/j.ecolecon.2022.107356,Sociocultural,"knowledge transfer, governance",governance,0,1,0,0,0,0,104,100,"subtype reclassed, sylvia adjusted a few mistakes"
+"Tennberg, M., 2009, CLIMATE GOVERNANCE IN THE ARCTIC",https://doi.org/10.1007/978-1-4020-9542-9_11,Sociocultural,Governance,governance,0,0,0,0,0,0,109,105,
+"Green, K. M.; Selgrath, J. C.; Frawley, T. H.; Oestreich, W. K.; Mansfield, E. J.; Urteaga, J.; Swanson, S. S.; Santana, F. N.; Green, S. J.; Naggea, J.; Crowder, L. B., 2021, Climate Change",10.1007/s10584-021-02965-w,Sociocultural,Knowledge transfer,knowledge transfer,0,0,0,0,0,0,114,110,
+"Lugo, A. E.; Medina, E.; McGinley, K.; 2014; Madera y Bosques",10.21829/myb.2014.200146,Sociocultural,international conservation governance for mangroves,governance,0,1,0,0,0,0,118,114,subtype reclassed
+"Warner, R.; 2018; ECOLOGY LAW QUARTERLY",10.15779/Z38M61BQ0J,Sociocultural,international governance for environmental impact assessments in ocean areas beyond national jurisdiction,governance,0,1,0,0,0,0,120,116,subtype reclassed
+"Park, 2023, Forest Ecology and Management",https://doi.org/10.1016/j.foreco.2023.120854,Sociocultural,assisted migration,knowledge transfer,0,1,0,0,0,0,125,121,subtype reclassed
+"Galaz, V.; Tallberg, J.; Boin, A.; Ituarte-Lima, C.; Hey, E.; Olsson, P.; Westley, F.; 2017; Risk, Hazards & Crisis in Public Policy","http://dx.doi.org/10.1002/rhc3.12108	",Sociocultural,international governance institutions,governance,0,1,0,0,0,0,130,125,subtype reclassed
+"Antwi, 2024, environmental review",https://doi.org/10.1139/er-2022-0130,Sociocultural,knowledge transfer,knowledge transfer,0,0,0,0,0,0,137,131,
+"Chi et al., 2024",10.1007/s10113-024-02212-9,Sociocultural,Knowledge Transfer; Cultural Resources/Ties,knowledge transfer,0,1,0,0,0,0,187,176,subtype reclassed
+"Mucioki, 2024",10.1002/ppp3.10500,Sociocultural,Knowledge Transfer; Governance; General Cultural Flow,knowledge transfer,0,1,0,0,0,0,188,177,subtype reclassed
+"Engler, C.; 2020; Ecology and Society",10.5751/ES-11988-250443,Sociocultural,regional fisheries management of transboundary fish stocks,governance,0,1,0,0,0,0,200,189,subtype reclassed
+"Park, 2023, Forest Ecology and Management",https://doi.org/10.1016/j.foreco.2023.120854,Sociocultural,knowledge transfer,knowledge transfer,0,0,0,0,0,0,203,192,
+"Sivakumar, B.; 2011; Hydrological Sciences Journal","10.1080/02626667.2011.580747	",Sociocultural,transboundary water governance (often international),governance,0,1,0,0,0,0,204,193,subtype reclassed
+"Antwi, 2024, environmental review",https://doi.org/10.1139/er-2022-0130,Sociocultural,governance,governance,0,0,0,0,0,0,206,195,subtype reclassed
+"Boulanger, 2023, Canadian Journal of Forest Research",https://doi.org/10.1139/cjfr-2022-0282,Sociocultural,knowledge transfer,knowledge transfer,0,0,0,0,0,0,223,212,
+"Keatts, 2021, Front. Public Health",10.3389/fpubh.2021.627654,Sociocultural,Changing patterns of food consumption and storage,knowledge transfer,0,1,0,0,0,0,224,213,subtype reclassed
+"Laushman, 2020, air soil and water research",https://doi.org/10.1177/1178622120950272,Sociocultural,knowledge transfer,knowledge transfer,0,0,0,0,0,0,228,217,
+"Boulanger, 2023, Canadian Journal of Forest Research",https://doi.org/10.1139/cjfr-2022-0282,Sociocultural,research partnerships,knowledge transfer,0,1,0,0,0,0,229,218,subtype reclassed
+"Knopp, 2020, Freshwater Biology",DOI: 10.1111/fwb.13570,Sociocultural,Indigenous knowledge transfer,knowledge transfer,0,1,0,0,0,0,233,221,subtype reclassed
