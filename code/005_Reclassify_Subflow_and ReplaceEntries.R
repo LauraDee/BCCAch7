@@ -2,7 +2,6 @@
 # Feb 9 2025
 
 # ****TO DO STIL BEFORE THIS STEP -- #need to figure out what to do with the FLOW itself that have been changed***
-
 library(tidyr)
 library(dplyr)
 
@@ -40,9 +39,8 @@ updated_docs <- merge(phys, docs, by = "ID_DOI_by_Flow")
 updated_docs <- merge(biotic, docs, by = "ID_DOI_by_Flow")
 glimpse(updated_docs)
 
-# Add in the new entries entirely: 
+# Add in the new entries entirely for: 
   # de la Fontaine,  2018, Ecology
   # Costa, D., 2021, Journal of Great Lakes Research
   # Shin et al., 2021, Global Change Biology
-
 
