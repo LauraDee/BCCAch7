@@ -4,6 +4,7 @@
 # ****TO DO STIL BEFORE THIS STEP -- #need to figure out what to do with the FLOW itself that have been changed***
 library(tidyr)
 library(dplyr)
+library(data.table)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 docs <- read.csv("cleaned_4_byFlow.csv")
@@ -40,6 +41,10 @@ subflows <- merge(biotic, subflows,  all.y = T)
 # Merge the new subflows into the main dataset
 updated_docs <- merge(subflows, docs, by = "ID_DOI_by_Flow", all.y = T)
 glimpse(updated_docs)
+
+#clean entries so all of the range shifts are written the same
+#updated_docs[X2.2.Subtype.NEW == "range shifts", X2.2.Subtype.NEW := "Range shift"]
+#updated_docs[X2.2.Subtype.NEW == "range shift", X2.2.Subtype.NEW := "Range shift"]
 
 # Add in the new entries entirely for: 
   # de la Fontaine,  2018, Ecology
