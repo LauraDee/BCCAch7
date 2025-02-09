@@ -44,3 +44,4 @@ glimpse(updated_docs)
   # Costa, D., 2021, Journal of Great Lakes Research
   # Shin et al., 2021, Global Change Biology
 
+write.csv(updated_docs, "cleaned_5_byFlow.csv")
