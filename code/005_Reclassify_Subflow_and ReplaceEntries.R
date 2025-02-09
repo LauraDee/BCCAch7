@@ -34,9 +34,9 @@ biotic <- biotic %>% filter(Citation != "Noyes, 2009, Environment International"
 socio <- socio %>% filter(Citation != "Shin et al., 2021, Global Change Biology")                    
 
 # Merge the new subflows into the main dataset
-updated_docs <- merge(socio, docs, by = "ID_DOI_by_Flow")
-updated_docs <- merge(phys, docs, by = "ID_DOI_by_Flow")
-updated_docs <- merge(biotic, docs, by = "ID_DOI_by_Flow")
+updated_docs <- merge(socio, docs, by = "ID_DOI_by_Flow", all.x = T, all.y = T)
+updated_docs <- merge(phys, updated_docs, by = "ID_DOI_by_Flow")
+updated_docs <- merge(biotic, updated_docs, by = "ID_DOI_by_Flow")
 glimpse(updated_docs)
 
 # Add in the new entries entirely for: 
