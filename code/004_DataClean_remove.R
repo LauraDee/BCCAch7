@@ -43,6 +43,10 @@ subflow_to_remove <-  doc2 %>% filter(ID_DOI_by_Flow != "95",
 # or just have the Flow entry changed*** HOW TO BEST DO THIS?
  # Hartig, 2021, Journal of Great Lakes Research, DOI_by_Flow #95 changed to Biotic (range shift)
 
+
+# ****TO DO STIL BEFORE THIS STEP -- #need to figure out what to do with the FLOW itself that have been changed***
+
+
 write.csv(doc2, "cleaned_4_byFlow.csv")
 
 

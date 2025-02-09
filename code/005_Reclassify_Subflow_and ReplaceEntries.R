@@ -1,5 +1,8 @@
 ## Reclassify Subflow Types and ReplaceEntries
 # Feb 9 2025
+
+# ****TO DO STIL BEFORE THIS STEP -- #need to figure out what to do with the FLOW itself that have been changed***
+
 library(tidyr)
 library(dplyr)
 
@@ -7,7 +10,7 @@ setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/B
 docs <- read.csv("cleaned_4_byFlow.csv")
 
 #load look up tables 
-# for biotic - need the new column to repeat the old!! 
+#need to figure out what to do with the FLOW itself that have been changed
 biotic <- read.csv("./data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("./data_cleaning/socioculturalFlowSubtype_lookup.csv")
 phys <-  read.csv("./data_cleaning/physicalFlowSubtype_lookup.csv")
@@ -31,9 +34,9 @@ socio <- socio %>% filter(Citation != "Shin et al., 2021, Global Change Biology"
 
 # Merge the new subflows into the main dataset
 updated_docs <- merge(socio, docs, by = "ID_DOI_by_Flow")
-glimpse(updated_docs)
 updated_docs <- merge(phys, docs, by = "ID_DOI_by_Flow")
-# updated_docs <- merge(biotic, docs, by = "ID_DOI_by_Flow")
+updated_docs <- merge(biotic, docs, by = "ID_DOI_by_Flow")
+glimpse(updated_docs)
 
 # Add in the new entries:
   # de la Fontaine,  2018, Ecology
