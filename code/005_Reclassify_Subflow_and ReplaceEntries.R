@@ -25,10 +25,12 @@ phys <- phys %>% filter(Citation != "Chen, 2011, Journal of Sustainable Developm
                         Citation != "Jenkins et al., 2013, Advances in Parasitology",
                         Citation != "Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT", #Mabel checking
                         Citation != "Covich et al., 1997, Hydrological Processes",
-                        Citation != "de la Fontaine,  2018, Ecology") 
+                        Citation != "de la Fontaine,  2018, Ecology",
+                        Citation != "Perry, 2007, Climate Change 2007") 
 
 biotic <- biotic %>% filter(Citation != "Noyes, 2009, Environment International",
-                            Citation != "de la Fontaine,  2018, Ecology")
+                            Citation != "de la Fontaine,  2018, Ecology",
+                            Citation != "Perry, 2007, Climate Change 2007") 
 
 socio <- socio %>% filter(Citation != "Shin et al., 2021, Global Change Biology")                    
 
@@ -38,8 +40,9 @@ updated_docs <- merge(phys, docs, by = "ID_DOI_by_Flow")
 updated_docs <- merge(biotic, docs, by = "ID_DOI_by_Flow")
 glimpse(updated_docs)
 
-# Add in the new entries:
+# Add in the new entries entirely: 
   # de la Fontaine,  2018, Ecology
   # Costa, D., 2021, Journal of Great Lakes Research
   # Shin et al., 2021, Global Change Biology
+
 
