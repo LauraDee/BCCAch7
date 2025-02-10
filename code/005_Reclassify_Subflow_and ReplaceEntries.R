@@ -1,5 +1,6 @@
 ## Reclassify Subflow Types and ReplaceEntries
 # Feb 9 2025
+rm(list = ls())
 
 # ****TO DO STIL BEFORE THIS STEP -- #need to figure out what to do with the FLOW itself that have been changed***
 library(tidyr)
@@ -34,9 +35,9 @@ biotic <- biotic %>% filter(Citation != "Noyes, 2009, Environment International"
 
 socio <- socio %>% filter(Citation != "Shin et al., 2021, Global Change Biology")                    
 
-#merge subflows into a single datafile
-subflows <- merge(socio, phys, all.y = T)
-subflows <- merge(biotic, subflows,  all.y = T)
+#combine subflows look ups into a single datafile - **this didnt work**
+subflows <- rbind(biotic, phys)
+subflows <- rbind(socio, phys)
 
 # Merge the new subflows into the main dataset
 updated_docs <- merge(subflows, docs, by = "ID_DOI_by_Flow", all.y = T)
