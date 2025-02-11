@@ -94,30 +94,10 @@ combination_counts_by_impact <- combinations %>%
     Complex = sum(
       interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Complex change",
       na.rm = TRUE
-    )
+    ),
   ) %>%
   pivot_longer(cols = c(Increase, Decrease, Complex), names_to = "ImpactDirection", values_to = "count") %>%
   ungroup()
-
-# Plot with facets by Impact direction
-
-ggplot(combination_counts_by_impact, aes(x = Flow, y = Impact, size = count, color = ImpactDirection)) +
-  geom_point(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~ImpactDirection, scales = "free") +  # Create facets for each impact direction
-  scale_size_continuous(range = c(3, 10)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
-  labs(
-    title = "Interaction Between Altered Flows and Impacts by Impact Direction",
-    x = "Altered Flow",
-    y = "Impact",
-    size = "Count",
-    color = "Impact Direction"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
-  )
 
 # Filter out rows with count == 0
 combination_counts_by_impact_filtered <- combination_counts_by_impact %>%
@@ -146,42 +126,64 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = c
 #### Do for drivers
 # Generate all possible combinations of flows and impacts
 combinations2 <- expand.grid(
-  Flow = flow_columns,
+ # Flow = flow_columns,
   Impact = impact_columns,
   Driver = driver_cols,
   stringsAsFactors = FALSE
 )
 
 # Count occurrences of each combination in the data
-combination_counts_driver_impact <- combinations2 %>%
-  rowwise() %>% 
+  # combination_counts_driver_impact <- combinations2 %>%
+  #   rowwise() %>% 
+  #   mutate(
+  #     count = sum(
+  #       interaction_data[[Driver]] != "" & interaction_data[[Impact]] != "",
+  #       na.rm = TRUE
+  #     )
+  #   ) %>%
+  #   ungroup()
+
+combination_counts_by_impact_driver <- combinations2 %>%
+  rowwise() %>%
   mutate(
-    count = sum(
-      interaction_data[[Driver]] != "" & interaction_data[[Impact]] != "",
+    Increase = sum(
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Increase",
+      na.rm = TRUE
+    ),
+    Decrease = sum(
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Decrease",
+      na.rm = TRUE
+    ),
+    Complex = sum(
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Complex change",
+      na.rm = TRUE
+    ),
+    NoChange= sum(
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "No change (measured)",
       na.rm = TRUE
     )
   ) %>%
+  pivot_longer(cols = c(Increase, Decrease, Complex, NoChange), names_to = "ImpactDirection", values_to = "count") %>%
   ungroup()
 
+# Filter out rows with count == 0
+combination_counts_by_impact_driver_filtered <- combination_counts_by_impact_driver %>%
+  filter(count > 0)
+
 # Convert to a dataframe for easy viewing
-combination_counts_impact_driver <- as.data.frame(combination_counts_driver_impact)
+combination_counts_by_impact_driver_filtered <- as.data.frame(combination_counts_by_impact_driver_filtered)
 
 # Preview the result
-glimpse(combination_counts_impact_driver)
-
-write.csv(combination_counts_impact_driver, "driver_impact_counts.csv")
-
+glimpse(combination_counts_by_impact_driver_filtered)
+head(combination_counts_by_impact_driver_filtered)
+write.csv(combination_counts_by_impact_driver_filtered, "driver_impact_counts.csv")
 #do a check to see if these counts are right/plausible
 table(reshaped_data$X2.12.Impact..Abundance,reshaped_data$driver.Climate.change..generic.)
 #We need to remoe the blank entries for the counts!
 table(reshaped_data$X2.12.Impact..Richness,reshaped_data$driver.Climate.change..generic.)
 
-
-
-
-
-
-
+#this doesnt seem right:
+table(combination_counts_by_impact_driver_filtered$ImpactDirection)
 
 
 
