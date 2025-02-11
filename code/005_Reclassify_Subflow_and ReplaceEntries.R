@@ -15,20 +15,19 @@ docs <- read.csv("cleaned_4_byFlow.csv")
 biotic <- read.csv("./data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("./data_cleaning/socioculturalFlowSubtype_lookup.csv")
 phys <-  read.csv("./data_cleaning/physicalFlowSubtype_lookup.csv")
-glimpse(biotic)
-glimpse(phys)
-glimpse(socio)
 
 #Read in new entries that will be appended and assigned new IDs
 # we will need to add all of the same columns since the main data has the extra management ones, or we should do it this in an earlier step
-# replace_socio <- read.csv()
+replace_socio <- read.csv("./data_cleaning/Kyle_RecodeSubflows-Feb102025.csv")
 
-#combine subflows look ups into a single datafile - **this didnt work**
-identical(names(biotic), names(phys))
+#combine subflows look ups into a single datafile - **this didnt work** so I coerced the names to be the same
+glimpse(biotic)
+glimpse(phys)
+glimpse(socio)
+identical(names(biotic), names(socio))identical(names(biotic), names(phys))
 names(phys) <- names(biotic)
-identical(names(biotic), names(socio))
-names(socio) <- names(biotic)
 
+#rebind the flow look ups
 subflows <- rbind(biotic, phys)
 subflows <- rbind(socio, biotic)
 
