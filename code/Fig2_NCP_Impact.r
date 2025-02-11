@@ -3,9 +3,14 @@ graphics.off()
 rm(list=ls())
 
 library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(data.table)
+library(ggalluvial)
+devtools::install_github("erblast/easyalluvial") #https://erblast.github.io/easyalluvial/
+library(easyalluvial)
 
-#setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-# reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 reshaped_data <- read.csv("reshaped_4_drivers.csv")
 glimpse(reshaped_data)
 
@@ -26,7 +31,30 @@ table(reshaped_data$X2.16.NCP.ES..None)
  table(reshaped_data$X2.16.NCP.ES..Soil.Protection)
  table(reshaped_data$X2.16.NCP.ES..Hazards)
  #etc.
+#review impacts
+ table(reshaped_data$X2.12.Impact..None)
+ table(reshaped_data$X2.12.Impact..Abundance)
+ table(reshaped_data$X2.12.Impact..Richness)
+ table(reshaped_data$X2.12.Impact..Loss)
+ table(reshaped_data$X2.12.Impact..Disease) 
+ table(reshaped_data$X2.12.Impact..Invasion)
+ table(reshaped_data$X2.12.Impact..Composition)
+ table(reshaped_data$X2.12.Impact..Genetics)
+ table(reshaped_data$X2.12.Impact..Land.Use.Loss)
+ table(reshaped_data$X2.12.Impact..Land.Use.Restore)
+ table(reshaped_data$X2.12.Impact..Urbanization)
+ table(reshaped_data$X2.12.Impact..Connectivity)  
+ table(reshaped_data$X2.12.Impact..Trophic)
+ table(reshaped_data$X2.12.Impact..Indigenous.Knowledge)
+ table(reshaped_data$X2.12.Impact..Management)
+ table(reshaped_data$X2.12.Impact..Other)
  
+table(reshaped_data$driver.Drought) #178 FALSE, 55 TRUE
+table(reshaped_data$driver.Climate.change..generic.)
+table(reshaped_data$driver.Sea.level.rise)
+table(reshaped_data$driver.Hurricanes)
+
+
 # Select and reshape relevant columns
 flow_columns <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
 impact_columns <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
@@ -36,6 +64,9 @@ NCP_cols <-names(reshaped_data)[grepl("X2.16.NCP.ES.", names(reshaped_data))]
 
 #Remove the No NCP entry which is "X2.16.NCP.ES..None"  
 NCP_cols <- NCP_cols[-1]
+
+#remove none for X2.20.Well.being..None
+hwb_cols <- hwb_cols[-1]
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
@@ -86,7 +117,6 @@ ggplot(combination_counts_df, aes(x = Flow, y = NCP, size = count)) +
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 
-
 # Count occurrences for each NCP direction 
 combination_counts_by_NCP <- combinations %>%
   rowwise() %>%
@@ -129,6 +159,10 @@ combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
 #check 
 head(combination_counts_by_NCP_filtered) # yay it worked!
 
+# remove not measured too
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered %>%
+  filter(NCPDirection != "NotMeasured")
+
 # remove the blank NCP entries for all NCP columns
 # Filter out rows with count == 0
 combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
@@ -169,16 +203,34 @@ ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDire
 ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
   geom_bar(alpha = 0.7) +  # Add points with alpha transparency
   facet_wrap(~NCPDirection, scales = "fixed") 
-  
-ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDirection)) +
-  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~NCP, scales = "free") +  # Create facets for each NCP direction
+
+#stacked bar plot  
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCPDirection)) +
+  geom_bar(alpha = 0.7, position = "stack") +  # Add points with alpha transparency
+  facet_wrap(~NCP, scales = "fixed") 
+
+ggplot(combination_counts_by_NCP_filtered, aes(x = NCP, color = NCPDirection)) +
+  geom_bar(alpha = 0.7, position = "stack") +  # Add points with alpha transparency
+  #facet_wrap(~NCP, scales = "free") +  # Create facets for each NCP direction
   scale_size_continuous(range = c(1, 10)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue", 
-                                NotMeasured = "gray"))
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue"))
+    
+
+# Plots of which flow change are having which NCP changes
+
+# create an alluvial:
+is_alluvia_form(as.data.frame(combination_counts_by_NCP_filtered), axes = 1:5, silent = TRUE)
+
+ggplot(as.data.frame(combination_counts_by_NCP_filtered),
+       aes(y = count, axis1 = Flow, axis2 = NCP)) +
+  geom_alluvium(aes(fill = NCPDirection), width = 1/5) +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Altered Flow", "NCP"), expand = c(.05, .05)) +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  ggtitle("NCP impacts, by Altered Flow")
 
 
-# Plosts of which flow change are having which NCP changes
 
 
 ## do for each subtype
@@ -190,7 +242,6 @@ rm(list=ls())
 library(ggplot2)
 
 #setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-# reshaped_data <- read.csv("reshaped_3_byFlow.csv")
 reshaped_data <- read.csv("reshaped_4_drivers.csv")
 glimpse(reshaped_data)
 
@@ -312,8 +363,13 @@ table(combination_counts_by_NCP$NCPDirection, combination_counts_by_NCP$count)
 #Remove the NCPDirection == "NotConsidered" rows -
 combination_counts_by_NCP_filtered <- combination_counts_by_NCP %>%
   filter(NCPDirection != "NotConsidered")
+
 #check 
 head(combination_counts_by_NCP_filtered) # yay it worked!
+
+# remove not measured too
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered %>%
+  filter(NCPDirection != "NotMeasured")
 
 # remove the blank NCP entries for all NCP columns
 # Filter out rows with count == 0
@@ -360,9 +416,11 @@ ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDire
     panel.grid.major = element_line(color = "grey80", linetype = "dotted") )
 
 #basic bar plot counting the NCP entry counts by direction
-ggplot(combination_counts_by_NCP_filtered, aes(x = count, color = NCP)) +
-  geom_bar(alpha = 0.7) +  # Add points with alpha transparency
-  facet_wrap(~NCPDirection, scales = "fixed") 
+ggplot(combination_counts_by_NCP_filtered, aes(x = count, y = NCP, color = NCPDirection) +
+  geom_bar(alpha = 0.7, position = "stack"))
+
+
+
 
 # PHYSICAL
 phys_combo_NCP <- reshaped_data %>%
