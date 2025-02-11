@@ -7,10 +7,10 @@ library(dplyr)
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 docs <- read.csv("reshaped_3_byFlow.csv")
 
-#list of entire papers to remove after checking
+#list of entire papers to remove  forever
  # “Nielsen, 2015, Global Change Biology”,  “Vaddey, 2010, Watershed Management”,
- #“Chen, 2011, Journal of Sustainable Development”
-# Perry, 2007, Climate Change 2007 which is the IPCC??? check.
+ # “Chen, 2011, Journal of Sustainable Development”
+ # Perry, 2007, Climate Change 2007 which is the IPCC??? check.
 
 doc2 <- docs %>% filter(Citation != "Chen, 2011, Journal of Sustainable Development",
                         Citation != "Nielsen, 2015, Global Change Biology",
