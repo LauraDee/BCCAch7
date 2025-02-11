@@ -416,11 +416,12 @@ ggplot(combination_counts_by_NCP_filtered, aes(x = NCPDirection, color = NCPDire
     panel.grid.major = element_line(color = "grey80", linetype = "dotted") )
 
 #basic bar plot counting the NCP entry counts by direction
-ggplot(combination_counts_by_NCP_filtered, aes(x = count, y = NCP, color = NCPDirection) +
-  geom_bar(alpha = 0.7, position = "stack"))
 
-
-
+bioticNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = NCP, color = NCPDirection)) +
+  geom_bar(alpha = 0.7, position = "stack") +  # Add points with alpha transparency
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChangeMeasured" = "blue"))
+bioticNCP
 
 # PHYSICAL
 phys_combo_NCP <- reshaped_data %>%
@@ -544,6 +545,13 @@ head(combination_counts_by_NCP_filtered) # yay it worked!
 # Filter out rows with count == 0
 combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered  %>%
   filter(count > 0)
+
+# remove not measured too
+combination_counts_by_NCP_filtered <- combination_counts_by_NCP_filtered %>%
+  filter(NCPDirection != "NotMeasured")
+
+
+
 
 # Plot with facets by NCP direction excluding entries with NO NCPs mentioned  and zero counts
 physNCP <- ggplot(combination_counts_by_NCP_filtered, aes(x = Flow, y = NCP, size = count, color = NCPDirection)) +
