@@ -6,8 +6,8 @@ rm(list=ls())
 library(ggplot2)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-reshaped_data <- read.csv("reshaped_3_byFlow.csv")
-
+#reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+reshaped_data <- read.csv("reshaped_4_drivers.csv")
 glimpse(reshaped_data)
 
 # Select and reshape relevant columns
@@ -17,12 +17,16 @@ glimpse(reshaped_data)
 #updated col names
 altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
 impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+driver_cols <- names(reshaped_data)[grepl("driver.", names(reshaped_data))]
+
+#Remove the No Impact entry  
+impact_cols <- impact_cols[-1]
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
 
 interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
-  select(all_of(c(altered_flow_cols, impact_cols))) %>%
+  select(all_of(c(altered_flow_cols, impact_cols, driver_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
 glimpse(interaction_data)
@@ -139,12 +143,38 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = c
   )
 
 
+#### Do for drivers
+# Generate all possible combinations of flows and impacts
+combinations2 <- expand.grid(
+  Flow = flow_columns,
+  Impact = impact_columns,
+  Driver = driver_cols,
+  stringsAsFactors = FALSE
+)
 
+# Count occurrences of each combination in the data
+combination_counts_driver_impact <- combinations2 %>%
+  rowwise() %>% 
+  mutate(
+    count = sum(
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] != "",
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup()
 
+# Convert to a dataframe for easy viewing
+combination_counts_impact_driver <- as.data.frame(combination_counts_driver_impact)
 
+# Preview the result
+glimpse(combination_counts_impact_driver)
 
+write.csv(combination_counts_impact_driver, "driver_impact_counts.csv")
 
-
+#do a check to see if these counts are right/plausible
+table(reshaped_data$X2.12.Impact..Abundance,reshaped_data$driver.Climate.change..generic.)
+#We need to remoe the blank entries for the counts!
+table(reshaped_data$X2.12.Impact..Richness,reshaped_data$driver.Climate.change..generic.)
 
 
 
