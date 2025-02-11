@@ -1,15 +1,14 @@
 ﻿Citation,DOI,2.1.Flow.Type,2.1.Flow.Type.NEW,2.2.Subtype,2.2.Subtype.NEW,Flag_QualityCheck,Flag_SubtypeCode,Flag_FlowCode,Flag_SubFlowSplit,Flag_FlowSplit,Flag_MissingData,ID_DOI_by_FlowEntry,ID_DOI_by_Flow,ID_DOI_by_Flow.NEW,Notes
-"Charron, D. F.; Thomas, M. K.; Waltner-Toews, D.; Aramini, J. J.; Edge, T.; Kent, R. A.; Maarouf, A. R.; Wilson, J.; Hrudey, S. E., 2004, Journal of Toxicology and Environmental Health. Part A","http://dx.doi.org/10.1080/15287390490492313	",Biotic,Physical,"river flow, run-off",-,0,0,1,0,0,0,30,30,-,
-"Sudlow et al., 2023, Environmental Reviews","10.1139/er-2022-0114	",Biotic,Physical,stream flow,-,0,0,1,0,0,0,33,33,-,
-"Hartig, 2021, Journal of Great Lakes Research",https://www.researchgate.net/profile/Jan-Ciborowski/publication/352652269_An_ecosystem_health_assessment_of_the_Detroit_River_and_western_Lake_Erie/links/60e936321c28af3458598682/An-ecosystem-health-assessment-of-the-Detroit-River-and-western-Lake-Erie.pdf,Biotic,Physical,lake flow (?? all manner of things impacting the Great Lakes),-,0,0,1,0,0,0,46,47,-,
-Foulon (2020) Water Quality Research Journal,https://iwaponline.com/wqrj/article/55/1/1/69781/A-global-scan-of-how-the-issue-of-nutrient-loading,Biotic,Physical,Nutrient Pollution Flow,-,0,0,1,0,0,0,51,52,-,
-"Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT",https://doi.org/10.1002/ieam.1360,Biotic,Physical,River and groundwater flows along with sediment and pollunts,-,0,0,1,0,0,0,56,57,-,
-"Ochs, 2024, Science of the Total Environment",https://doi.org/10.1016/j.scitotenv.2024.171490,Biotic,Physical,"riverine dishcharge, lake circulation",-,0,0,1,0,0,0,65,66,-,
+"Charron, D. F.; Thomas, M. K.; Waltner-Toews, D.; Aramini, J. J.; Edge, T.; Kent, R. A.; Maarouf, A. R.; Wilson, J.; Hrudey, S. E., 2004, Journal of Toxicology and Environmental Health. Part A","http://dx.doi.org/10.1080/15287390490492313	",Biotic,Physical,"river flow, run-off",-,0,0,1,1,0,0,30,30,-,need subflow check
+"Sudlow et al., 2023, Environmental Reviews","10.1139/er-2022-0114	",Biotic,Remove,stream flow,-,0,0,1,0,0,0,33,33,-,
+Foulon (2020) Water Quality Research Journal,https://iwaponline.com/wqrj/article/55/1/1/69781/A-global-scan-of-how-the-issue-of-nutrient-loading,Biotic,Remove,Nutrient Pollution Flow,-,0,0,1,0,0,0,51,52,-,
+"Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT",https://doi.org/10.1002/ieam.1360,Biotic,Remove,River and groundwater flows along with sediment and pollunts,-,0,0,1,1,0,0,56,57,-,to be removed; needs to be recoded by Mabel
+"Ochs, 2024, Science of the Total Environment",https://doi.org/10.1016/j.scitotenv.2024.171490,Biotic,Remove,"riverine dishcharge, lake circulation",-,0,0,1,0,0,0,65,66,-,
 "Mucioki, 2024",10.1002/ppp3.10500,Biotic,Biotic,Biome-shift; Phenological shift,biome-shift,0,1,0,0,0,0,6,6,-,
 "Costanza, K. K. L.; Whitney, T. D.; McIntir, C. D.; Livingston, W. H.; Gandhi, K. J. K., 2018, Forest Ecology and Management","10.1016/j.foreco.2018.02.049	",Biotic,Biotic,gene flow,disease spread,0,1,0,0,0,0,22,22,-,
 "Park, 2023, Forest Ecology and Management",https://doi.org/10.1016/j.foreco.2023.120854,Biotic,Biotic,assisted migration,gene flow,0,1,0,0,0,0,54,55,-,
 "Hayes, 2014, Reviews in Fish Biology and Fisheries",10.1007/s11160-014-9348-8,Biotic,Biotic,Change in migration dynamics,migration,0,1,0,0,0,0,62,63,-,
-"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Biotic,Biotic,transport of toxins through animal migration,migration,1,1,0,0,0,0,72,74,-,to be removed; still needs becky to recode
+"Noyes, 2009, Environment International",https://www.sciencedirect.com/science/article/pii/S0160412009000543,Biotic,Biotic,transport of toxins through animal migration,migration,1,1,0,1,0,0,72,74,-,to be removed; still needs becky to recode
 "Grayson and Johnson, 2017, Journal of Animal Ecology","10.1111/1365-2656.12755	",Biotic,Biotic,Invasion,range-shift,0,1,0,0,0,0,2,2,-,
 "Rahel and Olden, 2008, Conservation Biology",https://doi.org/10.1111/j.1523-1739.2008.00950.x,Biotic,Biotic,dispersal,range-shift,0,1,0,0,0,0,35,35,-,
 "Krause-Jensen et al., 2020, Frontiers in Marine Science",https://doi.org/10.3389/fmars.2020.617324,Biotic,Biotic,dispersal,range-shift,0,1,0,0,0,0,37,37,-,
