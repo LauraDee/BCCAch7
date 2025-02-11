@@ -181,13 +181,30 @@ write.csv(combination_counts_by_impact_driver_filtered, "driver_impact_counts.cs
 table(reshaped_data$X2.12.Impact..Abundance,reshaped_data$driver.Climate.change..generic.)
 #We need to remoe the blank entries for the counts!
 table(reshaped_data$X2.12.Impact..Richness,reshaped_data$driver.Climate.change..generic.)
+ #yes the combination_counts_by_impact_driver_filtered worked!
 
-#this doesnt seem right:
+#this doesnt seem right?? is it?
 table(combination_counts_by_impact_driver_filtered$ImpactDirection)
 
-
-
-
+#this looks wrong - 
+driver_impact <-  ggplot(combination_counts_by_impact_driver_filtered, aes(x = Driver, y = Impact, size = count, color = ImpactDirection)) +
+  geom_point(alpha = 0.7) +  # Add points with alpha transparency
+facet_wrap(~ImpactDirection, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChange" = "blue")) + 
+  labs(
+    title = "Driver to Biodiversity Impact",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_impact
 
 
 
