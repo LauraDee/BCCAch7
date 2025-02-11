@@ -15,6 +15,9 @@ docs <- read.csv("cleaned_4_byFlow.csv")
 biotic <- read.csv("./data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("./data_cleaning/socioculturalFlowSubtype_lookup.csv")
 phys <-  read.csv("./data_cleaning/physicalFlowSubtype_lookup.csv")
+glimpse(biotic)
+glimpse(phys)
+glimpse(socio)
 
 #Read in new entries that will be appended and assigned new IDs
 # we will need to add all of the same columns since the main data has the extra management ones, or we should do it this in an earlier step
@@ -22,15 +25,12 @@ phys <-  read.csv("./data_cleaning/physicalFlowSubtype_lookup.csv")
 
 #combine subflows look ups into a single datafile - **this didnt work**
 identical(names(biotic), names(phys))
+names(phys) <- names(biotic)
 identical(names(biotic), names(socio))
-glimpse(biotic)
-glimpse(phys)
-glimpse(socio)
+names(socio) <- names(biotic)
 
 subflows <- rbind(biotic, phys)
 subflows <- rbind(socio, biotic)
-
-
 
 # in the look up files, probably need to first remove the ones removed in the 004 step to avoid confusion
 subflows <- subflows %>% filter(Citation != "Chen, 2011, Journal of Sustainable Development",
@@ -44,8 +44,7 @@ subflows <- subflows %>% filter(Citation != "Chen, 2011, Journal of Sustainable 
                         Citation != "Perry, 2007, Climate Change 2007",
                         Citation != "Shin et al., 2021, Global Change Biology") #Kyle recoded
 
-
-# Merge the new subflows into the main dataset
+# Merge the new subflow look ups into the main dataset
 updated_docs <- merge(subflows, docs, by = "ID_DOI_by_Flow", all.y = T)
 glimpse(updated_docs)
 
@@ -57,5 +56,10 @@ glimpse(updated_docs)
   # de la Fontaine,  2018, Ecology
   # Costa, D., 2021, Journal of Great Lakes Research
   # Shin et al., 2021, Global Change Biology
+
+#waiting on new entries for:
+ # "Noyes, 2009, Environment International"
+ #"Jenkins et al., 2013, Advances in Parasitology"
+ # "Covich et al., 1997, Hydrological Processes"
 
 write.csv(updated_docs, "cleaned_5_byFlow.csv")
