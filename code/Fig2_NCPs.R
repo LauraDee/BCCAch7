@@ -4,6 +4,8 @@ rm(list=ls())
 
 #load libraries
 library(ggplot2)
+library(tidyr)
+library(dplyr)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 reshaped_data <- read.csv("reshaped_3_byFlow.csv")
