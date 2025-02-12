@@ -90,13 +90,13 @@ docs[X2.2.Subtype.NEW == "range shifts", X2.2.Subtype.NEW := "Range shift"]
 docs[X2.2.Subtype.NEW == "range shift", X2.2.Subtype.NEW := "Range shift"]
 
 # Add in the new entries entirely for:
-  # de la Fontaine,  2018, Ecology
-  # Costa, D., 2021, Journal of Great Lakes Research
-  # Shin et al., 2021, Global Change Biology
+  # de la Fontaine,  2018, Ecology - in the form 
+  # Costa, D., 2021, Journal of Great Lakes Research - Hilary sent Laura 
+  # Shin et al., 2021, Global Change Biology - in "./data_cleaning/Kyle_RecodeSubflows-Feb102025.csv"
 
 #waiting on new entries for:
  # "Noyes, 2009, Environment International"
- #"Jenkins et al., 2013, Advances in Parasitology"
+ # "Jenkins et al., 2013, Advances in Parasitology"
  # "Covich et al., 1997, Hydrological Processes"
 
 write.csv(updated_docs, "cleaned_5_byFlow.csv")
