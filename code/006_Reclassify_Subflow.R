@@ -59,9 +59,11 @@ nrow(updated_docs2) #142
 # need to put in the subtype.y for the subtype.new for the ones that were left the same for some?
 #check which:
 
+#USE left_join
 updated_docs <- merge(subflows, docs, by = "ID_DOI_by_Flow", all.y = T)
 #nrow(updated_docs) #242
 
+#USE left_join
 updated_docs2 <- merge(subflows, docs, by = "ID_DOI_by_Flow")
 nrow(updated_docs2) #142
 
@@ -87,20 +89,7 @@ docs[X2.2.Subtype.NEW == "range shift", X2.2.Subtype.NEW := "Range shift"]
  # "Jenkins et al., 2013, Advances in Parasitology"
  # "Covich et al., 1997, Hydrological Processes"
 
+#new entries for the papers Colleen
+
 write.csv(updated_docs, "cleaned_5_byFlow.csv")
 
-#Read in new entries that will be appended and assigned new IDs
-# we will need to add all of the same columns since the main data has the extra management ones, or we should do it this in an earlier step
-replace_socio <- read.csv("./data_cleaning/Kyle_RecodeSubflows-Feb102025.csv", header = T)
-replace_socio$X.2 <- NULL
-replace_socio$X.1 <- NULL
-replace_socio$X <- NULL
-
-#read in Hilary and Colleen's
-
-# replace_socio has 129 columns and docs has only 99
-
-#combine docs with Kyle's entries:
-rbind(docs, replace_socio) #different column numbers so this wont work and needs to be done earlier
-#****NEED HELP HERE *****
-#
