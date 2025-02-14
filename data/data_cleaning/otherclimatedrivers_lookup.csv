@@ -1,0 +1,37 @@
+﻿raw,driver,Notes
+"[17] ""permafrost melt; sea ice decline""                            ",permafrost melt,
+"[18] ""Hurricanes are mentioned""                                    ",Hurricanes,already a category
+"[19] ""but not explicitly in a transboundary context""               ",,not a category
+"[20] ""water availability""                                          ",water availability,"we would like two subcategories for water availability (groundwater change, surface water change), and a generic ""water availability"" category if the coder was not specific"
+"[21] ""extreme weather""                                             ",extreme weather,
+"[22] ""freshwater temperature and chemistry change""                 ",freshwater temperature change; freshwater chemistry change,
+"[23] ""Land ice cover (glaciers)""                                   ",frazzle (land ice) change,
+"[24] ""C02 concentration""                                           ",emissions concentration change,
+"[25] ""Increased frequency of extreme weather events""               ",extreme weather,
+"[26] ""Extreme weather""                                             ",extreme weather,
+"[27] ""Water temperature directional change""                        ",freshwater temperature change,
+"[28] ""ice cover duration""                                          ",frazzle (land ice) change,need to know what kind of ice in order to code this
+"[29] ""streamflow patterns""                                         ",surface water change,
+"[30] ""freshwater salinization""                                     ",freshwater chemistry change,
+"[31] ""additional natural disasters (e.g.""                          ",extreme weather,
+"[32] ""tsunamis""                                                    ",NA,not a category
+"[33] ""earthquakes""                                                 ",NA,not a category
+"[34] ""volcanic eruptions)""                                         ",NA,not a category
+"[35] ""extreme weather events""                                      ",extreme weather,
+"[36] ""changes in wind pattersn""                                    ",wind pattern change,includes el nino
+"[37] ""this paper does not mention temp or precip change explicitly""",NA,not a category
+"[38] ""only habitat change""                                         ",NA,not a category
+"[39] ""snow pack (depth and hardness)""                              ",snow pack change,
+"[40] ""El Nino Southern Oscillation (ENSO)""                         ",wind pattern change,
+"[41] ""Permafrost thawing""                                          ",permafrost melt,
+"[42] ""Snow cover directional change""                               ",snow pack change,
+"[43] ""Melting permafrost""                                          ",permafrost melt,
+"[44] ""increased UV radiation""                                      ",emissions concentration change,
+"[45] ""snow cover loss.""                                            ",snow pack change,
+"[46] ""River water temperature; hydrology""                          ",freshwater temperature change,
+"[47] ""winter storms""                                               ",extreme weather,
+"[48] ""Riverine discharge change""                                   ",surface water change,
+"[49] ""heat waves""                                                  ",heat waves,
+"[50] ""Natural disasters broadly""                                   ",extreme weather,
+"[51] ""Snowpack reduction""                                          ",snow pack change,
+"[52] ""melting permafrost""",permafrost melt,
