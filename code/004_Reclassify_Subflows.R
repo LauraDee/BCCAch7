@@ -52,4 +52,7 @@ df4_updated <- df3_updated %>%
   mutate(X2.1.Flow.Type = if_else(is.na(X2.1.Flow.Type.NEW), X2.1.Flow.Type, X2.1.Flow.Type.NEW)) %>%
   mutate(X2.2.Subtype = if_else(is.na(X2.2.Subtype.NEW), X2.2.Subtype, X2.2.Subtype.NEW)) %>%
   select(-X2.2.Subtype.NEW,-X2.1.Flow.Type.NEW) 
+
+df4_updated <- df4_updated %>% mutate(X2.1.Flow.Type = ifelse(X2.1.Flow.Type=="Trade (transport of goods and services)","Trade",X2.1.Flow.Type))
+levels(factor(df4_updated$X2.1.Flow.Type))
 write.csv(df4_updated, 'data/004_output_Reclassified.csv')

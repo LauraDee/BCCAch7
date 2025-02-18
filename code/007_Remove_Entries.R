@@ -38,9 +38,7 @@ subflow_to_remove <-  doc2 %>% filter(ID_DOI_by_Flow != "95",
   # de la Fontaine,  2018, Ecology
   # Costa, D., 2021, Journal of Great Lakes Research
   # Shin et al., 2021, Global Change Biology
-doc2 <- doc2 %>% filter(Citation != "de la Fontaine,  2018, Ecology",
-                        Citation != "Costa, D., 2021, Journal of Great Lakes Research",
-                        Citation != "Shin et al., 2021, Global Change Biology") # #Mabel checking
+doc2 <- doc2 %>% filter(Citation != "de la Fontaine,  2018, Ecology")
 
 ## list of papers with at least one major flow that was reclassified and needs to be replaced
 # or just have the Flow entry changed*** HOW TO BEST DO THIS?
