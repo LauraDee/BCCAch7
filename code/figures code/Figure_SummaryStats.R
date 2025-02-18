@@ -40,16 +40,13 @@ flow_percent <- data %>%
   summarise (n = n()) %>%
   mutate(prop = n / sum(n))
 
-flow_percent
-ggplot(flow_percent, aes(X2.1.Flow.Type)) +
-  geom_bar(position= "stack") 
-
-  labs( title = "Percent of Papers by Flow Type",
-    x = "Flow Type",
-    y = "%") +
-  theme_minimal() + theme(legend.position="none")
-
-
+ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
+    geom_col(aes(fill = as.factor(X2.1.Flow.Type))) +
+ labs( title = "Proportion of Flow Type",
+      x = "Flow Type",
+      y = "Proportion of Entries") +
+    theme_minimal() + theme(legend.position="none")
+    
 ## Count of paper by Subflow
 table(data$X2.2.Subtype)
 
@@ -62,6 +59,19 @@ subflowcount <- ggplot(as.data.frame(data), aes(X2.2.Subtype,  fill = X2.1.Flow.
   theme_minimal() + coord_flip() + theme(legend.title = "Flow Type")
 subflowcount
 
+subflow_percent <- data %>%
+  group_by(X2.2.Subtype) %>%
+  summarise (n = n()) %>%
+  mutate(prop = n / sum(n))
+
+ggplot(subflow_percent, aes(as.factor(X2.2.Subtype), prop)) +
+  geom_col(aes(fill = as.factor(X2.2.Subtype))) +
+  labs( title = "Proportion of Subflow Types",
+        x = "Subflow Type",
+        y = "Proportion of Entries") +
+  theme_minimal() + theme(legend.position="none")
+
+#for just biotic
 biotic = data[X2.1.Flow.Type == "Biotic",]
 biotic[X2.2.Subtype == "range-shift", X2.2.Subtype := "Range shift"]
 biotic[X2.2.Subtype == "species range shifts", X2.2.Subtype := "Range shift"]
@@ -113,7 +123,7 @@ ggplot(df, aes(Driver, count)) +
     y = "Count") +
   theme_minimal() + coord_flip()
 
-## filter to drivers with more than 5 or 10 papers
+## filter to drivers with more than 5 entries
 df5 <- df %>%  filter(count>5)
 nrow(df5)
 nrow(df)
@@ -124,4 +134,16 @@ drivers <- ggplot(df5, aes(Driver, count)) +
     x = "Driver",
     y = "Count") +
   theme_minimal() + coord_flip()
+drivers
 
+## filter to drivers with more than  10 entries
+df10 <- df %>%  filter(count>10)
+nrow(df5)
+nrow(df10)
+
+ggplot(df10, aes(Driver, count)) +
+  geom_col() + labs(
+    title = "Count of Drivers",
+    x = "Driver",
+    y = "Count") +
+  theme_minimal() + coord_flip()
