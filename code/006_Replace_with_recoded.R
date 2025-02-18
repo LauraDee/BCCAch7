@@ -1,7 +1,6 @@
 ### Replace recoded entries
 
-
-reshaped_data_drivers <- read.csv("data/reshaped_5_drivers.csv")
+reshaped_data_drivers <- read.csv("data/005_output_drivers.csv")
 reshaped_data_drivers <- reshaped_data_drivers %>% dplyr::select(-c(X,X.2,X.1,X.3))
 
 # we will need to add all of the same columns since the main data has the extra management ones, or we should do it this in an earlier step
@@ -21,3 +20,5 @@ reshaped_data_drivers <- rbind(reshaped_data_drivers,replace_socio %>% filter(!i
 dim(reshaped_data_drivers)
 # replace_socio has 129 columns and docs has only 99
 
+
+write.csv(reshaped_data_drivers, "data/006_output_recoded.csv")

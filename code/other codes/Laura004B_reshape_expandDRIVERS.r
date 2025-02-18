@@ -1,13 +1,6 @@
-# clean and expand the climate drivers columns
-library(dplyr)
-library(tidyr)
-library(stringr)
-library(readxl)
-
-relabel_drivers <- read_excel("C:\\Users\\basti\\Documents\\GitHub\\BCCAch7\\data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
-relabel_drivers <- read.excel("otherclimatedrivers_lookup.xlsx") #reshaped_data <- read.csv("data/reshaped_3_byFlow.csv")
-reshaped_data <- read.csv("cleaned_4_byFlow.csv")
-relabel_drivers <- read.csv("otherclimatedrivers_lookup.csv")
+relabel_drivers <- read_excel("data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
+reshaped_data <- read.csv("data/reshaped_4_Reclassified.csv")
+reshaped_data_original <- reshaped_data
 
 # Remove the "X" prefix from column names if it starts with "X" followed by a number
 names(reshaped_data) <- gsub("^X(\\d)", "\\1", names(reshaped_data))
@@ -81,24 +74,30 @@ reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="
   `driver:additional natural disasters (e.g.`,`driver:freshwater temperature change; freshwater chemistry change`))
 
 glimpse(reshaped_data_drivers)
+glimpse(reshaped_data_original)
 
-write.csv(reshaped_data_drivers, "data/reshaped_4_drivers.csv")
+@ Drawing some random numbers for sanity check
+# reshaped_data_drivers$ID_DOI_by_Flow[193]
+# reshaped_data_original$ID_DOI_by_Flow[193]
+
+
+write.csv(reshaped_data_drivers, "data/reshaped_5_drivers.csv")
 #laura: write.csv(reshaped_data_drivers, "reshaped_4_drivers.csv")
 
 
-# Find duplicates in the `DOI_by_Flow` column where the Flow row needs to be split
-duplicated_doi <- reshaped_data_drivers %>%
-  group_by(ID_DOI_by_FlowEntry) %>% # Replace with the exact column name if needed
-  filter(n() > 1) %>%               # Keep only rows where the count is greater than 1
-  ungroup()
+# # Find duplicates in the `DOI_by_Flow` column where the Flow row needs to be split
+# duplicated_doi <- reshaped_data_drivers %>%
+#   group_by(ID_DOI_by_FlowEntry) %>% # Replace with the exact column name if needed
+#   filter(n() > 1) %>%               # Keep only rows where the count is greater than 1
+#   ungroup()
 
-# Get the unique repeated `DOI_by_Flow` values
-repeated_doi <- duplicated_doi %>%
-  select(ID_DOI_by_FlowEntry) %>%
-  distinct()
+# # Get the unique repeated `DOI_by_Flow` values
+# repeated_doi <- duplicated_doi %>%
+#   select(ID_DOI_by_FlowEntry) %>%
+#   distinct()
 
-write.csv(duplicated_doi, "data/reshaped_4_drivers.csv")
-################ END
+# write.csv(duplicated_doi, "data/reshaped_4_drivers.csv")
+# ################ END
 
 
 

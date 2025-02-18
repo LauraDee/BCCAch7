@@ -1,12 +1,6 @@
-
-library(dplyr)
-library(tidyr)
-library(stringr)
-library(readxl)
-
-relabel_drivers <- read_excel("C:\\Users\\basti\\Documents\\GitHub\\BCCAch7\\data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
-reshaped_data <- read.csv("data/003_output_byFlow.csv")
-# laura;s relabel_drivers <- read_excel("refined_drivers/otherclimatedrivers_lookup.xlsx")
+relabel_drivers <- read_excel("data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
+reshaped_data <- read.csv("data/004_output_Reclassified.csv")
+reshaped_data_original <- reshaped_data
 
 # Remove the "X" prefix from column names if it starts with "X" followed by a number
 names(reshaped_data) <- gsub("^X(\\d)", "\\1", names(reshaped_data))
@@ -52,6 +46,7 @@ all_drivers <- reshaped_data_d$driver %>%
   unique() %>%               # Get unique values
   sort()                     # Sort for consistency
 glimpse(all_drivers)
+
 # Create new columns for each unique driver
 reshaped_data_expanded <- reshaped_data_d %>%
   mutate(driver_list = strsplit(driver, ",")) %>% # Split the drivers
@@ -79,23 +74,29 @@ reshaped_data_drivers <- reshaped_data %>% left_join(reshaped_data_expanded,by="
   `driver:additional natural disasters (e.g.`,`driver:freshwater temperature change; freshwater chemistry change`))
 
 glimpse(reshaped_data_drivers)
+glimpse(reshaped_data_original)
 
-write.csv(reshaped_data_drivers, "data/reshaped_4_drivers.csv")
-#laura: write.csv(reshaped_data_drivers, "reshaped_4_drivers.csv")
+## Drawing some random numbers for sanity check
+# reshaped_data_drivers$ID_DOI_by_Flow[193]
+# reshaped_data_original$ID_DOI_by_Flow[193]
 
-# Find duplicates in the `DOI_by_Flow` column where the Flow row needs to be split
-duplicated_doi <- reshaped_data_drivers %>%
-  group_by(ID_DOI_by_FlowEntry) %>% # Replace with the exact column name if needed
-  filter(n() > 1) %>%               # Keep only rows where the count is greater than 1
-  ungroup()
 
-# Get the unique repeated `DOI_by_Flow` values
-repeated_doi <- duplicated_doi %>%
-  select(ID_DOI_by_FlowEntry) %>%
-  distinct()
+write.csv(reshaped_data_drivers, "data/005_output_drivers.csv")
 
-write.csv(duplicated_doi, "data/reshaped_4_drivers_conflictFLOW.csv")
-################ END
+
+# # Find duplicates in the `DOI_by_Flow` column where the Flow row needs to be split
+# duplicated_doi <- reshaped_data_drivers %>%
+#   group_by(ID_DOI_by_FlowEntry) %>% # Replace with the exact column name if needed
+#   filter(n() > 1) %>%               # Keep only rows where the count is greater than 1
+#   ungroup()
+
+# # Get the unique repeated `DOI_by_Flow` values
+# repeated_doi <- duplicated_doi %>%
+#   select(ID_DOI_by_FlowEntry) %>%
+#   distinct()
+
+# write.csv(duplicated_doi, "data/reshaped_4_drivers.csv")
+# ################ END
 
 
 
@@ -215,7 +216,7 @@ driver_cols <- names(reshaped_data_drivers)[grepl("driver:", names(reshaped_data
 
 "%notin%" <- Negate("%in%")
 
-interaction_data <- reshaped_data_drivers %>% filter(Citation %notin% c("TEST","test","Test")) %>% 
+interaction_data <- reshaped_data_drivers %>% filter(Citation %notin% c("TEST","test","Test")) %>%
   select(all_of(c(altered_flow_cols, driver_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
@@ -233,7 +234,7 @@ combinations <- expand.grid(
 
 # Count occurrences of each combination in the data
 combination_counts <- combinations %>%
-  rowwise() %>% 
+  rowwise() %>%
   mutate(
     count = sum(
       interaction_data[[Flow]] != "" & interaction_data[[driver]] != "",
@@ -391,7 +392,7 @@ combination_counts_by_driver <- combinations %>%
   mutate(
     count = sum(
       apply(interaction_data, 1, function(row) {
-        row[[Flow]] != "" && row[[driver]] != "" && 
+        row[[Flow]] != "" && row[[driver]] != "" &&
         row[[Flow]] == Flow && row[[driver]] == driver
       })
     ),

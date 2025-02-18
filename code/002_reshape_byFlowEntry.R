@@ -1,6 +1,7 @@
-data_rev <- read.csv("data/reshaped_1_flowtypes.csv")
+data_rev <- read.csv("data/001_output_flowtypes.csv")
 data_rev <- data_rev %>% rename(Citation = 'X1..What.is.the.short.citation.of.the.paper...Author..Year..Journal.')
 data_rev <- data_rev %>% filter(Citation != "TEST",Citation != "test" )
+dim(data_rev)
 ### Step 1: Reshape by DOI - Flow (START)
   # Identify repeating columns
   base_names <- gsub("^.*?(2\\.[0-9]+).*", "\\1", names(data_rev))
@@ -154,9 +155,9 @@ data_rev <- data_rev %>% filter(Citation != "TEST",Citation != "test" )
   cat("Unique values in index column:", levels(factor(reshaped_data$Index)), "\n")
   cat("Unique DOIs:", length(levels(factor(reshaped_data$ID_DOI))), "\n")
   cat("Unique DOIs by Flow Entry:", length(levels(factor(reshaped_data$ID_DOI_by_FlowEntry))), "\n")
-  
+dim(reshaped_data)  
 
-write.csv(reshaped_data, "data/reshaped_2_byFlowEntry.csv")
+write.csv(reshaped_data, "data/002_output_byFlowEntry.csv")
 
 
 # ### Step 1: Reshape by DOI - Flow (END)

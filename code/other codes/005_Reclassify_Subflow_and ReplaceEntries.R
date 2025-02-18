@@ -1,4 +1,4 @@
-docs <- read.csv("data/reshaped_3_byFlow.csv")
+docs <- read.csv("data/003_output_byFlow.csv")
 
 biotic <- read.csv("data/data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("data/data_cleaning/socioculturalFlowSubtype_lookup.csv")

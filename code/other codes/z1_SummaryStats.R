@@ -7,7 +7,7 @@ library(ggplot2)
 library(data.table)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-#reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+#reshaped_data <- read.csv("data/003_output_byFlow.csv")
 data <- fread("reshaped_4_drivers.csv")
 glimpse(data)
 data$V1 = NULL

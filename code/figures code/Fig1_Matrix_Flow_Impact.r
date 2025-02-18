@@ -5,7 +5,7 @@ rm(list=ls())
 library(ggplot2)
 
 #setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-reshaped_data <- read.csv("reshaped_3_byFlow.csv")
+reshaped_data <- read.csv("data/003_output_byFlow.csv")
 glimpse(reshaped_data)
 
 # Select and reshape relevant columns

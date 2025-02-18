@@ -1,7 +1,7 @@
 ## Remove entries that have been checked, and ones that need to be replaced entirely
 # Flag and remove papers that need to be recoded.
 # Feb 9 2025
-docs <- read.csv("data/reshaped_6_recoded.csv")
+docs <- read.csv("data/006_output_recoded.csv")
 
 #list of entire papers to remove  forever
  # “Nielsen, 2015, Global Change Biology”,  “Vaddey, 2010, Watershed Management”,
@@ -48,7 +48,7 @@ doc2 <- doc2 %>% filter(Citation != "de la Fontaine,  2018, Ecology",
 
 dim(docs)
 dim(doc2)
-write.csv(doc2, "reshaped_7_cleaned.csv")
+write.csv(doc2, "007_output_entriesRemoved.csv")
 
 
 

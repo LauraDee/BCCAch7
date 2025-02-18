@@ -5,7 +5,7 @@ library(stringr)
 library(readxl)
 
 relabel_drivers <- read_excel("C:\\Users\\basti\\Documents\\GitHub\\BCCAch7\\data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
-relabel_drivers <- read.excel("otherclimatedrivers_lookup.xlsx") #reshaped_data <- read.csv("data/reshaped_3_byFlow.csv")
+relabel_drivers <- read.excel("otherclimatedrivers_lookup.xlsx") #reshaped_data <- read.csv("data/003_output_byFlow.csv")
 reshaped_data <- read.csv("cleaned_4_byFlow.csv")
 relabel_drivers <- read.csv("otherclimatedrivers_lookup.csv")
 
