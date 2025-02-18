@@ -10,4 +10,5 @@ dim(reshaped_data)
 reshaped_data$ID_DOI_by_Flow <- seq(1:dim(reshaped_data)[1])
 max(reshaped_data$ID_DOI_by_FlowEntry)
 reshaped_data %>% filter(ID_DOI_by_FlowEntry==123) %>% select("Citation") ## Sanity check, this should give you: "1 Sivakumar, B.; 2011; Hydrological Sciences Journal" as of Feb 14, 2025
+
 write.csv(reshaped_data, 'data/003_output_byFlow.csv')
