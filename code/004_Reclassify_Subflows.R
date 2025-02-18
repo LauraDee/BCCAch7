@@ -2,9 +2,9 @@ docs <- read.csv("data/003_output_byFlow.csv") #before it was called reshaped_3_
 
 biotic <- read.csv("data/data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("data/data_cleaning/socioculturalFlowSubtype_lookup.csv")
-phys <-  read.csv("data/data_cleaning/physicalFlowSubtype_lookup.csv")
+#phys <-  read.csv("data/data_cleaning/physicalFlowSubtype_lookup.csv")
 human <-  read.csv("data/data_cleaning/lookuptable_humamovement.csv")
-
+phys <-  read.csv("data/data_cleaning/physicalFlowSubtype_lookup_CRM.csv")
 
 
 ## Reclassify human movement
@@ -55,4 +55,5 @@ df4_updated <- df3_updated %>%
 
 df4_updated <- df4_updated %>% mutate(X2.1.Flow.Type = ifelse(X2.1.Flow.Type=="Trade (transport of goods and services)","Trade",X2.1.Flow.Type))
 levels(factor(df4_updated$X2.1.Flow.Type))
+list(unique(df4_updated$X2.2.Subtype))
 write.csv(df4_updated, 'data/004_output_Reclassified.csv')
