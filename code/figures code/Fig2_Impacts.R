@@ -5,9 +5,8 @@ rm(list=ls())
 #load libraries
 library(ggplot2)
 
-setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
-#reshaped_data <- read.csv("data/003_output_byFlow.csv")
-reshaped_data <- read.csv("reshaped_4_drivers.csv")
+setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
+reshaped_data <- read.csv("data/006_output_recoded.csv")
 glimpse(reshaped_data)
 
 # Select and reshape relevant columns
@@ -19,13 +18,13 @@ altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(resha
 impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
 driver_cols <- names(reshaped_data)[grepl("driver.", names(reshaped_data))]
 
-#Remove the No Impact entry  
+#Remove the No Impact entry
 impact_cols <- impact_cols[-1]
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
 
-interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
+interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>%
   select(all_of(c(altered_flow_cols, impact_cols, driver_cols))) %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
@@ -47,7 +46,7 @@ combinations <- expand.grid(
 
 # Count occurrences of each combination in the data
 combination_counts <- combinations %>%
-  rowwise() %>% 
+  rowwise() %>%
   mutate(
     count = sum(
       interaction_data[[Flow]] != "" & interaction_data[[Impact]] != "",
@@ -77,7 +76,6 @@ ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
-
 
 # Count occurrences for each Impact direction
 combination_counts_by_impact <- combinations %>%
@@ -134,7 +132,7 @@ combinations2 <- expand.grid(
 
 # Count occurrences of each combination in the data
   # combination_counts_driver_impact <- combinations2 %>%
-  #   rowwise() %>% 
+  #   rowwise() %>%
   #   mutate(
   #     count = sum(
   #       interaction_data[[Driver]] != "" & interaction_data[[Impact]] != "",
@@ -186,12 +184,12 @@ table(reshaped_data$X2.12.Impact..Richness,reshaped_data$driver.Climate.change..
 #this doesnt seem right?? is it?
 table(combination_counts_by_impact_driver_filtered$ImpactDirection)
 
-#this looks wrong - 
+#this looks wrong - but needs to be stretched
 driver_impact <-  ggplot(combination_counts_by_impact_driver_filtered, aes(x = Driver, y = Impact, size = count, color = ImpactDirection)) +
   geom_point(alpha = 0.7) +  # Add points with alpha transparency
 facet_wrap(~ImpactDirection, scales = "fixed") +  # Create facets for each NCP direction
   scale_size_continuous(range = c(1, 10)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChange" = "blue")) + 
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple", "NoChange" = "blue")) +
   labs(
     title = "Driver to Biodiversity Impact",
     x = "Driver",
@@ -209,7 +207,7 @@ driver_impact
 
 
 
-
+# not sure what the below is:
 
 unique_flows <- interaction_data %>%
   select(starts_with("2.7")) %>%
@@ -232,7 +230,7 @@ combination_counts_by_impact <- combinations %>%
   mutate(
     count = sum(
       apply(interaction_data, 1, function(row) {
-        row[[Flow]] != "" && row[[Impact]] != "" && 
+        row[[Flow]] != "" && row[[Impact]] != "" &&
           row[[Flow]] == Flow && row[[Impact]] == Impact
       })
     ),
