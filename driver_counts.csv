@@ -1,31 +1,32 @@
-Driver,count
-driver.Climate.change..generic.,175
-driver.Drought,62
-driver.Sea.level.rise,13
-driver.Floods,26
-driver.Hurricanes,12
-driver.Air.temperature.directional.change,133
-driver.permafrost.melt,6
-driver.Air.temperature.variability,26
-driver.Precipitation.directional.change,79
-driver.Precipitation.variability,55
-driver.Wildfires,30
-driver.Sea.temperature.change,43
-driver.water.availability,3
-driver.extreme.weather,8
-driver.Sea.ice.area.change,25
-driver.Seawater.chemistry,13
-driver.Land.ice.cover..glaciers.,3
-driver.Ocean.currents,11
-driver.C02.concentration,1
-driver.freshwater.temperature.change,2
-driver.frazzle..land.ice..change,1
-driver.surface.water.change,2
-driver.freshwater.chemistry.change,1
-driver.wind.pattern.change,1
-driver.snow.pack..depth.and.hardness.,1
-driver.El.Nino.Southern.Oscillation..ENSO.,1
-driver.snow.pack.change,4
-driver.emissions.concentration.change,2
-driver.heat.waves,1
-driver.natural.disasters,1
+"","V1","V2","V3"
+"V1","","Driver","count"
+"V2","V1","driver.Climate.change..generic.","175"
+"V3","V2","driver.Drought"," 62"
+"V4","V3","driver.Sea.level.rise"," 13"
+"V5","V4","driver.Floods"," 26"
+"V6","V5","driver.Hurricanes"," 12"
+"V7","V6","driver.Air.temperature.directional.change","133"
+"V8","V7","driver.permafrost.melt","  6"
+"V9","V8","driver.Air.temperature.variability"," 26"
+"V10","V9","driver.Precipitation.directional.change"," 79"
+"V11","V10","driver.Precipitation.variability"," 55"
+"V12","V11","driver.Wildfires"," 30"
+"V13","V12","driver.Sea.temperature.change"," 43"
+"V14","V13","driver.water.availability","  3"
+"V15","V14","driver.extreme.weather","  8"
+"V16","V15","driver.Sea.ice.area.change"," 25"
+"V17","V16","driver.Seawater.chemistry"," 13"
+"V18","V17","driver.Land.ice.cover..glaciers.","  3"
+"V19","V18","driver.Ocean.currents"," 11"
+"V20","V19","driver.C02.concentration","  1"
+"V21","V20","driver.freshwater.temperature.change","  2"
+"V22","V21","driver.frazzle..land.ice..change","  1"
+"V23","V22","driver.surface.water.change","  2"
+"V24","V23","driver.freshwater.chemistry.change","  1"
+"V25","V24","driver.wind.pattern.change","  1"
+"V26","V25","driver.snow.pack..depth.and.hardness.","  1"
+"V27","V26","driver.El.Nino.Southern.Oscillation..ENSO.","  1"
+"V28","V27","driver.snow.pack.change","  4"
+"V29","V28","driver.emissions.concentration.change","  2"
+"V30","V29","driver.heat.waves","  1"
+"V31","V30","driver.natural.disasters","  1"
