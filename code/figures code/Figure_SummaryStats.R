@@ -17,13 +17,17 @@ setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/B
 reshaped_data <- read.csv("data/006_output_recoded.csv")
 glimpse(reshaped_data)
 table(reshaped_data$X2.1.Flow.Type)
+
+
 data <- reshaped_data %>% filter(`X2.1.Flow.Type` %notin% c("Remove","Recode"))
 driver_cols <- names(data)[grepl("driver.", names(data))]
+
 
 ## Count of paper by Flow
 table(data$X2.1.Flow.Type)
 data = as.data.table(data)
-data[X2.1.Flow.Type =="Trade (transport of goods and services)", X2.1.Flow.Type:="Human movement"]
+data = data[X2.1.Flow.Type =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
+data = data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
 
 flowcount <- ggplot(as.data.frame(data), aes(X2.1.Flow.Type,  fill = X2.1.Flow.Type)) +
   geom_bar(position = 'dodge') +
@@ -68,7 +72,7 @@ ggplot(subflow_percent, aes(as.factor(X2.2.Subtype), prop)) +
   geom_col(aes(fill = as.factor(X2.2.Subtype))) +
   labs( title = "Proportion of Subflow Types",
         x = "Subflow Type",
-        y = "Proportion of Entries") +
+        y = "Proportion of Entries") + coord_flip() +
   theme_minimal() + theme(legend.position="none")
 
 #for just biotic
