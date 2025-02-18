@@ -7,6 +7,8 @@ rm(list=ls())
 #load libraries
 library(ggplot2)
 library(data.table)
+library(reshape2)
+library(dplyr)
 
 # Filter relevant columns for Altered Flow and Impact
 "%notin%" <- Negate("%in%")
@@ -31,6 +33,22 @@ flowcount <- ggplot(as.data.frame(data), aes(X2.1.Flow.Type,  fill = X2.1.Flow.T
     y = "Count") +
   theme_minimal() + theme(legend.position="none")
 flowcount
+
+#do as % :
+flow_percent <- data %>%
+  group_by(X2.1.Flow.Type) %>%
+  summarise (n = n()) %>%
+  mutate(prop = n / sum(n))
+
+flow_percent
+ggplot(flow_percent, aes(X2.1.Flow.Type)) +
+  geom_bar(position= "stack") 
+
+  labs( title = "Percent of Papers by Flow Type",
+    x = "Flow Type",
+    y = "%") +
+  theme_minimal() + theme(legend.position="none")
+
 
 ## Count of paper by Subflow
 table(data$X2.2.Subtype)
@@ -57,29 +75,53 @@ biotic.subflowcount <- ggplot(as.data.frame(biotic), aes(X2.2.Subtype)) +
   theme_minimal() + coord_flip()
 biotic.subflowcount
 
-## Count of papers by Driver
-
+## Count of papers by Driver - this could be improved upon
+# to automate: 
 table(reshaped_data$driver.heat.waves)
 sum(data$driver.heat.waves) #1
 sum(data$driver.Drought) #62
 
-
-driverdat = data[, .(total = sum(na.omit(unlist(.SD)))), .SD, .SDcols = patterns("^driver.")]
-
-library(dplyr)
-data %>%
-  group_by(driver_cols) %>%
-  summarise(total = sum(unlist(select(cur_data(), starts_with('task'))), na.rm = TRUE))
-
-
-# https://stackoverflow.com/questions/57702227/count-number-of-rows-where-value-in-two-columns-are-both-true/57702283
-
-
 count_true_cols <- function(data, cols) {
   data %>%
-    select(cols) %>%
-    summarise_all(.funs = ~sum(.x), starts_with('driver.'))
+    select(all_of(cols),starts_with('driver.')) %>%
+    summarise_all(.funs = ~sum(.x)) 
 }
 
 results <- count_true_cols(data, driver_cols)
+results <- as.data.frame(results)
 print(results)
+
+# df2 <- results |> 
+#   pivot_longer(cols = everything(),
+#                names_to = 'date',
+#                values_to = 'x')
+
+#write.csv(results, "driver_counts.csv")
+df <- fread("driver_counts.csv")
+
+df <- as.matrix(df)
+df2_new<- t(df)
+write.csv(df2_new, "driver_counts.csv")
+
+df <- fread("driver_counts.csv")
+head(df)
+
+ggplot(df, aes(Driver, count)) +
+  geom_col() + labs(
+    title = "Count of Drivers",
+    x = "Driver",
+    y = "Count") +
+  theme_minimal() + coord_flip()
+
+## filter to drivers with more than 5 or 10 papers
+df5 <- df %>%  filter(count>5)
+nrow(df5)
+nrow(df)
+
+drivers <- ggplot(df5, aes(Driver, count)) +
+  geom_col() + labs(
+    title = "Count of Drivers",
+    x = "Driver",
+    y = "Count") +
+  theme_minimal() + coord_flip()
+
