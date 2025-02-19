@@ -84,6 +84,13 @@ levels(factor(reshaped_data_drivers$`2.1.Flow.Type`))
 # reshaped_data_original$ID_DOI_by_Flow[193]
 
 
+all_removed <- read.csv('data/999_removed_papers.csv')
+reshaped_data_drivers <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow %notin% all_removed$ID_DOI_by_Flow)
+
+
+levels(factor(all_removed$X2.1.Flow.Type))
+all_removed %>% filter(X2.1.Flow.Type=="Trade") %>% select(Citation)
+
 write.csv(reshaped_data_drivers, "data/005_output_drivers.csv")
 
 

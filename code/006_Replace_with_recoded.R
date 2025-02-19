@@ -1,14 +1,13 @@
 ### Replace recoded entries
 
 reshaped_data_drivers <- read.csv("data/005_output_drivers.csv")
-glimpse(reshaped_data_drivers)
 levels(factor(reshaped_data_drivers$X2.1.Flow.Type))
 reshaped_data_drivers <- reshaped_data_drivers %>% dplyr::select(-c(X,X.3,X.2,X.1))
 
 # we will need to add all of the same columns since the main data has the extra management ones, or we should do it this in an earlier step
 replace_socio <- read.csv("data/data_cleaning/Kyle_RecodeSubflows-Feb102025.csv", header = T)
 replace_socio <- replace_socio %>% dplyr::select(-c(X,X.2,X.1))
-
+glimpse(replace_socio)
 dim(replace_socio)
 dim(reshaped_data_drivers)
 identical(colnames(replace_socio), colnames(reshaped_data_drivers))
@@ -25,7 +24,7 @@ dim(reshaped_data_drivers)
 
 #COSTA RECODED
 replace_costa <- read.csv("data/data_cleaning/Brumberg_BCCA_revisions_costa_recode.csv", header = T)
-costa_original <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow==replace_costa$ID_DOI_by_Flow)
+costa_original <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow %in% replace_costa$ID_DOI_by_Flow)
 costa_original <- rbind(costa_original,costa_original)
 costa_original[,1:99] <- replace_costa[,1:99]
 dim(costa_original)
@@ -43,3 +42,4 @@ dim(reshaped_data_drivers)
 
 
 write.csv(reshaped_data_drivers, "data/006_output_recoded.csv")
+

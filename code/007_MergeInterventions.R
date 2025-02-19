@@ -7,7 +7,8 @@ mutate(Response.Mentioned.=ifelse(!is.na(Response.Mentioned.verified),Response.M
 dplyr::select(-Response.Mentioned.verified)
 glimpse(merged_df)
 ## Add new column 
-
+# [41] "disease detection; disease prevention; control; public outreach, awareness, and education"
+levels(factor(merged_df$intervention.codes))
 unique_interventions <- merged_df %>%
   tidyr::separate_rows(intervention.codes, sep = ";\\s*") %>%
   distinct(intervention.codes) %>%
@@ -15,7 +16,7 @@ unique_interventions <- merged_df %>%
   arrange(intervention.codes) # Sort the interventions alphabetically
 
 # Print the cleaned list of interventions
-print(unique_interventions)
+print(unique_interventions, n=200)
 interventions_vector <- unique_interventions$intervention.codes
 
 fleshed_df <- merged_df
@@ -33,6 +34,14 @@ fleshed_df <- fleshed_df %>%
 
 glimpse(fleshed_df)
 write.csv(fleshed_df,'data/007_output_interventions.csv')
+
+
+
+
+
+
+
+
 
 fleshed_df <- fleshed_df %>% filter(X2.1.Flow.Type %notin% c("Remove","Recode"))
 

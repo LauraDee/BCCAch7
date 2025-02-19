@@ -1,7 +1,5 @@
 ## Remove entries that have been checked, and ones that need to be replaced entirely
-# Flag and remove papers that need to be recoded.
-# Feb 9 2025
-docs <- read.csv("data/006_output_recoded.csv")
+docs <- read.csv("data/007_output_Interventions.csv")
 
 #list of entire papers to remove  forever
  # “Nielsen, 2015, Global Change Biology”,  “Vaddey, 2010, Watershed Management”,
@@ -16,12 +14,10 @@ doc2 <- docs %>% filter(Citation != "Chen, 2011, Journal of Sustainable Developm
 # list of papers to remove that need to be recoded:
 list_to_recode <- c("Jenkins et al., 2013, Advances in Parasitology",
                     "Noyes, 2009, Environment International",
-                    "Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT",
                     "Covich et al., 1997, Hydrological Processes")
 
 doc2 <- doc2 %>% filter(Citation != "Jenkins et al., 2013, Advances in Parasitology",
                         Citation != "Noyes, 2009, Environment International",
-                        Citation != "Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT", #Mabel checking
                         Citation != "Covich et al., 1997, Hydrological Processes") # #Mabel checking
 
 
@@ -29,9 +25,8 @@ doc2 <- doc2 %>% filter(Citation != "Jenkins et al., 2013, Advances in Parasitol
 
  ##** We need to think about how to do this if some have been recoded in the form
  ##*# then if we reload the data and reassign the #s - will this still work?
-subflow_to_remove <-  doc2 %>% filter(ID_DOI_by_Flow != "95",
-                                      ID_DOI_by_Flow != "69",
-                                      ID_DOI_by_Flow != "135") # this is Dube et al 2012 that says River and groundwater flows along with sediment and pollunts and lists Biotic entry
+doc2 <-  doc2 %>% filter(ID_DOI_by_Flow != 95,
+                                      ID_DOI_by_Flow != 69)
  ###Dube et al., 2012, INTEGRATED ENVIRONMENTAL ASSESSMENT AND MANAGEMENT" needs to be recoded.
 
 # list of entire papers to remove that have been recoded and need to be replaced:
@@ -46,7 +41,11 @@ doc2 <- doc2 %>% filter(Citation != "de la Fontaine,  2018, Ecology")
 
 dim(docs)
 dim(doc2)
-write.csv(doc2, "007_output_entriesRemoved.csv")
+doc2$ID_DOI_by_Flow==95
+write.csv(doc2, "data/007_output_entriesRemoved.csv")
 
 
 
+levels(factor(doc2$X2.2.Subtype[which(doc2$X2.1.Flow.Type=="Physical")]))
+
+levels(factor(doc2$X2.2.Subtype[which(doc2$X2.1.Flow.Type=="Physical")]))
