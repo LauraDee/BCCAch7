@@ -14,14 +14,12 @@ library(dplyr)
 "%notin%" <- Negate("%in%")
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
-reshaped_data <- read.csv("data/006_output_recoded.csv")
+reshaped_data <- read.csv("data/007_output_interventions.csv")
 glimpse(reshaped_data)
 table(reshaped_data$X2.1.Flow.Type)
 
-
 data <- reshaped_data %>% filter(`X2.1.Flow.Type` %notin% c("Remove","Recode"))
 driver_cols <- names(data)[grepl("driver.", names(data))]
-
 
 ## Count of paper by Flow
 table(data$X2.1.Flow.Type)
@@ -53,13 +51,17 @@ ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
     
 ## Count of paper by Subflow
 table(data$X2.2.Subtype)
+data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
+data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
+
 
 subflowcount <- ggplot(as.data.frame(data), aes(X2.2.Subtype,  fill = X2.1.Flow.Type)) +
   geom_bar(position = 'dodge') +
   labs(
     title = "Count of Papers by Subflow Type",
     x = "Subflow Type",
-    y = "Count") +
+    y = "Count") + coord_flip() 
+
   theme_minimal() + coord_flip() + theme(legend.title = "Flow Type")
 subflowcount
 
