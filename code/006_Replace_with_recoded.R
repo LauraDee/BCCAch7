@@ -24,6 +24,7 @@ dim(reshaped_data_drivers)
 
 #COSTA RECODED
 replace_costa <- read.csv("data/data_cleaning/Brumberg_BCCA_revisions_costa_recode.csv", header = T)
+dim(replace_costa)
 costa_original <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow %in% replace_costa$ID_DOI_by_Flow)
 costa_original <- rbind(costa_original,costa_original)
 costa_original[,1:99] <- replace_costa[,1:99]
@@ -35,6 +36,25 @@ dim(reshaped_data_drivers)
 reshaped_data_drivers <- rbind(reshaped_data_drivers,costa_original %>% filter(!is.na(ID_DOI_by_Flow)))
 dim(reshaped_data_drivers)
 
+
+
+
+replace_dube <- read.csv("data/data_cleaning/reshaped_3_byFlow_Dubefix_recode.csv")
+replace_dube$ID_DOI_by_Flow
+dim(replace_dube)
+dube_original <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow %in% replace_dube$ID_DOI_by_Flow)
+dube_original$ID_DOI_by_Flow
+dim(dube_original)
+names(dube_original)
+names(replace_dube)
+dube_original[,1:99] <- replace_dube[,1:99]
+dim(dube_original)
+dim(reshaped_data_drivers)
+ids <- c(dube_original$ID_DOI_by_Flow)
+reshaped_data_drivers <- reshaped_data_drivers %>% filter(ID_DOI_by_Flow %notin% ids)
+dim(reshaped_data_drivers)
+reshaped_data_drivers <- rbind(reshaped_data_drivers,dube_original %>% filter(!is.na(ID_DOI_by_Flow)))
+dim(reshaped_data_drivers)
 
 #reshaped_3_byFlow_Dubefix_recode.csv
 #replace_Dube <- read.csv("data/data_cleaning/reshaped_3_byFlow_Dubefix_recode.csv", header = T)
