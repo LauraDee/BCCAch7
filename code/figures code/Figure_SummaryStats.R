@@ -165,5 +165,3 @@ unique(list(data$X2.21.Well.being.List))
 
 #for just physical
 phys = data[X2.1.Flow.Type == "Physical",]
-biotic[X2.2.Subtype == "range-shift", X2.2.Subtype := "Range shift"]
-biotic[X2.2.Subtype == "species range shifts", X2.2.Subtype := "Range shift"]

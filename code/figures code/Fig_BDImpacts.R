@@ -24,12 +24,9 @@ interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test",
   filter(!if_all(-row_id, ~ .x == ""))
 glimpse(interaction_data)
 
-#flow_columns <- names(interaction_data)[grepl("Altered Flow", names(interaction_data))]
-#impact_columns <- names(interaction_data)[grepl("Impact", names(interaction_data))]
-
 #update column names
 flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
-impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
+impact_columns <- names(interaction_data)[grepl("Impact.", names(interaction_data))]
 
 # Generate all possible combinations of flows and impacts
 combinations <- expand.grid(
@@ -70,11 +67,10 @@ ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 
-
 # Count occurrences for each Impact direction
 combination_counts_by_impact <- combinations %>%
   rowwise() %>%
-  mutate(
+   mutate(
     Increase = sum(
       interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Increase",
       na.rm = TRUE
@@ -113,6 +109,32 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = c
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
+
+#do counts of impacts and by direction for bar plots
+head(combination_counts_by_impact_filtered)
+
+#remove impact of none
+combination_counts_by_impact_filtered = as.data.table(combination_counts_by_impact_filtered)
+# need to do: 
+combination_counts_by_impact_filtered <- combination_counts_by_impact_filtered  %>%
+  filter(count > 0)  %>%
+  filter(Impact != "X2.12.Impact..None")
+
+write.csv(combination_counts_by_impact_filtered, "view_impacts_feb2025.csv")
+
+Impacts <- ggplot(combination_counts_by_impact_filtered, aes(x = Impact, color = ImpactDirection)) +
+ geom_bar() +  theme_minimal() +
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
+  labs(
+    title = "Biodiversity Impact",
+    x = "Impact to Biodiversity",
+    y = "count",
+    size = "Count",
+    color = "Impact Direction") + coord_flip()
+Impacts 
+
+
+
 
 
 
