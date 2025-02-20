@@ -128,5 +128,9 @@ df4_updated <- df4_updated %>% mutate(X2.1.Flow.Type = ifelse(X2.1.Flow.Type=="T
 
 levels(factor(df4_updated$X2.1.Flow.Type))
 
+df4_updated <- df4_updated %>%
+  mutate(X2.2.Subtype = tolower(X2.2.Subtype)) 
+
+df4_updated %>% filter(X2.1.Flow.Type=="Biotic") %>% select(X2.2.Subtype) %>% unique()
 write.csv(df4_updated, 'data/004_output_Reclassified.csv')
 write.csv(all_removed , 'data/999_removed_papers.csv')

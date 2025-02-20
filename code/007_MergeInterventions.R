@@ -33,7 +33,27 @@ fleshed_df <- fleshed_df %>%
               .cols = interventions_vector)
 
 glimpse(fleshed_df)
+
+
+fleshed_df <- fleshed_df %>%
+  mutate(X2.2.Subtype = tolower(X2.2.Subtype))  %>% 
+  filter(Citation!="Sivakumar, B.; 2011; Hydrological Sciences Journal")
+
 write.csv(fleshed_df,'data/007_output_interventions.csv')
+
+
+fleshed_df_g <-  fleshed_df %>% group_by(X2.1.Flow.Type,X2.2.Subtype) %>% 
+mutate(count=n())
+glimpse(fleshed_df_g)
+
+
+
+fleshed_df_g$X2.2.Subtype <- factor(fleshed_df_g$X2.2.Subtype, levels = sort(unique(fleshed_df_g$X2.2.Subtype)))
+ggplot(fleshed_df_g, aes(y=X2.2.Subtype,fill=X2.1.Flow.Type))+
+geom_bar() + 
+theme_minimal() +   
+scale_fill_brewer(palette = "Set2") + 
+labs(x = "count",y="Subflow",fill="Flow")
 
 
 
