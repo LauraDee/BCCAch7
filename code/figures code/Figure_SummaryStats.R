@@ -14,14 +14,12 @@ library(dplyr)
 "%notin%" <- Negate("%in%")
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
-reshaped_data <- read.csv("data/006_output_recoded.csv")
+reshaped_data <- read.csv("data/007_output_interventions.csv")
 glimpse(reshaped_data)
 table(reshaped_data$X2.1.Flow.Type)
 
-
 data <- reshaped_data %>% filter(`X2.1.Flow.Type` %notin% c("Remove","Recode"))
 driver_cols <- names(data)[grepl("driver.", names(data))]
-
 
 ## Count of paper by Flow
 table(data$X2.1.Flow.Type)
@@ -53,22 +51,27 @@ ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
     
 ## Count of paper by Subflow
 table(data$X2.2.Subtype)
+data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
+data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
+
 
 subflowcount <- ggplot(as.data.frame(data), aes(X2.2.Subtype,  fill = X2.1.Flow.Type)) +
   geom_bar(position = 'dodge') +
   labs(
     title = "Count of Papers by Subflow Type",
     x = "Subflow Type",
-    y = "Count") +
-  theme_minimal() + coord_flip() + theme(legend.title = "Flow Type")
+    y = "Count") + coord_flip() 
 subflowcount
+
+#subflowcount +  theme_minimal() + coord_flip() + theme(legend.title = "Flow Type")
 
 subflow_percent <- data %>%
   group_by(X2.2.Subtype) %>%
   summarise (n = n()) %>%
   mutate(prop = n / sum(n))
+subflow_percent
 
-ggplot(subflow_percent, aes(as.factor(X2.2.Subtype), prop)) +
+ggplot(subflow_percent, aes(as.factor(X2.2.Subtype), prop, fill = X2.1.Flow.Type)) +
   geom_col(aes(fill = as.factor(X2.2.Subtype))) +
   labs( title = "Proportion of Subflow Types",
         x = "Subflow Type",
@@ -151,3 +154,16 @@ ggplot(df10, aes(Driver, count)) +
     x = "Driver",
     y = "Count") +
   theme_minimal() + coord_flip()
+
+## Impact summaries
+glimpse(data)
+impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
+
+table(data$X2.12.Impact..Abundance)
+table(data$X2.12.Impact..Abundance)
+unique(list(data$X2.21.Well.being.List))
+
+#for just physical
+phys = data[X2.1.Flow.Type == "Physical",]
+biotic[X2.2.Subtype == "range-shift", X2.2.Subtype := "Range shift"]
+biotic[X2.2.Subtype == "species range shifts", X2.2.Subtype := "Range shift"]

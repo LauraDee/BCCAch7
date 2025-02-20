@@ -4,6 +4,7 @@ rm(list=ls())
 
 #load libraries
 library(ggplot2)
+library(tidyverse)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
 reshaped_data <- read.csv("data/006_output_recoded.csv")
