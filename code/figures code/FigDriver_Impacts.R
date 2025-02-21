@@ -116,7 +116,6 @@ df5 <- combination_counts_by_impact_filtered %>%
 #left off here
 
 
-
 #### Do for drivers
 # Generate all possible combinations of flows and impacts
 combinations2 <- expand.grid(
