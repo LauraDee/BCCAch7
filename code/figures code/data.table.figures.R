@@ -140,9 +140,11 @@ data <- driver_impact_data %>%
 #####################
 
 # NCP impacts by flow
-ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
-  geom_bar(position= "stack") + 
-  facet_wrap(~driver, scales = "fixed") +   coord_flip()
+ncp <- ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
+  geom_bar(position= "stack") +   coord_flip()
+
+ncp + facet_wrap(~driver, scales = "fixed") 
+ncp + facet_wrap(~X2.2.Subtype, scales = "fixed") 
 
 # all driver categories (too many)
 ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
@@ -190,7 +192,8 @@ hwb <- ggplot(hwb_data, aes(x = hwb, fill = hwb_direction)) +
 hwb
 #broken out by flow
 hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed") 
-
+#broken out by subflow
+hwb + facet_wrap(~X2.2.Subtype, scales = "fixed") 
 
 ## altered flow by flow type
 altered_flow_data
