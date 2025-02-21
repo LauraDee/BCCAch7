@@ -165,3 +165,10 @@ unique(list(data$X2.21.Well.being.List))
 
 #for just physical
 phys = data[X2.1.Flow.Type == "Physical",]
+phys.subflowcount <- ggplot(as.data.frame(phys), aes(X2.2.Subtype)) +
+  geom_bar(position = 'dodge') +
+  labs(title = "Count of Physical Papers by Subflow Type",
+    x = "Subflow Type",
+    y = "Count") + theme_minimal() + coord_flip()
+phys.subflowcount
+

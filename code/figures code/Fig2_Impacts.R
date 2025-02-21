@@ -7,12 +7,8 @@ library(ggplot2)
 library(tidyverse)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
-reshaped_data <- read.csv("data/006_output_recoded.csv")
+reshaped_data <- read.csv("data/007_output_interventions.csv")
 glimpse(reshaped_data)
-
-# Select and reshape relevant columns
-#altered_flow_cols <- names(reshaped_data)[grepl("Altered Flow", names(reshaped_data))]
-#impact_cols <- names(reshaped_data)[grepl("Impact", names(reshaped_data))]
 
 #updated col names
 altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
@@ -41,6 +37,7 @@ impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interactio
 # Generate all possible combinations of flows and impacts
 combinations <- expand.grid(
   Flow = flow_columns,
+  Driver = driver_cols,
   Impact = impact_columns,
   stringsAsFactors = FALSE
 )
@@ -50,7 +47,7 @@ combination_counts <- combinations %>%
   rowwise() %>%
   mutate(
     count = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] != "",
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] != "",
       na.rm = TRUE
     )
   ) %>%
@@ -58,9 +55,11 @@ combination_counts <- combinations %>%
 
 # Convert to a dataframe for easy viewing
 combination_counts_df <- as.data.frame(combination_counts)
+combination_counts_df  <- combination_counts_df  %>%
+  filter(count > 0)
 
 # Preview the result
-glimpse(combination_counts_df)
+glimpse(combination_counts_df) #this doesnt look right
 
 # Create the plot of paper counts by combination
 ggplot(combination_counts_df, aes(x = Flow, y = Impact, size = count)) +
@@ -83,15 +82,15 @@ combination_counts_by_impact <- combinations %>%
   rowwise() %>%
   mutate(
     Increase = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Increase",
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Increase",
       na.rm = TRUE
     ),
     Decrease = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Decrease",
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Decrease",
       na.rm = TRUE
     ),
     Complex = sum(
-      interaction_data[[Flow]] != "" & interaction_data[[Impact]] == "Complex change",
+      interaction_data[[Driver]] != "" & interaction_data[[Impact]] == "Complex change",
       na.rm = TRUE
     ),
   ) %>%
@@ -115,6 +114,25 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Flow, y = Impact, size = c
     size = "Count",
     color = "Impact Direction"
   ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+
+# Plot with facets by Impact direction, excluding zero counts
+ggplot(combination_counts_by_impact_filtered, aes(x = Driver, y = Impact, size = count, color = ImpactDirection)) +
+  geom_point(alpha = 0.1) +  # Add points with alpha transparency
+  facet_wrap(~ImpactDirection, scales = "fixed", shrink = TRUE) +  # Create facets for each impact direction
+  scale_size_continuous(range = c(3, 15)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
+  labs(
+    title = "Interaction Between Altered Flows and Impacts by Impact Direction",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) + coord_flip() +
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
@@ -204,6 +222,13 @@ facet_wrap(~ImpactDirection, scales = "fixed") +  # Create facets for each NCP d
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 driver_impact
+
+
+ ggplot(combination_counts_by_impact_driver_filtered, aes(x = Impact, y = count, fill = ImpactDirection)) +
+  geom_col() + 
+  facet_wrap(~Driver, scales = "fixed") 
+
+ 
 
 
 

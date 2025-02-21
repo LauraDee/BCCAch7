@@ -6,6 +6,7 @@ rm(list=ls())
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(ggforce)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
 reshaped_data <- read.csv("data/007_output_interventions.csv")
@@ -122,19 +123,49 @@ combination_counts_by_impact_filtered <- combination_counts_by_impact_filtered  
 
 write.csv(combination_counts_by_impact_filtered, "view_impacts_feb2025.csv")
 
-Impacts <- ggplot(combination_counts_by_impact_filtered, aes(x = Impact, color = ImpactDirection)) +
+Impacts <- ggplot(combination_counts_by_impact_filtered, aes(x = Impact, fill = ImpactDirection)) +
  geom_bar() +  theme_minimal() +
-  scale_color_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
   labs(
     title = "Biodiversity Impact",
     x = "Impact to Biodiversity",
     y = "count",
     size = "Count",
+    color = "Impact Direction") + coord_flip() 
+Impacts
+
+# Impacts +
+#   # The vertical axis only extends upwards 
+#   scale_y_discrete(expand = expansion(add = c(0, 0.5))) +
+#   theme(
+#     # Set background color to white
+#     panel.background = element_rect(fill = "white"),
+#     # Set the color and the width of the grid lines for the horizontal axis
+#     panel.grid.major.x = element_line(color = "#A8BAC4", size = 0.3),
+#     # Remove tick marks by setting their length to 0
+#     axis.ticks.length = unit(0, "mm"),
+#     # Remove the title for both axes
+#     # axis.title = element_blank(),
+#     # Only left line of the vertical axis is painted in black
+#     axis.line.y.left = element_line(color = "black"),
+#     # Remove labels from the vertical axis
+#     #  axis.text.y = element_blank(),
+#     # But customize labels for the horizontal axis
+#     axis.text.x = element_text(family = "Econ Sans Cnd", size = 16)
+#   )
+
+#facet wrap impacts by flow type
+Impacts_by_Flow <- ggplot(combination_counts_by_impact_filtered, aes(x = Impact, y=count, fill = ImpactDirection)) +
+  geom_col() +  theme_minimal() +
+  facet_wrap(~Flow, scales = "fixed", shrink = TRUE, labeller = "label_value") +
+  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
+  labs(
+    title = "Biodiversity Impact by Flow",
+    x = "Impact to Biodiversity",
+   # y = "count",
+    size = "Count",
     color = "Impact Direction") + coord_flip()
-Impacts 
-
-
-
+Impacts_by_Flow
 
 
 
