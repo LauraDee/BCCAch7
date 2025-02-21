@@ -106,10 +106,13 @@ ggplot(combination_counts_by_impact_filtered, aes(x = Driver, y = Impact, size =
   )
 
 ggplot(combination_counts_by_impact_filtered, aes(x = Impact, y = count, fill = ImpactDirection)) +
-  geom_col() + 
-  facet_wrap(~Driver, scales = "fixed")
+  geom_col(position= "stack") + 
+  facet_wrap(~Driver, scales = "fixed") +
+  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex" = "purple")) +
 
-
+ # for counts greater than 5
+df5 <- combination_counts_by_impact_filtered %>% 
+  filter(count > 5)
 #left off here
 
 
