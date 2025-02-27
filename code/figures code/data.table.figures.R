@@ -212,10 +212,29 @@ ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex Change" = "purple", "No change (measured)" = "lightblue"))
 
 # reduce driver categories and re-plot
+ncp_data <- driver_impact_ncp %>%
+  filter(`driver` %notin% c("freshwater.temperature.change","snow.pack..depth.and.hardness.",
+                            "remove emissions.concentration.change","C02.concentration",
+                            "frazzle..land.ice..change", "water.availability",
+                            "surface.water.change", "freshwater.chemistry.change",
+                            "emissions.concentration.change",
+                            "extreme.weather", "snow.pack.change",
+                            "Ocean.currents", "permafrost.melt",
+                            "Seawater.chemistry", "Hurricanes"))
 
-
+ggplot(ncp_data, aes(x = ncp, fill = ncp_direction)) +
+  geom_bar(position= "stack") + 
+  facet_wrap(~driver, scales = "fixed") +   coord_flip() +
+  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex Change" = "purple", "No change (measured)" = "lightblue")) +
+  labs(
+    title = "Count and direction of Impacts to NCP by Driver",
+    x = "NCP",
+    y = "Count",
+    fill = "Impact Direction") +  theme_minimal()
 
 #Alluvials
+# Relationship btwn BD and NCP impacts, where the stratum is the NCP direction 
+# of impacts
 ggplot(data = driver_impact_ncp,
        aes(axis1 = impact, axis2 = ncp)) + #, y = freq
   geom_alluvium(aes(fill = ncp_direction)) +
@@ -308,6 +327,15 @@ ggplot(data = driver_flow_impact,
 
 
 
+### do for just Biotic 
+biotic = driver_flow_impact[X2.1.Flow.Type.x == "Biotic",]
 
-### do for just biotic 
-biotic_driver_flow_impact = driver_flow_impact
+ggplot(data = biotic,
+       aes(axis1 = driver, axis2 = altered_flow)) + #, y = freq
+  geom_alluvium(aes(fill = X2.2.Subtype.x)) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("driver", "altered flow"),
+                   expand = c(0.15, 0.05)) + 
+  theme_void()
