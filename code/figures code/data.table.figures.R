@@ -20,7 +20,7 @@ impact.group <- fread("data/data_cleaning/impact_group.csv")
 reshaped_data = reshaped_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
 #group:
  # groundwater &  groundwater flow
- #sea ice change & sea ice retreat
+ # sea ice change & sea ice retreat
 # stream flow and river flow to  surface water quantity
 reshaped_data = reshaped_data[X2.2.Subtype =="groundwater flow", X2.2.Subtype := "groundwater"]
 reshaped_data = reshaped_data[X2.2.Subtype =="sea ice change", X2.2.Subtype := "sea ice retreat"]
@@ -94,7 +94,7 @@ driver_flow_impact = merge(driver_impact_data,
                           allow.cartesian=TRUE)
 #NCP data
 NCP_data = melt(reshaped_data,
-                              id.vars=c("ID_DOI_by_Flow"),
+                id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                               measure.vars = patterns(driver="^X2.16.NCP.ES.."),
                               variable.name = "ncp",
                               value.name="ncp_direction")[ncp_direction!="",][,ncp:=gsub(pattern="^X2.16.NCP.ES..(*)", replacement="\\1",ncp)]
@@ -205,8 +205,8 @@ data <- driver_impact_data %>%
                                 "surface.water.change", "freshwater.chemistry.change",
                                 "emissions.concentration.change",
                                 "extreme.weather", "snow.pack.change",
-                            "Ocean.currents", "permafrost.melt",
-                            "Seawater.chemistry", "Hurricanes"))
+                               "Ocean.currents", "permafrost.melt",
+                               "Seawater.chemistry", "Hurricanes"))
 table(data$driver)
 length(unique(data$driver)) #17
 
@@ -307,20 +307,33 @@ ggplot(data = data,
 #####################
 ### NCP figures ######
 #####################
-
 # NCP impacts
-ncp <- ggplot(NCP_data, aes(x = ncp, fill = ncp_direction)) +
-  geom_bar(position= "stack") +   coord_flip() +
-  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+ncp <- ggplot(NCP_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
+  geom_bar(position= "stack") +
+  coord_flip() + theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex hange" = "goldenrod1", "No change (measured)" = "grey")) +
+  labs(
+    title = "Impacts to Nature's Contribution to People (NCP)",
+    x = "NCP",
+    y = "Count",
+    fill = "Impact Direction")
 ncp
 
 # NCP impacts by flow type
-#ncp_by_flow <- ncp + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+ncp_by_flow <- ncp + facet_wrap(~X2.1.Flow.Type, scales = "free")
 ncp_by_flow
-ncp + facet_wrap(~X2.2.Subtype, scales = "fixed")
+
+# NCP impacts by subflow
+# drop trade ,wind, snow melt?
+ncp_by_subflow <- ncp + facet_wrap(~X2.2.Subtype, scales = "fixed")
+ncp_by_subflow
+
+
+#####################
+### NCP + Driver figures ######
+#####################
 
 #now read in the data with NCP and drivers in one dataframe:
-
 ncp + facet_wrap(~driver, scales = "fixed")
 
 # all driver categories (too many)
