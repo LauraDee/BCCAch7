@@ -1,0 +1,16 @@
+﻿impact,impact.group
+Abundance,good
+Richness,good
+Loss,bad
+Disease,bad
+Invasion,bad
+Composition,neutral
+Genetics,neutral
+Land.Use.Loss,bad
+Land.Use.Restore,good
+Urbanization,bad
+Connectivity,good
+Trophic,neutral
+Management,good
+Other,neutral
+Indigenous.Knowledge,good

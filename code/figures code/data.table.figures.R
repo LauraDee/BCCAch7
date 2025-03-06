@@ -1,5 +1,8 @@
 #Figures of drivers by flow and impacts and NCP
 
+#https://www.cedricscherer.com/2023/10/26/yet-another-how-to-on-labelling-bar-graphs-in-ggplot2/
+# https://www.sthda.com/english/articles/32-r-graphics-essentials/132-plot-grouped-data-box-plot-bar-plot-and-more/#grouped-categorical-variables
+
 #load libraries
 library(ggplot2)
 library(tidyverse)
@@ -11,6 +14,7 @@ library(data.table) #load last
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
 reshaped_data <- fread("data/007_output_interventions.csv")
+impact.group <- fread("data/data_cleaning/impact_group.csv")
 
 #clean up Flow and Subflow types
 reshaped_data = reshaped_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
@@ -39,22 +43,14 @@ phys = reshaped_data[X2.1.Flow.Type =="Physical",]
 table(phys$X2.2.Subtype)
 
 ## Summary Stats on the Flow and Subflow:
-subflowcount <- ggplot(as.data.frame(reshaped_data), aes(X2.2.Subtype,  fill = X2.1.Flow.Type)) +
-  geom_bar(position = 'dodge') +
-  labs(
-    title = "Count of Papers by Subflow Type",
-    x = "Subflow Type",
-    y = "Count") + coord_flip()
-subflowcount
-# ORDER BY MOST TO LEAST
-
-reshaped_data %>%
+subflowcount <- reshaped_data %>%
   ggplot(aes(x = fct_infreq(X2.2.Subtype), fill = X2.1.Flow.Type)) +
-  geom_bar() +
+  geom_bar() + theme_minimal() +
   labs(x = "Subflow Type",
        title = "Count of Papers by Subflow Type",
-       y = "Count") + coord_flip()
-
+       y = "Count") + coord_flip() +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
+subflowcount
 
 driver_data = melt(reshaped_data,
                  id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
@@ -71,13 +67,22 @@ impact_data = melt(reshaped_data,
 impact_data = impact_data[impact != "None"]
 impact_data = impact_data[direction != 'No direction mentioned']
 impact_data = impact_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
-table(driver_impact_data$direction)
+
+impact_data = merge(impact_data,
+                     impact.group,
+                      by="impact",
+                      allow.cartesian=TRUE)
+#change names
+impact_data = impact_data[impact =="Indigenous.Knowledge", impact := "Indigenous Knowledge"]
+impact_data = impact_data[impact =="Land.Use.Restore", impact := "Habitat Restoration"]
+impact_data = impact_data[impact =="Land.Use.Loss", impact := "Habitat Loss"]
 
 altered_flow_data =  melt(reshaped_data,
        id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
        measure.vars = patterns(driver="^X2.7.Altered.Flow.."),
        variable.name = "altered_flow",
        value.name="alteration")[alteration!="",][,altered_flow:=gsub(pattern="^X2.7.Altered.Flow..(*)", replacement="\\1",altered_flow)]
+
 #view the data
 table(altered_flow_data$altered_flow)
 table(altered_flow_data$alteration)
@@ -87,7 +92,6 @@ driver_flow_impact = merge(driver_impact_data,
                           altered_flow_data,
                           by="ID_DOI_by_Flow",
                           allow.cartesian=TRUE)
-
 #NCP data
 NCP_data = melt(reshaped_data,
                               id.vars=c("ID_DOI_by_Flow"),
@@ -97,17 +101,19 @@ NCP_data = melt(reshaped_data,
 NCP_data = NCP_data[ncp != "None"]
 NCP_data = NCP_data[ncp_direction != "No direction mentioned"]
 
+## combined datasets
 driver_impact_data = merge(driver_data,
                            impact_data,
                            by="ID_DOI_by_Flow",
                            allow.cartesian=TRUE)
 #condense and clean
-driver_impact_data = driver_impact_data[X2.1.Flow.Type =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
-driver_impact_data = driver_impact_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
+driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
+driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="Trade", X2.1.Flow.Type := "Human movement"]
 driver_impact_data = driver_impact_data[direction != 'No direction mentioned']
 table(driver_impact_data$direction)
 driver_impact_data = driver_impact_data[impact != "None"]
 
+#combine driver impact and NCP data
 driver_impact_ncp = merge(driver_impact_data,
                           NCP_data,
                           by="ID_DOI_by_Flow",
@@ -129,9 +135,10 @@ hwb_data = hwb_data[hwb != 'None']
 ##################################################################################
 # BD Impacts ###################################################
 ##################################################################
-Impacts <- ggplot(impact_data, aes(x = impact, fill = direction)) +
+Impacts <- ggplot(impact_data, aes(x = fct_infreq(impact), fill = direction)) +
   geom_bar() +  theme_minimal() +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple", "No change (measured)" = "lightblue")) +
+  facet_grid(~impact.group) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Biodiversity Impact",
     x = "Impact to Biodiversity",
@@ -142,7 +149,7 @@ Impacts
 
 Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
   geom_bar() +  theme_minimal() +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple", "No change (measured)" = "lightblue")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   facet_wrap(~X2.1.Flow.Type, scales = "free") +
   labs(
     title = "Biodiversity Impact",
@@ -151,6 +158,8 @@ Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     size = "Count",
     color = "Impact Direction") + coord_flip()
 Impacts_by_flow
+
+write.csv(impact_data, "impact_data_for_Anna.csv")
 
 # for the top subflow categories - to do impacts by"
 Impacts_by_subflow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
@@ -210,7 +219,72 @@ ggplot(data = data,
        aes(axis1 = driver, axis2 = impact)) + #, y = freq
   geom_alluvium(aes(fill = direction)) +
  # facet_wrap(~X2.1.Flow.Type, scales = "free") +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+ # scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.05)) +
+  theme_void()
+
+## by flow type
+biodata = data[X2.1.Flow.Type.x == "Biotic", ]
+physdata = data[X2.1.Flow.Type.x == "Physical", ]
+sociodata = data[X2.1.Flow.Type.x == "Sociocultural", ]
+humandata = data[X2.1.Flow.Type.x == "Human movement", ]
+
+# Alluvial connecting to Driver to Impact by flow
+
+#biotic
+ggplot(data = biodata,
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  # facet_wrap(~X2.1.Flow.Type, scales = "free") +
+  # scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.05)) +
+  theme_void()
+
+#physical
+ggplot(data = physdata,
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  # facet_wrap(~X2.1.Flow.Type, scales = "free") +
+  # scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.05)) +
+  theme_void()
+
+#human
+ggplot(data = humandata,
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  # facet_wrap(~X2.1.Flow.Type, scales = "free") +
+  # scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.05)) +
+  theme_void()
+
+#socio
+ggplot(data = sociodata,
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  # facet_wrap(~X2.1.Flow.Type, scales = "free") +
+  # scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   geom_stratum() +
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
@@ -237,7 +311,7 @@ ggplot(data = data,
 # NCP impacts
 ncp <- ggplot(NCP_data, aes(x = ncp, fill = ncp_direction)) +
   geom_bar(position= "stack") +   coord_flip() +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex Change" = "purple", "No change (measured)" = "lightblue"))
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
 ncp
 
 # NCP impacts by flow type
@@ -253,7 +327,7 @@ ncp + facet_wrap(~driver, scales = "fixed")
 ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
   geom_bar(position= "stack") +
   facet_wrap(~driver, scales = "fixed") +   coord_flip() +
- scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex Change" = "purple", "No change (measured)" = "lightblue"))
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey"))
 
 # reduce driver categories and re-plot
 ncp_data <- driver_impact_ncp %>%
@@ -269,7 +343,7 @@ ncp_data <- driver_impact_ncp %>%
 ggplot(ncp_data, aes(x = ncp, fill = ncp_direction)) +
   geom_bar(position= "stack") +
   facet_wrap(~driver, scales = "fixed") +   coord_flip() +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex Change" = "purple", "No change (measured)" = "lightblue")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Count and direction of Impacts to NCP by Driver",
     x = "NCP",
@@ -330,7 +404,7 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Changes to Flow",
     x = "Changes to Flow",
@@ -342,7 +416,7 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.2.Subtype, scales = "fixed") +
-  scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Changes to Flow",
     x = "Changes to Flow",
