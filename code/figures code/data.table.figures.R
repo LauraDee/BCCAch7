@@ -323,10 +323,24 @@ ncp
 ncp_by_flow <- ncp + facet_wrap(~X2.1.Flow.Type, scales = "free")
 ncp_by_flow
 
-# NCP impacts by subflow
-# drop trade ,wind, snow melt?
 ncp_by_subflow <- ncp + facet_wrap(~X2.2.Subtype, scales = "fixed")
 ncp_by_subflow
+
+# NCP impacts by subflow
+# drop trade ,wind, snow melt?
+reduced_ncp_data <- NCP_data %>%
+  filter(`X2.2.Subtype` %notin% c("trade","wind", "snow melt runoff"))
+
+ncp_by_subflow2 <- ggplot(reduced_ncp_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
+  geom_bar(position= "stack") +
+  coord_flip() + theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex hange" = "goldenrod1", "No change (measured)" = "grey")) +
+  labs(
+    title = "Impacts to Nature's Contribution to People (NCP)",
+    x = "NCP",
+    y = "Count",
+    fill = "Impact Direction") + facet_wrap(~X2.2.Subtype, scales = "fixed")
+ncp_by_subflow2
 
 
 #####################
