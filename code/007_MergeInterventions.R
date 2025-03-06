@@ -1,3 +1,6 @@
+
+library("readxl")
+library("tidyverse")
 data <- read_excel("data/data_cleaning/reshaped_3_drivers_Jan10_interventions_feb13.xlsx", sheet = "combined_coding")
 df1 <- read.csv('data/006_output_recoded.csv')
 levels(factor(df1$X2.1.Flow.Type))

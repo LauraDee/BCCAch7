@@ -1,4 +1,4 @@
-Fig2_Impacts.R
+# Fig2_Impacts.R
 
 #Figures of drivers by flow and impacts and NCP
 graphics.off()
@@ -9,7 +9,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-#setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
+setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 #reshaped_data <- read.csv("reshaped_3_byFlow.csv")
 reshaped_data <- read.csv("reshaped_4_drivers.csv")
 glimpse(reshaped_data)
