@@ -33,7 +33,8 @@ flowcount <- ggplot(as.data.frame(data), aes(X2.1.Flow.Type,  fill = X2.1.Flow.T
     title = "Count of Papers by Flow Type",
     x = "Flow Type",
     y = "Count") +
-  theme_minimal() + theme(legend.position="none")
+  theme_minimal() + theme(legend.position="none") +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
 flowcount
 
 #do as % :
@@ -47,20 +48,37 @@ ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
  labs( title = "Proportion of Flow Type",
       x = "Flow Type",
       y = "Proportion of Entries") +
-    theme_minimal() + theme(legend.position="none")
-    
+    theme_minimal() + theme(legend.position="none") +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
+
 ## Count of paper by Subflow
 table(data$X2.2.Subtype)
 data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
 data = data[X2.2.Subtype =="knowledge transfer", X2.2.Subtype := "Knowledge transfer"]
 
+#group:
+# groundwater &  groundwater flow
+# sea ice change & sea ice retreat
+# stream flow and river flow to  surface water quantity
+data = data[X2.2.Subtype =="groundwater flow", X2.2.Subtype := "groundwater"]
+data = data[X2.2.Subtype =="sea ice change", X2.2.Subtype := "sea ice retreat"]
+data = data[X2.2.Subtype =="stream flow", X2.2.Subtype := "surface water quantity"]
+data = data[X2.2.Subtype =="river flow", X2.2.Subtype := "surface water quantity"]
+# make a combined nutrient and sediment flow
+data = data[X2.2.Subtype =="sediment flow", X2.2.Subtype := "nutrient and sediment flow"]
+data = data[X2.2.Subtype =="nutrient flow", X2.2.Subtype := "nutrient and sediment flow"]
+#rename wind flow to just wind
+# rename glacial melt and discharge to just glacial melt
+data = data[X2.2.Subtype =="wind flow", X2.2.Subtype := "wind"]
+data = data[X2.2.Subtype =="glacial melt and discharge", X2.2.Subtype := "glacial melt"]
 
 subflowcount <- ggplot(as.data.frame(data), aes(X2.2.Subtype,  fill = X2.1.Flow.Type)) +
   geom_bar(position = 'dodge') +
   labs(
     title = "Count of Papers by Subflow Type",
     x = "Subflow Type",
-    y = "Count") + coord_flip() 
+    y = "Count") + coord_flip() +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
 subflowcount
 
 #subflowcount +  theme_minimal() + coord_flip() + theme(legend.title = "Flow Type")
@@ -70,6 +88,7 @@ subflow_percent <- data %>%
   summarise (n = n()) %>%
   mutate(prop = n / sum(n))
 subflow_percent
+print(subflow_percent)
 
 ggplot(subflow_percent, aes(as.factor(X2.2.Subtype), prop, fill = X2.1.Flow.Type)) +
   geom_col(aes(fill = as.factor(X2.2.Subtype))) +
@@ -93,7 +112,7 @@ biotic.subflowcount <- ggplot(as.data.frame(biotic), aes(X2.2.Subtype)) +
 biotic.subflowcount
 
 ## Count of papers by Driver - this could be improved upon
-# to automate: 
+# to automate:
 table(reshaped_data$driver.heat.waves)
 sum(data$driver.heat.waves) #1
 sum(data$driver.Drought) #62
@@ -101,14 +120,14 @@ sum(data$driver.Drought) #62
 count_true_cols <- function(data, cols) {
   data %>%
     select(all_of(cols),starts_with('driver.')) %>%
-    summarise_all(.funs = ~sum(.x)) 
+    summarise_all(.funs = ~sum(.x))
 }
 
 results <- count_true_cols(data, driver_cols)
 results <- as.data.frame(results)
 print(results)
 
-# df2 <- results |> 
+# df2 <- results |>
 #   pivot_longer(cols = everything(),
 #                names_to = 'date',
 #                values_to = 'x')
