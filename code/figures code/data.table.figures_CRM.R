@@ -3,11 +3,11 @@
 #load libraries
 library(ggplot2)
 library(tidyverse)
-library(data.table)
 library(forcats)
 library(ggalluvial)
 library(dplyr)
 library(plyr)
+library(data.table)
 
 "%notin%" <- Negate("%in%")
 
@@ -17,29 +17,29 @@ reshaped_data <- fread("007_output_interventions.csv")
 
 
 
-driver_data = melt(reshaped_data, 
+driver_data = melt(reshaped_data,
                  id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                  measure.vars = patterns("^driver."),
                  variable.name = "driver")[value==TRUE,][,value:=NULL][,driver:=gsub(pattern="^driver.(*)", replacement="\\1",driver)]
 
-impact_data = melt(reshaped_data, 
+impact_data = melt(reshaped_data,
                    id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                    measure.vars = patterns("^X2.12.Impact"),
                    variable.name = "impact",
                    value.name="direction")[direction!="",][,impact:=gsub(pattern="^X2.12.Impact..(*)", replacement="\\1",impact)]
 
-driver_impact_data = merge(impact_data, 
-                           driver_data, 
+driver_impact_data = merge(impact_data,
+                           driver_data,
                            by=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                            allow.cartesian=TRUE)
 
-#condense and clean 
+#condense and clean
 impact_data = impact_data[impact != "None"]
 impact_data = impact_data[direction != 'No direction mentioned']
 impact_data = impact_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
 table(driver_impact_data$direction)
 
-altered_flow_data =  melt(reshaped_data, 
+altered_flow_data =  melt(reshaped_data,
        id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
        measure.vars = patterns("^X2.7.Altered.Flow.."),
        variable.name = "altered_flow",
@@ -50,13 +50,13 @@ table(altered_flow_data$altered_flow)
 table(altered_flow_data$alteration)
 altered_flow_data = altered_flow_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
 
-driver_flow_impact = merge(driver_impact_data, 
-                          altered_flow_data, 
+driver_flow_impact = merge(driver_impact_data,
+                          altered_flow_data,
                           by=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                           allow.cartesian=TRUE)
 
 #NCP data
-NCP_data = melt(reshaped_data, 
+NCP_data = melt(reshaped_data,
                               id.vars=c("ID_DOI_by_Flow"),
                               measure.vars = patterns("^X2.16.NCP.ES.."),
                               variable.name = "ncp",
@@ -64,26 +64,26 @@ NCP_data = melt(reshaped_data,
 NCP_data = NCP_data[ncp != "None"]
 NCP_data = NCP_data[ncp_direction != "No direction mentioned"]
 
-# driver_impact_data = merge(driver_data, 
-#                            impact_data, 
+# driver_impact_data = merge(driver_data,
+#                            impact_data,
 #                            by="ID_DOI_by_Flow",
 #                            allow.cartesian=TRUE)
-#condense and clean 
+#condense and clean
 driver_impact_data = driver_impact_data[X2.1.Flow.Type =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
 driver_impact_data = driver_impact_data[X2.1.Flow.Type =="Trade", X2.1.Flow.Type := "Human movement"]
 driver_impact_data = driver_impact_data[direction != 'No direction mentioned']
 table(driver_impact_data$direction)
 driver_impact_data = driver_impact_data[impact != "None"]
 
-driver_impact_ncp = merge(driver_impact_data, 
-                          NCP_data, 
+driver_impact_ncp = merge(driver_impact_data,
+                          NCP_data,
                           by=c("ID_DOI_by_Flow"),
                           allow.cartesian=TRUE)
 
 table(driver_impact_ncp$ncp_direction)
 
 #Human well-being dataset
-hwb_data = melt(reshaped_data, 
+hwb_data = melt(reshaped_data,
                 id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                 measure.vars = patterns("^X2.20.Well.being...."),
                 variable.name = "hwb",
@@ -104,7 +104,7 @@ Impacts <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     x = "Impact to Biodiversity",
     y = "count",
     size = "Count",
-    color = "Impact Direction") + coord_flip() 
+    color = "Impact Direction") + coord_flip()
 Impacts
 
 Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
@@ -116,7 +116,7 @@ Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     x = "Impact to Biodiversity",
     y = "count",
     size = "Count",
-    color = "Impact Direction") + coord_flip() 
+    color = "Impact Direction") + coord_flip()
 Impacts_by_flow
 
 # for the top subflow categories - to do impacts by"
@@ -129,7 +129,7 @@ Impacts_by_subflow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     x = "Impact to Biodiversity",
     y = "count",
     size = "Count",
-    color = "Impact Direction") + coord_flip() 
+    color = "Impact Direction") + coord_flip()
 Impacts_by_subflow
 
 ####################################################
@@ -145,7 +145,7 @@ driver_count <- ggplot(driver_data, aes(x = driver)) +
 driver_count
 
 # count number of observations by driver here, then remove the ones with less than X
-table(driver_data$driver) 
+table(driver_data$driver)
 
 ####################################################
 #### Figures on BD Impacts and Drivers################
@@ -155,7 +155,7 @@ table(driver_data$driver)
 table(driver_impact_data$driver, driver_impact_data$impact)
 
 #list to drop from figures:
-#this was still too busy so doing the top ~10 drivers here: 
+#this was still too busy so doing the top ~10 drivers here:
 data <- driver_impact_data %>%
   filter(`driver` %notin% c("freshwater.temperature.change","snow.pack..depth.and.hardness.",
                                 "remove emissions.concentration.change","C02.concentration",
@@ -168,7 +168,7 @@ data <- driver_impact_data %>%
 table(data$driver)
 length(unique(data$driver)) #17
 
-# for this visual - could group : "extreme.weather", hurricaines. 
+# for this visual - could group : "extreme.weather", hurricaines.
 
 ##################################################################################
 # Alluvial: Driver and BD Impacts ###################################################
@@ -176,16 +176,16 @@ length(unique(data$driver)) #17
 ggplot(data = data,
        aes(axis1 = driver, axis2 = impact)) + #, y = freq
   geom_alluvium(aes(fill = direction)) +
- # facet_wrap(~X2.1.Flow.Type, scales = "free") + 
+ # facet_wrap(~X2.1.Flow.Type, scales = "free") +
   scale_fill_manual(values = c("Increase" = "dodgerblue4", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
   geom_stratum() +
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("Driver", "Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_classic()
 
-# Alluvial connecting to Driver to Impact by flow 
+# Alluvial connecting to Driver to Impact by flow
 #not that informative because so many more of the papers are biotic
 
 ## flow alterations first
@@ -220,13 +220,13 @@ i_s$impact <- gsub("\\.", " ", i_s$impact)
 ggplot(data = i_s,
        aes(axis1 = driver, axis2 = impact)) + #, y = freq
   geom_alluvium(aes(fill = driver)) +
-  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue", 
+  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue",
                                "darkolivegreen1", "darkolivegreen3", "aquamarine","cornflowerblue","darkblue","darkorange1")) +
   geom_stratum(alpha=.75) +
   geom_text(stat = "stratum", min.y = .75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("Driver", "Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 #flow type to impact
@@ -238,7 +238,7 @@ ggplot(data = i_s,
   geom_text(stat = "stratum", min.y = .75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("Driver", "Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 #flow type to driver
@@ -250,31 +250,31 @@ ggplot(data = i_s,
   geom_text(stat = "stratum", min.y = .75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("Driver", "Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 #####################
 ### NCP figures ######
 #####################
 
-# NCP impacts 
+# NCP impacts
 ncp <- ggplot(NCP_data, aes(x = ncp, fill = ncp_direction)) +
   geom_bar(position= "stack") +   coord_flip() + theme_minimal() +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey"))
 ncp
 
 # NCP impacts by flow type
-# ncp_by_flow <- ncp + facet_wrap(~X2.1.Flow.Type, scales = "fixed") 
+# ncp_by_flow <- ncp + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 # ncp_by_flow
-# ncp + facet_wrap(~X2.2.Subtype, scales = "fixed") 
+# ncp + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 #now read in the data with NCP and drivers in one dataframe:
 
-# ncp + facet_wrap(~driver, scales = "fixed") 
+# ncp + facet_wrap(~driver, scales = "fixed")
 
 # all driver categories (too many)
 ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
-  geom_bar(position= "stack") + 
+  geom_bar(position= "stack") +
   facet_wrap(~driver, scales = "fixed") +   coord_flip() + theme_minimal() +
  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey"))
 
@@ -317,7 +317,7 @@ ggplot(data = driver_impact_ncp,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void() +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey"))
 
@@ -329,7 +329,7 @@ ggplot(data = i_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void() +
   scale_fill_manual(values = c("chartreuse", "chartreuse3","chartreuse4", 'darksalmon', 'darkorchid4','deepskyblue2',
                                'dimgray','deepskyblue4','darkgreen','gold'))
@@ -363,11 +363,11 @@ ggplot(data = d_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void() +
-  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue", 
-                               "darkolivegreen1", "darkolivegreen3", "aquamarine","cornflowerblue","darkorange1")) 
-  
+  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue",
+                               "darkolivegreen1", "darkolivegreen3", "aquamarine","cornflowerblue","darkorange1"))
+
 
 #driver to NCP alluvial (all drivers)
 ggplot(data = d_s,
@@ -377,7 +377,7 @@ ggplot(data = d_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void() +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey"))
 
@@ -389,7 +389,7 @@ ggplot(data = d_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void() +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey"))
 
@@ -397,7 +397,7 @@ ggplot(data = d_s,
 ###########################################
 ### HWB PLOTS ##############################
 ########################################################
-# to do Alluvial diagram (as the one above) showing the 
+# to do Alluvial diagram (as the one above) showing the
 # links and weight of connections among climate change drivers,
 # type of flow changes, and human well-being dimensions.
 
@@ -414,9 +414,9 @@ hwb <- ggplot(hwb_data, aes(x = hwb, fill = hwb_direction)) +
 hwb
 
 #broken out by flow
-hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed") 
+hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
-hwb + facet_wrap(~X2.2.Subtype, scales = "fixed") 
+hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 ## altered flow by flow type
 altered_flow_data
@@ -424,7 +424,7 @@ table(altered_flow_data$altered_flow)
 table(altered_flow_data$alteration)
 
 ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
-  geom_bar(position= "stack") + 
+  geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
   theme_minimal() +
@@ -433,11 +433,11 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
     title = "Changes to Flow",
     x = "Changes to Flow",
     size = "Count",
-    fill = "Impact Direction") 
+    fill = "Impact Direction")
 
 #sparse for some of the categories by promising for migration, disease spread and range-shift
 ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
-  geom_bar(position= "stack") + 
+  geom_bar(position= "stack") +
   coord_flip() +
   theme_minimal() +
   facet_wrap(~X2.2.Subtype, scales = "fixed") +
@@ -446,7 +446,7 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
     title = "Changes to Flow",
     x = "Changes to Flow",
     size = "Count",
-    fill = "Impact Direction") 
+    fill = "Impact Direction")
 
 ggplot(data = driver_flow_impact,
        aes(axis1 = driver, axis2 = altered_flow)) + #, y = freq
@@ -456,7 +456,7 @@ ggplot(data = driver_flow_impact,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
 ggplot(data = driver_flow_impact,
@@ -467,7 +467,7 @@ ggplot(data = driver_flow_impact,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("direction", "altered flow"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
 ## flow alterations first
@@ -491,7 +491,7 @@ ggplot(data = driver_flow_impact,
   geom_text(stat = "stratum",min.y=.75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("direction", "altered flow"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
 ## drivers first
@@ -515,10 +515,10 @@ ggplot(data = d_s,
   geom_text(stat = "stratum", min.y=.75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("driver", "X2.1.Flow.Type"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
-### do for just biotic 
+### do for just biotic
 biotic_driver_flow_impact = driver_flow_impact[driver_flow_impact$X2.1.Flow.Type == 'Biotic',]
 unique(biotic_driver_flow_impact$X2.1.Flow.Type)
 
@@ -563,7 +563,7 @@ ggplot(data = a_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 ggplot(data = a_s,
@@ -574,19 +574,19 @@ ggplot(data = a_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 ggplot(data = a_s,
        aes(axis1 = driver, axis2 = X2.2.Subtype)) + #, y = freq
   geom_alluvium(aes(fill = driver)) +
-  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue", 
+  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue",
                                "darkolivegreen1", "darkolivegreen3", "aquamarine","cornflowerblue","darkorange1")) +
   geom_stratum(alpha=0.75) +
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 # calculate frequencies
@@ -610,7 +610,7 @@ ggplot(data = i_s,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.15)) + 
+                   expand = c(0.15, 0.15)) +
   theme_void()
 
 
@@ -626,7 +626,7 @@ i_s <- subset(d_s, impact %in% top10)
 # order factor levels
 i_s$impact <- factor(i_s$impact, levels = rev(top10))
 
-# drivers <- c("Air temperature directional change", "Climate change generic", "Drought", "Air temperature variability", "Precipitation directional change", 
+# drivers <- c("Air temperature directional change", "Climate change generic", "Drought", "Air temperature variability", "Precipitation directional change",
 #              "Precipitation variability", "Wildfires", "Sea temperature change", "Sea ice area change", "Ocean currents")
 # impacts <- c("Abundance", 'Composition', 'Connectivity', 'Disease', 'Genetics', 'Invasion', 'Land Use Loss', 'Loss', 'Richness', 'Trophic')
 # directions <- c('Increase', 'Decrease', 'Complex change', 'No change (measured)', 'No direction mentioned')
@@ -649,7 +649,7 @@ ggplot(data = i_s,
   geom_text(stat = "stratum", min.y=.75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("BD Impact", "NCP Impact"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
 
@@ -662,10 +662,10 @@ ggplot(data = biotic_driver_flow_impact,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("direction", "altered flow"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 
- 
+
 
 r <- ggplot(data = to_graph_data,
        aes(axis1 = driver, axis2 = impact)) + #, y = freq
@@ -675,7 +675,7 @@ r <- ggplot(data = to_graph_data,
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("direction", "altered flow"),
-                   expand = c(0.15, 0.05)) + 
+                   expand = c(0.15, 0.05)) +
   theme_void()
 r
 ggsave('test.png',
