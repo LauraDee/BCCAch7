@@ -1,5 +1,9 @@
 relabel_drivers <- read_excel("data\\refined_drivers\\otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
 
+#Laura's 
+#file.exists("data/refined_drivers/otherclimatedrivers_lookup.xlsx") 
+#relabel_drivers <- read_excel("data/refined_drivers/otherclimatedrivers_lookup.xlsx") %>% as.data.frame()
+
 reshaped_data <- read.csv("data/004_output_Reclassified.csv")
 reshaped_data_original <- reshaped_data
 levels(factor(reshaped_data_original$X2.1.Flow.Type))
