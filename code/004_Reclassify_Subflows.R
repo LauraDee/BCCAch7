@@ -48,10 +48,6 @@ levels(factor(df2_updated$X2.2.Subtype[which(df2_updated$X2.1.Flow.Type=="Physic
 levels(factor(df3_updated$X2.2.Subtype[which(df3_updated$X2.1.Flow.Type=="Physical")]))
 levels(factor(phys$X2.2.Subtype.NEW[which(phys$X2.1.Flow.Type.NEW=="Physical")]))
 
-
-
-
-
 ## Reclassify biotic
 ## Sanity Check: DOIs must match
 # biotic %>% select(ID_DOI_by_Flow,DOI) %>% tail(4)
@@ -106,13 +102,14 @@ list_recode_handpicked <- c("Jenkins et al., 2013, Advances in Parasitology",
                     "Covich et al., 1997, Hydrological Processes", "de la Fontaine,  2018, Ecology")
 
 dois_byflow_to_remove <- c(95,69)
-
+dois_to_remove <- 118 #remove the duplicate entry of Santos et al. 2023 Leaf hoppers paper (coded twice)
 
 all_removed <- df4_updated %>% filter(Citation %in% list_nomatching_biotic$Citation|
                       ID_DOI_by_Flow %in% list_nomatching_phys$ID_DOI_by_Flow|
                       X2.1.Flow.Type %in% c("Recode","Remove")|
                       Citation %in% list_remove_handpicked|
                       ID_DOI_by_Flow %in% dois_byflow_to_remove|
+                        ID_DOI %in% dois_to_remove|
                       Citation %in% list_recode_handpicked)
 
 
