@@ -1,11 +1,12 @@
 docs <- read.csv("data/003_output_byFlow.csv") #before it was called reshaped_3_byFlow
 
-biotic <- read.csv("data/data_cleaning/bioticFlowSubtype_lookup.csv")
 socio <- read.csv("data/data_cleaning/socioculturalFlowSubtype_lookup.csv")
-#phys <-  read.csv("data/data_cleaning/physicalFlowSubtype_lookup.csv")
 human <-  read.csv("data/data_cleaning/lookuptable_humamovement.csv")
 phys <-  read.csv("data/data_cleaning/physicalFlowSubtype_lookup_CRM.csv")
-
+#this biotic file has entries as ONLY range shift OR disease (not counted twice, updated March 13 2025)
+biotic <- read.csv("data/data_cleaning/bioticFlowSubtype_lookup_nodoubles.csv")
+#this version of the biotic has duplicates with range shifts that are duplicated rows for disease
+# biotic <- read.csv("data/data_cleaning/bioticFlowSubtype_lookup.csv")
 
 ## Reclassify human movement
 lookup_table <- human %>%
