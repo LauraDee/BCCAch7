@@ -11,10 +11,8 @@ library(data.table)
 
 "%notin%" <- Negate("%in%")
 
-#setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
-reshaped_data <- fread("007_output_interventions.csv")
-
-
+setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
+reshaped_data <- fread("data/007_output_interventions.csv")
 
 
 driver_data = melt(reshaped_data,
@@ -217,6 +215,20 @@ i_s$driver <- gsub("\\  ", " ", i_s$driver)
 i_s$driver <- gsub("\\c ", "c", i_s$driver)
 i_s$impact <- gsub("\\.", " ", i_s$impact)
 
+
+# counts on driver data
+driver_count_simplified <- ggplot(i_s, aes(x = driver)) +
+  geom_bar() +  theme_minimal() + coord_flip() +
+  labs(
+    title = "Count of drivers per flow",
+    x = "Driver",
+    y = "Count")
+driver_count_simplified
+
+
+# count number of observations by driver here, then remove the ones with less than X
+table(driver_data$driver)
+
 ggplot(data = i_s,
        aes(axis1 = driver, axis2 = impact)) + #, y = freq
   geom_alluvium(aes(fill = driver)) +
@@ -238,7 +250,19 @@ ggplot(data = i_s,
   geom_text(stat = "stratum", min.y = .75,
             aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("Driver", "Impact"),
-                   expand = c(0.15, 0.15)) +
+                   expand = c(0.15, 0.15)) + labs(fill = "Flow Type") + 
+  theme_void()
+
+#flow type to impact by direction of impact
+ggplot(data = i_s,
+       aes(axis1 = X2.1.Flow.Type, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  #scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", 'NA' = 'white')) +
+  geom_stratum(alpha=.75) +
+  geom_text(stat = "stratum", min.y = .75,
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.15)) + labs(fill = "Flow Type") + 
   theme_void()
 
 #flow type to driver

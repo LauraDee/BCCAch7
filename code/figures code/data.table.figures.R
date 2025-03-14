@@ -50,7 +50,9 @@ subflowcount <- reshaped_data %>%
        title = "Count of Papers by Subflow Type",
        y = "Count") + coord_flip() +
   scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
+subflowcount <-subflowcount +labs(fill ="Flow Type")
 subflowcount
+jpeg(file="subflowcount.jpeg")
 
 driver_data = melt(reshaped_data,
                  id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
@@ -77,6 +79,18 @@ impact_data = impact_data[impact =="Indigenous.Knowledge", impact := "Indigenous
 impact_data = impact_data[impact =="Land.Use.Restore", impact := "Habitat Restoration"]
 impact_data = impact_data[impact =="Land.Use.Loss", impact := "Habitat Loss"]
 
+## combined datasets
+driver_impact_data = merge(driver_data,
+                           impact_data,
+                           by="ID_DOI_by_Flow",
+                           allow.cartesian=TRUE)
+#condense and clean
+driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
+driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="Trade", X2.1.Flow.Type := "Human movement"]
+driver_impact_data = driver_impact_data[direction != 'No direction mentioned']
+table(driver_impact_data$direction)
+driver_impact_data = driver_impact_data[impact != "None"]
+
 altered_flow_data =  melt(reshaped_data,
        id.vars=c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),
        measure.vars = patterns(driver="^X2.7.Altered.Flow.."),
@@ -101,17 +115,7 @@ NCP_data = melt(reshaped_data,
 NCP_data = NCP_data[ncp != "None"]
 NCP_data = NCP_data[ncp_direction != "No direction mentioned"]
 
-## combined datasets
-driver_impact_data = merge(driver_data,
-                           impact_data,
-                           by="ID_DOI_by_Flow",
-                           allow.cartesian=TRUE)
-#condense and clean
-driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="'Trade (transport of goods and services)'", X2.1.Flow.Type := "Human movement"]
-driver_impact_data = driver_impact_data[X2.1.Flow.Type.x =="Trade", X2.1.Flow.Type := "Human movement"]
-driver_impact_data = driver_impact_data[direction != 'No direction mentioned']
-table(driver_impact_data$direction)
-driver_impact_data = driver_impact_data[impact != "None"]
+
 
 #combine driver impact and NCP data
 driver_impact_ncp = merge(driver_impact_data,
@@ -159,13 +163,13 @@ Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     color = "Impact Direction") + coord_flip()
 Impacts_by_flow
 
-write.csv(impact_data, "impact_data_for_Anna.csv")
+write.csv(impact_data, "data/impact_data_for_Anna.csv")
 
 # for the top subflow categories - to do impacts by"
 Impacts_by_subflow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
   geom_bar() +  theme_minimal() +
   scale_fill_manual(values = c("Increase" = "green", "Decrease" = "red", "Complex change" = "purple", "No change (measured)" = "lightblue")) +
-  facet_wrap(~X2.2.Subtype, scales = "free") +
+  facet_wrap(~X2.2.Subtype, scales = "fixed") +
   labs(
     title = "Biodiversity Impact",
     x = "Impact to Biodiversity",
@@ -173,6 +177,8 @@ Impacts_by_subflow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
     size = "Count",
     color = "Impact Direction") + coord_flip()
 Impacts_by_subflow
+
+
 
 ####################################################
 #### Figures on  Drivers################
@@ -188,6 +194,87 @@ driver_count
 
 # count number of observations by driver here, then remove the ones with less than X
 table(driver_data$driver)
+## flow alterations first
+# calculate frequencies
+tab <- table(data$driver)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+# subset of data frame
+d_s <- subset(data, driver %in% top10)
+# order factor levels
+d_s$driver <- factor(d_s$driver, levels = rev(top10))
+
+# calculate frequencies
+tab <- table(data$impact)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+# subset of data frame
+i_s <- subset(data, impact %in% top10)
+# order factor levels
+i_s$impact <- factor(i_s$impact, levels = rev(top10))
+
+#clean a couple of things
+i_s$driver <- gsub("\\.", " ", i_s$driver)
+i_s$driver <- gsub("\\  ", " ", i_s$driver)
+i_s$driver <- gsub("\\c ", "c", i_s$driver)
+i_s$impact <- gsub("\\.", " ", i_s$impact)
+
+# counts on driver data
+driver_count_simplified <- ggplot(i_s, aes(x = fct_infreq(driver))) +
+  geom_bar() +  theme_minimal() + coord_flip() +
+  labs(
+    title = "Count of drivers per Flow",
+    x = "Driver",
+    y = "Count")
+driver_count_simplified
+
+jpeg(file="driver_count_simplified.jpeg")
+Fig1 <- plot_grid(driver_count_simplified,subflowcount)
+ggsave("figures/for_report/Fig1.pdf", width = 30,  height = 10,  units = "cm")
+
+
+## Alluvials ###
+
+ggplot(data = i_s,
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = driver)) +
+  scale_fill_manual(values = c("darkslategray3", "darkslategray4", "antiquewhite3", "gold", "deepskyblue",
+                               "darkolivegreen1", "darkolivegreen3", "aquamarine","cornflowerblue","darkblue","darkorange1")) +
+  geom_stratum(alpha=.75) +
+  geom_text(stat = "stratum", min.y = .75,
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.15)) +
+  theme_void()
+
+#flow type to impact
+ggplot(data = i_s,
+       aes(axis1 = X2.1.Flow.Type, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = X2.1.Flow.Type)) +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", 'NA' = 'white')) +
+  geom_stratum(alpha=.75) +
+  geom_text(stat = "stratum", min.y = .75,
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.15)) +
+  theme_void()
+
+#flow type to driver
+ggplot(data = i_s,
+       aes(axis1 = X2.1.Flow.Type, axis2 = driver)) + #, y = freq
+  geom_alluvium(aes(fill = X2.1.Flow.Type)) +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta")) +
+  geom_stratum(alpha=.75) +
+  geom_text(stat = "stratum", min.y = .75,
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.15)) +
+  theme_void()
+
 
 ####################################################
 #### Figures on BD Impacts and Drivers################
