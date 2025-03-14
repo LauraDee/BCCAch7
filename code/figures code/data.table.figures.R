@@ -151,7 +151,7 @@ Impacts <- ggplot(impact_data, aes(x = fct_infreq(impact), fill = direction)) +
     color = "Impact Direction") + coord_flip()
 Impacts
 
-Impacts_by_flow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
+Impacts_by_flow <- ggplot(impact_data, aes(x = fct_infreq(impact), fill = direction)) +
   geom_bar() +  theme_minimal() +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   facet_wrap(~X2.1.Flow.Type, scales = "free") +
@@ -181,7 +181,7 @@ Impacts_by_subflow
 
 
 ####################################################
-#### Figures on  Drivers################
+#### Figures on  Drivers ################
 ###################################################
 # counts on driver data
 driver_count <- ggplot(driver_data, aes(x = driver)) +
@@ -394,6 +394,9 @@ ggplot(data = data,
 #####################
 ### NCP figures ######
 #####################
+
+NCP_data$ncp <- gsub("\\.", " ", NCP_data$ncp)
+
 # NCP impacts
 ncp <- ggplot(NCP_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
   geom_bar(position= "stack") +

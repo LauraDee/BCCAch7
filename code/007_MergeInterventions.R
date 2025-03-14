@@ -4,7 +4,9 @@ library("tidyverse")
 data <- read_excel("data/data_cleaning/reshaped_3_drivers_Mar3_interventions.xlsx", sheet = "combined_coding")
 df1 <- read.csv('data/006_output_recoded.csv')
 levels(factor(df1$X2.1.Flow.Type))
-data_selected <- data %>% select(ID_DOI_by_Flow, Response.Text, final.codes, Response.Mentioned.) %>% rename(intervention.text = Response.Text,intervention.codes=final.codes,Response.Mentioned.verified = Response.Mentioned.)
+
+data_selected <- data %>% select(ID_DOI_by_Flow, Response.Text, final.codes, Response.Mentioned.) %>% 
+  rename(intervention.text = Response.Text, intervention.codes = final.codes, Response.Mentioned.verified = Response.Mentioned.)
 merged_df <- df1 %>% left_join(data_selected, by = "ID_DOI_by_Flow") %>% 
 mutate(Response.Mentioned.=ifelse(!is.na(Response.Mentioned.verified),Response.Mentioned.verified,Response.Mentioned.)) %>% 
 dplyr::select(-Response.Mentioned.verified)
