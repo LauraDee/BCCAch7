@@ -421,6 +421,8 @@ ncp_by_subflow
 reduced_ncp_data <- NCP_data %>%
   filter(`X2.2.Subtype` %notin% c("trade","wind", "snow melt runoff"))
 
+reduced_ncp_data$ncp <- gsub("\\.", " ", reduced_ncp_data$ncp)
+
 ncp_by_subflow2 <- ggplot(reduced_ncp_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
   geom_bar(position= "stack") +
   coord_flip() + theme_minimal() +
