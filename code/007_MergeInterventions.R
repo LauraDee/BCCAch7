@@ -130,11 +130,7 @@ ggplot(intervention_matrix, aes(x = intervention, y = X2.1.Flow.Type, fill = cou
 
 
 
-
-
-
 # Create a complete grid to fill in missing combinations with zeros
-
 
 
 glimpse(fleshed_df)
