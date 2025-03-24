@@ -8,8 +8,6 @@
 #load libraries
 library(ggplot2)
 library(tidyverse)
-library(forcats)
-library(ggalluvial)
 library(data.table) #load last
 
 "%notin%" <- Negate("%in%")
