@@ -45,4 +45,4 @@ table(phys$X2.2.Subtype)
 
 ## probably add other things too that are in Colleen and my data.table.figures.R files!
 
-write.csv(reshaped_data, "data/008_PrepData_ForSynthesis.csv")
+write.csv(reshaped_data, "data/008_preppedata_forsynthesis.csv")
