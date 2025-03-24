@@ -14,7 +14,6 @@ library(data.table)
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/")
 reshaped_data <- fread("data/008_preppedata_forsynthesis.csv")
 
-
 driver_data = melt(reshaped_data,
                  id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                  measure.vars = patterns("^driver."),
