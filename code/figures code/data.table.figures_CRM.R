@@ -429,7 +429,7 @@ hwb <- ggplot(hwb_data, aes(x = hwb, fill = hwb_direction)) +
   geom_bar(position= "stack") +  coord_flip() +
   labs(
     title = "Impacts to human well-being",
-    x = "Human Well-being Impact",
+    x = "Human Well-being Dimension",
     size = "Count",
     fill = "Impact Direction") +
   theme_minimal() +
@@ -442,12 +442,32 @@ hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
 hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
+
+
+hwb_alluv <- ggplot(data = hwb_data,
+       aes(axis1 = X2.2.Subtype, axis2 = hwb)) + #, y = freq
+  geom_alluvium(aes(fill = hwb_direction)) +
+  #scale_fill_manual(values = c("Biotic" = "bisque2", "Physical" = "deepskyblue1", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta")) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("direction", "altered flow"),
+                   expand = c(0.15, 0.05)) +
+  theme_void()
+
+hwb_alluv
+hwb_alluv + facet_wrap(~X2.1.Flow.Type, scales = "free")
+  
+###########################################
+## ALTERED FLOW ##########################
+###########################################
+
 ## altered flow by flow type
 altered_flow_data
 table(altered_flow_data$altered_flow)
 table(altered_flow_data$alteration)
 
-ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
+alter <- ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
@@ -458,6 +478,9 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
     x = "Changes to Flow",
     size = "Count",
     fill = "Impact Direction")
+alter
+#this doesnt have the more aggregated phsyical categories that were fixed
+alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 #sparse for some of the categories by promising for migration, disease spread and range-shift
 ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
