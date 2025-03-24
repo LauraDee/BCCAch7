@@ -116,7 +116,6 @@ NCP_data = NCP_data[ncp != "None"]
 NCP_data = NCP_data[ncp_direction != "No direction mentioned"]
 
 
-
 #combine driver impact and NCP data
 driver_impact_ncp = merge(driver_impact_data,
                           NCP_data,
@@ -179,12 +178,11 @@ Impacts_by_subflow <- ggplot(impact_data, aes(x = impact, fill = direction)) +
 Impacts_by_subflow
 
 
-
 ####################################################
 #### Figures on  Drivers ################
 ###################################################
 # counts on driver data
-driver_count <- ggplot(driver_data, aes(x = driver)) +
+driver_count <- ggplot(driver_data, aes(x = fct_infreq(driver))) +
   geom_bar() +  theme_minimal() + coord_flip() +
   labs(
     title = "Count of drivers surveyed in the review",
@@ -439,8 +437,7 @@ ncp_by_subflow2
 ### NCP + Driver figures ######
 #####################
 
-#now read in the data with NCP and drivers in one dataframe:
-ncp + facet_wrap(~driver, scales = "fixed")
+table(driver_impact_ncp$ncp_direction)
 
 # all driver categories (too many)
 ggplot(driver_impact_ncp, aes(x = ncp, fill = ncp_direction)) +
@@ -501,14 +498,20 @@ ggplot(data = driver_impact_ncp,
 # links and weight of connections among climate change drivers,
 # type of flow changes, and human well-being dimensions.
 
-hwb <- ggplot(hwb_data, aes(x = hwb, fill = hwb_direction)) +
+hwb <- ggplot(hwb_data, aes(x = fct_infreq(hwb), fill = hwb_direction)) +
   geom_bar(position= "stack") +  coord_flip() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Impacts to human well-being",
-    x = "Human Well-being Impact",
+    x = "Human Well-being Dimension",
     size = "Count",
     fill = "Impact Direction")
 hwb
+
+# Combined Figure with NCP impacts:
+Fig2 <- plot_grid(ncp,hwb)
+plot_grid(ncp,hwb)
+
 #broken out by flow
 hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
@@ -519,7 +522,7 @@ altered_flow_data
 table(altered_flow_data$altered_flow)
 table(altered_flow_data$alteration)
 
-ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
+ggplot(altered_flow_data, aes(x = fct_infreq(altered_flow), fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
@@ -531,7 +534,7 @@ ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
     fill = "Impact Direction")
 
 #sparse for some of the categories by promising for migration, disease spread and range-shift
-ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
+ggplot(altered_flow_data, aes(x = fct_infreq(altered_flow), fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   facet_wrap(~X2.2.Subtype, scales = "fixed") +
