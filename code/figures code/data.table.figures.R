@@ -1,5 +1,6 @@
 #Figures of drivers by flow and impacts and NCP
 #March 24 2025
+
 #https://www.cedricscherer.com/2023/10/26/yet-another-how-to-on-labelling-bar-graphs-in-ggplot2/
 # https://www.sthda.com/english/articles/32-r-graphics-essentials/132-plot-grouped-data-box-plot-bar-plot-and-more/#grouped-categorical-variables
 
@@ -54,6 +55,7 @@ subflowcount <-subflowcount +labs(fill ="Flow Type")
 subflowcount
 jpeg(file="subflowcount.jpeg")
 
+## reshape data 
 driver_data = melt(reshaped_data,
                  id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
                  measure.vars = patterns(driver="^driver."),
