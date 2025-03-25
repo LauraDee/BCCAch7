@@ -237,6 +237,51 @@ Impacts_by_subflow <- Impacts + facet_wrap(~X2.2.Subtype, scales = "free")
 Impacts_by_subflow
 # write.csv(impact_data, "data/impact_data_for_Anna.csv")
 
+#What are the top ten impacts reported?
+data <- impact_data
+# do for top subflow groups
+# calculate frequencies
+tab <- table(data$impact)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+# subset of data frame
+d_s <- subset(data, impact %in% top10)
+
+# order factor levels
+d_s$impact <- factor(d_s$impact, levels = rev(top10))
+list(unique(d_s$impact))
+
+#What are the top ten Subflow types?
+# calculate frequencies
+tab <- table(data$X2.2.Subtype)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+# subset of data frame
+i_s <- subset(data, X2.2.Subtype %in% top10)
+
+# order factor levels
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top10))
+list(unique(i_s$X2.2.Subtype))
+
+#clean a couple of things
+i_s$impact <- gsub("\\.", " ", i_s$impact)
+
+Impacts_top10_subflow <- ggplot(i_s, aes(x = fct_infreq(impact), fill = direction)) +
+  geom_bar() +  theme_minimal() +
+  facet_grid(~X2.2.Subtype) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  labs(
+    title = "Biodiversity Impact",
+    x = "Impact to Biodiversity",
+    y = "count",
+    size = "Count",
+    color = "Impact Direction") + coord_flip()
+Impacts_top10_subflow  
+
 #############################################################
 ### NCP Impacts ###########################################
 #########################################################
@@ -245,7 +290,7 @@ NCP_data$ncp <- gsub("\\.", " ", NCP_data$ncp)
 ncp <- ggplot(NCP_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
   geom_bar(position= "stack") +
   coord_flip() + theme_minimal() +
-  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex hange" = "goldenrod1", "No change (measured)" = "grey")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Impacts to Nature's Contribution to People (NCP)",
     x = "NCP",
@@ -269,7 +314,7 @@ ncp_rangeshift$ncp <- gsub("\\.", " ", ncp_rangeshift$ncp)
 ncp_range <- ggplot(ncp_rangeshift, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
   geom_bar(position= "stack") +
   coord_flip() + theme_minimal() +
-  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex hange" = "goldenrod1", "No change (measured)" = "grey")) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey")) +
   labs(
     title = "Impacts of Range Shifts to Nature's Contribution to People (NCP)",
     x = "NCP",
@@ -277,8 +322,114 @@ ncp_range <- ggplot(ncp_rangeshift, aes(x = fct_infreq(ncp), fill = ncp_directio
     fill = "Impact Direction")
 ncp_range
 
+# grab the subflows determined above as the top ten
+list(unique(i_s$X2.2.Subtype))
+top_subflow <- list(unique(i_s$X2.2.Subtype))
+
+reduced_ncp_data <- NCP_data %>%
+  filter(`X2.2.Subtype` %notin% top_subflow)
+
+length(unique(reduced_ncp_data$X2.2.Subtype))
+
+# NCP impacts by subflow
+# drop trade ,wind, snow melt?
+reduced_ncp_data <- NCP_data %>%
+  filter(`X2.2.Subtype` %notin% c("trade","wind", "snow melt runoff"))
+
+reduced_ncp_data$ncp <- gsub("\\.", " ", reduced_ncp_data$ncp)
+
+ncp_by_subflow2 <- ggplot(reduced_ncp_data, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
+  geom_bar(position= "stack") +
+  coord_flip() + theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey")) +
+  theme_minimal() + labs(
+    title = "Impacts to Nature's Contribution to People (NCP)",
+    x = "NCP",
+    y = "Count",
+    fill = "Impact Direction") + facet_wrap(~X2.2.Subtype, scales = "fixed")
+ncp_by_subflow2
 
 #############################################################
 ### HWB Impacts ###########################################
 #########################################################
 
+hwb <- ggplot(hwb_data, aes(x = fct_infreq(hwb), fill = hwb_direction)) +
+  geom_bar(position= "stack") +  coord_flip() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  theme_minimal() + labs(
+    title = "Impacts to human well-being",
+    x = "Human Well-being Dimension",
+    size = "Count",
+    fill = "Impact Direction")
+hwb
+
+# Combined Figure with NCP impacts:
+Fig2 <- plot_grid(ncp,hwb)
+plot_grid(ncp,hwb)
+
+#broken out by flow
+hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+#broken out by subflow
+hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
+
+# to do Alluvial diagram (as the one above) showing the
+# links and weight of connections among climate change drivers,
+# type of flow changes, and human well-being dimensions.
+
+#############################################################
+### ALTERED FLOW SUMMARIES ###########################################
+#########################################################
+
+head(altered_flow_data)
+
+table(altered_flow_data$altered_flow)
+table(altered_flow_data$alteration)
+
+alter <- ggplot(altered_flow_data, aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Flow",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+alter
+#this doesnt have the more aggregated physical categories that were fixed
+alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
+
+###########################################################################################
+### ALLUVIALS #############################################################################
+#######################################################################################
+
+
+
+###########################################################################################
+### COMBINATIONS and COUNTS  - HEAT MAPS AND ALLUVIALS ###########################################
+#######################################################################################
+
+### NOW NEED TO GET COMBINATIONS and COUNTS 
+
+#*** TO DO FOR TOP SUBFLOWS
+
+head(driver_flow_impact)
+
+
+
+#not working
+ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+  scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
+  labs(
+    title = "Interaction Between Altered Flows and Impacts",
+    x = "Altered Flow",
+    y = "Impact",
+    size = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
