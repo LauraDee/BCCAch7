@@ -11,8 +11,12 @@ library(tidyr)
 
 setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/BCCAch7/data")
 #reshaped_data <- read.csv("reshaped_3_byFlow.csv")
-reshaped_data <- read.csv("reshaped_4_drivers.csv")
+# reshaped_data <- read.csv("reshaped_4_drivers.csv")
+reshaped_data <- fread("008_preppedata_forsynthesis.csv")
 glimpse(reshaped_data)
+
+# Filter relevant columns for Altered Flow and Impact
+"%notin%" <- Negate("%in%")
 
 # Select and reshape relevant columns
 #altered_flow_cols <- names(reshaped_data)[grepl("Altered Flow", names(reshaped_data))]
@@ -22,30 +26,31 @@ glimpse(reshaped_data)
 altered_flow_cols <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
 impact_cols <- names(reshaped_data)[grepl("2.12.Impact.", names(reshaped_data))]
 driver_cols <- names(reshaped_data)[grepl("driver.", names(reshaped_data))]
-
+flow_columns <- names(reshaped_data)[grepl("2.7.Altered.Flow.", names(reshaped_data))]
 #Remove the No Impact entry  
 impact_cols <- impact_cols[-1]
 
-# Filter relevant columns for Altered Flow and Impact
-"%notin%" <- Negate("%in%")
-
-interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
-  select(all_of(c(altered_flow_cols, impact_cols, driver_cols))) %>%
+interaction_data <- reshaped_data %>% 
+  select(all_of(c(altered_flow_cols, impact_cols, driver_cols)))  %>%
   mutate(row_id = row_number())  %>%
   filter(!if_all(-row_id, ~ .x == ""))
+
 glimpse(interaction_data)
 
-#flow_columns <- names(interaction_data)[grepl("Altered Flow", names(interaction_data))]
-#impact_columns <- names(interaction_data)[grepl("Impact", names(interaction_data))]
+# interaction_data <- reshaped_data %>% filter(`Citation` %notin% c("TEST","test","Test")) %>% 
+#   select(all_of(c(altered_flow_cols, impact_cols, driver_cols))) %>%
+#   mutate(row_id = row_number())  %>%
+#   filter(!if_all(-row_id, ~ .x == ""))
+# glimpse(interaction_data)
 
 #update column names
-flow_columns <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
-impact_columns <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
+flow_cols <- names(interaction_data)[grepl("2.7.Altered.Flow.", names(interaction_data))]
+impact_cols <- names(interaction_data)[grepl("2.12.Impact.", names(interaction_data))]
 
 # Generate all possible combinations of flows and impacts
 combinations <- expand.grid(
-  Flow = flow_columns,
-  Impact = impact_columns,
+  Flow = flow_cols,
+  Impact = impact_cols,
   stringsAsFactors = FALSE
 )
 

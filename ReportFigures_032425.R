@@ -49,7 +49,7 @@ impact_data = impact_data[impact =="Land.Use.Loss", impact := "Habitat Loss"]
 ## combined datasets
 driver_impact_data = merge(driver_data,
                            impact_data,
-                           by="ID_DOI_by_Flow",
+                           by= c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"),  #"ID_DOI_by_Flow",
                            allow.cartesian=TRUE)
 #condense and clean
 driver_impact_data = driver_impact_data[direction != 'No direction mentioned']
@@ -67,7 +67,7 @@ table(altered_flow_data$alteration)
 
 driver_flow_impact = merge(driver_impact_data,
                            altered_flow_data,
-                           by="ID_DOI_by_Flow",
+                           by= c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"), #"ID_DOI_by_Flow",
                            allow.cartesian=TRUE)
 #NCP data
 NCP_data = melt(reshaped_data,
@@ -81,7 +81,7 @@ NCP_data = NCP_data[ncp_direction != "No direction mentioned"]
 #combine driver impact and NCP data
 driver_impact_ncp = merge(driver_impact_data,
                           NCP_data,
-                          by="ID_DOI_by_Flow",
+                          by= c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"), 
                           allow.cartesian=TRUE)
 
 table(driver_impact_ncp$ncp_direction)
@@ -99,7 +99,7 @@ hwb_data = hwb_data[hwb != 'None']
 #combine driver impact and hwb data
 driver_impact_hwb = merge(driver_impact_data,
                           hwb_data,
-                          by="ID_DOI_by_Flow",
+                          by= c("ID_DOI_by_Flow","X2.1.Flow.Type", "X2.2.Subtype","DOI"), 
                           allow.cartesian=TRUE)
 
 ##########################################
@@ -379,7 +379,6 @@ hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 #############################################################
 ### ALTERED FLOW SUMMARIES ###########################################
 #########################################################
-
 head(altered_flow_data)
 
 table(altered_flow_data$altered_flow)
@@ -401,6 +400,17 @@ alter
 alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 ###########################################################################################
+### Do figures on each flow type #############################################################################
+#######################################################################################
+
+
+
+###########################################################################################
+### Do figures by top driver(s) #############################################################################
+#######################################################################################
+
+
+###########################################################################################
 ### ALLUVIALS #############################################################################
 #######################################################################################
 
@@ -409,13 +419,35 @@ alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 ###########################################################################################
 ### COMBINATIONS and COUNTS  - HEAT MAPS AND ALLUVIALS ###########################################
 #######################################################################################
-
+#get combos https://stackoverflow.com/questions/15475832/count-number-of-time-combination-of-events-appear-in-dataframe-columns-ext
 ### NOW NEED TO GET COMBINATIONS and COUNTS 
 
 #*** TO DO FOR TOP SUBFLOWS
-
 head(driver_flow_impact)
+data <- expand.grid(X= driver_flow_impact$driver, Y= driver_flow_impact$altered_flow)
+head(data)
 
+df = table(apply(data,1,function(x) paste(sort(x),collapse='-')))
+
+df1 = as.data.frame(t(apply(data,1,sort)))
+
+all.possible <- expand.grid(c('a','b','c'), c('a','b','c'))
+all.possible = data
+all.possible <- all.possible[all.possible[, 1] != all.possible[, 2], ]
+all.possible2 <- unique(apply(all.possible, 1, function(x) paste(sort(x), collapse='-')))
+
+data[data$freq > 0, ]
+
+h_s = data %>% 
+  group_by(X,Y) %>% 
+  summarise(count=n())
+
+
+# Give extreme colors:
+ggplot(data, aes(X, Y, fill= Z)) + 
+  geom_tile() +
+  scale_fill_gradient(low="white", high="blue") +
+  theme_ipsum()
 
 
 #not working

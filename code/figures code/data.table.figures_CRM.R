@@ -442,7 +442,6 @@ hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 
-
 hwb_alluv <- ggplot(data = hwb_data,
        aes(axis1 = X2.2.Subtype, axis2 = hwb)) + #, y = freq
   geom_alluvium(aes(fill = hwb_direction)) +
