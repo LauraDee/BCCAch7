@@ -119,6 +119,59 @@ subflowcount
 jpeg(file="subflowcount.jpeg")
 
 
+# by flow and calculate percents for the report
+#do as % :
+reshaped_data$V1 = NULL
+reshaped_data$V1 = NULL
+reshaped_data$X = NULL
+
+flow_percent <- reshaped_data %>%
+  group_by(X2.1.Flow.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+flow_percent
+
+ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
+  geom_col(aes(fill = as.factor(X2.1.Flow.Type))) +
+  labs( title = "Proportion of Flow Type",
+        x = "Flow Type",
+        y = "Proportion of Entries") +
+  theme_minimal() + theme(legend.position="none") +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
+
+subflow_perc  <- reshaped_data %>%
+  group_by(X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+subflow_perc 
+
+write.csv(subflow_perc, "subflow_type_percent.csv")
+
+# calculate % of papers that contained more than one flow
+multiflow <- reshaped_data %>%
+  group_by(Another.Flow.) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+multiflow
+
+#calc ecosystem type
+ecosystem <- reshaped_data %>%
+  group_by(X2.14.Ecosystem.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+ecosystem
+
+#substantially more cleaning is needed to do anything by ecosystem type:
+ecotype <- ggplot(reshaped_data, aes(x = fct_infreq(X2.14.Ecosystem.Type)), fill = X2.1.Flow.Type) +
+  geom_bar() + theme_minimal() +
+  labs(x = "Ecosystem Type",
+       title = "Count of Papers by Ecosystem Type",
+       y = "Count") + coord_flip() +
+  scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
+ecotype <- ecotype + labs(fill ="Flow Type")
+ecotype
 ####################################################
 #### Figures summarizing Drivers ##################
 ###################################################
@@ -133,6 +186,14 @@ driver_data = driver_data[driver == "Hurricanes", driver := "Extreme Event"]
 driver_data = driver_data[driver =="extreme.weather", driver := "Extreme Event"]
 driver_data = driver_data[driver =="heat.waves", driver := "Extreme Event"]
 driver_data = driver_data[driver =="natural.disasters", driver := "Extreme Event"]
+
+
+#calc ecosystem type
+driver_perc <- driver_data %>%
+  group_by(driver) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(driver_perc) 
 
 #clean a couple of things
 driver_data$driver <- gsub("\\.", " ", driver_data$driver)
@@ -211,9 +272,6 @@ jpeg(file="driver_count_simplified.jpeg")
 Fig1 <- plot_grid(driver_count_simplified,subflowcount)
 Fig1
 ggsave("figures/for_report/Fig1.pdf", width = 30,  height = 10,  units = "cm")
-
-#To do below:
-# Alluvial connecting to Driver to Impact by flow
 
 ##################################################################################
 # BD Impacts ###################################################
@@ -410,10 +468,6 @@ alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 #######################################################################################
 
 
-###########################################################################################
-### ALLUVIALS #############################################################################
-#######################################################################################
-
 
 
 ###########################################################################################
@@ -424,36 +478,20 @@ alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
 #*** TO DO FOR TOP SUBFLOWS
 head(driver_flow_impact)
-data <- expand.grid(X= driver_flow_impact$driver, Y= driver_flow_impact$altered_flow)
-head(data)
+driver_flow_impact[,count_driver_alteredflow:=.N, by=.(driver, altered_flow)]
+summary(driver_flow_impact$count_driver_alteredflow)
 
-df = table(apply(data,1,function(x) paste(sort(x),collapse='-')))
+driver_flow_impact[,count_driver_alteration:=.N, by=.(driver, altered_flow,  alteration)]
+summary(driver_flow_impact$count_driver_alteration)
 
-df1 = as.data.frame(t(apply(data,1,sort)))
-
-all.possible <- expand.grid(c('a','b','c'), c('a','b','c'))
-all.possible = data
-all.possible <- all.possible[all.possible[, 1] != all.possible[, 2], ]
-all.possible2 <- unique(apply(all.possible, 1, function(x) paste(sort(x), collapse='-')))
-
-data[data$freq > 0, ]
-
-h_s = data %>% 
-  group_by(X,Y) %>% 
-  summarise(count=n())
-
-
-# Give extreme colors:
-ggplot(data, aes(X, Y, fill= Z)) + 
+# driver by flow counts
+ggplot(driver_flow_impact, aes(driver, altered_flow, fill= count_driver_alteredflow)) + 
   geom_tile() +
-  scale_fill_gradient(low="white", high="blue") +
-  theme_ipsum()
+  scale_fill_gradient(low="white", high="blue") + coord_flip()
 
-
-#not working
-ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count)) +
+ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteredflow)) +
   geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
-  scale_size_continuous(range = c(3, 10)) +  # Adjust size range for better visibility
+  scale_size_continuous(range = c(1, 10)) +  # Adjust size range for better visibility
   labs(
     title = "Interaction Between Altered Flows and Impacts",
     x = "Altered Flow",
@@ -465,3 +503,168 @@ ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count)) +
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
+
+#with directionality of how flow is altered
+driver_impact <-  ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 5)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of flow",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_impact
+
+driver_impact + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+
+
+#do for connections between driver-->altered flow--> biodiv impact
+
+driver_flow_impact[,count_driver_altflow_bdimpact:=.N, by=.(driver, altered_flow, impact)]
+summary(driver_flow_impact$count_driver_altflow_bdimpact)
+
+driver_flow_impact[,count_driver_impact:=.N, by=.(driver, impact)]
+
+driver_flow_impact %>%
+  ggplot(aes(driver, impact)) +
+  geom_raster(aes(fill = count_driver_impact))
+
+
+driver_flow_impact[,count_alteredflow_impact:=.N, by=.(altered_flow, impact)]
+
+driver_flow_impact %>%
+  ggplot(aes(altered_flow, impact)) +
+  geom_raster(aes(fill = count_alteredflow_impact), na.rm = TRUE) + 
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+
+
+###########################################################################################
+### ALLUVIALS #############################################################################
+#######################################################################################
+#PREP DATA: to do the alluvials, we need fewer categories
+
+# calculate driver frequencies
+tab <- table(driver_flow_impact$driver)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10_driver <- tail(names(tab_s), 10)
+top5_driver <- tail(names(tab_s), 5)
+# subset of data frame
+d_s <- subset(driver_flow_impact, driver %in% top10_driver)
+d_s <- subset(driver_flow_impact, driver %in% top5_driver)
+# order factor levels
+d_s$driver <- factor(d_s$driver, levels = rev(top10_driver))
+d_s$driver <- factor(d_s$driver, levels = rev(top5_driver))
+
+# calculate impact frequencies
+tab <- table(driver_flow_impact$impact)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10_impact <- tail(names(tab_s), 10)
+#extract top 5
+top5_impact <- tail(names(tab_s), 5)
+#extract top 7
+top7_impact <- tail(names(tab_s), 7)
+# subset of data frame
+i_s <- subset(driver_flow_impact, impact %in% top10_impact)
+i_s <- subset(driver_flow_impact, impact %in% top5_impact)
+i_s <- subset(driver_flow_impact, impact %in% top7_impact)
+
+# order factor levels
+i_s$impact <- factor(i_s$impact, levels = rev(top5_impact))
+i_s$impact <- factor(i_s$impact, levels = rev(top10_impact))
+i_s$impact <- factor(i_s$impact, levels = rev(top7_impact))
+
+#clean a couple of things
+i_s$driver <- gsub("\\.", " ", i_s$driver)
+i_s$driver <- gsub("\\  ", " ", i_s$driver)
+i_s$driver <- gsub("\\c ", "c", i_s$driver)
+i_s$impact <- gsub("\\.", " ", i_s$impact)
+
+#view lists
+top10_impact
+top5_impact
+top10_driver
+top5_driver
+top7_impact
+
+## subset the data to make the alluvials
+d_s <- subset(driver_flow_impact, driver %in% top5_driver)
+d_s <- subset(d_s, impact %in% top7_impact)
+d_s$driver <- gsub("\\.", " ", d_s$driver)
+
+
+ncp_rangeshift = NCP_data[X2.2.Subtype == "range-shift", ]
+
+## Make Figures ## 
+# all drivers and impacts but for Biotic 
+ggplot(data = driver_flow_impact[X2.1.Flow.Type == "Biotic", ],
+       aes(axis1 = driver, axis2 = impact)) + #, y = freq
+  geom_alluvium(aes(fill = direction)) +
+  # scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", 'NA' = 'white')) +
+  geom_stratum(alpha=.75) +
+  geom_text(stat = "stratum", min.y = .75,
+            aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("Driver", "Impact"),
+                   expand = c(0.15, 0.15)) + labs(fill = "Flow Type") + theme_void()
+
+ggplot(data = driver_flow_impact,
+       aes(axis1 = driver, axis2 = altered_flow, axis3 = impact,
+           y = count_driver_altflow_bdimpact)) +
+  scale_x_discrete(limits = c("Driver", "Altered Flow", "Impact"), expand = c(.2, .05)) +
+  xlab("Causal sequence") +
+  geom_alluvium(aes(fill = direction)) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  theme_minimal() +
+  ggtitle("Driver impacts to biodiversity through altering flow") #,
+          # "stratified by demographics and survival")
+
+#### #### #### #### #### #### ####
+### ALLUVIALS ON SUBSET #### ####
+#### #### #### #### #### #### ####
+
+#try from: https://medium.com/@arnavsaxena96/all-about-alluvial-diagrams-21da1505520b
+ggplot(d_s, aes(axis1 = driver, axis2 = altered_flow, axis3 = impact), weight = count_driver_altflow_bdimpact )+
+  geom_alluvium(aes(fill=as.factor(direction))) +
+  geom_stratum(decreasing = TRUE,  min.y = 20) +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)),size = 2,discern=TRUE) 
+# + stat_alluvium(geom = "flow", lode.guidance = "forward",
+#                 width = 30) 
+
+flourish <- d_s %>% 
+select(driver, altered_flow, impact, count_driver_alteration, count_driver_altflow_bdimpact, count_driver_impact, 
+       alteration, direction, count_alteredflow_impact, X2.1.Flow.Type)
+write.csv(flourish, "data_for_flourish.csv")
+
+# df <- df %>% 
+#   dplyr::group_by(stock, newspaper, status) %>% 
+#   summarise(n = n()) 
+
+#try from: https://medium.com/@arnavsaxena96/all-about-alluvial-diagrams-21da1505520b
+driver_to_impact <- ggplot(d_s, aes(axis1 = driver, axis2 = altered_flow, axis3 = impact))+
+  geom_alluvium(aes(fill=as.factor(direction))) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)),size = 3,discern=TRUE) +  theme_void() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) 
+driver_to_impact + facet_wrap(~X2.1.Flow.Type, scale = "free")
+
+# Alluvial connecting to Driver to Impact by flow
+driver_to_impact <- ggplot(d_s, aes(axis1 = driver, axis2 = impact))+
+  geom_alluvium(aes(fill=as.factor(direction))) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)),size = 3,discern=TRUE) +  theme_void() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) 
+
+driver_to_impact + facet_wrap(~X2.1.Flow.Type, scale = "free")
