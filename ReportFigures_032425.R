@@ -145,6 +145,7 @@ subflow_perc  <- reshaped_data %>%
   mutate(prop = n / sum(n))
 
 subflow_perc 
+print(subflow_perc, max.levels = NULL)
 
 write.csv(subflow_perc, "subflow_type_percent.csv")
 
@@ -458,6 +459,20 @@ alter
 #this doesnt have the more aggregated physical categories that were fixed
 alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
+
+#do for just biotic 
+bioalter <- ggplot(altered_flow_data[X2.1.Flow.Type == "Biotic",], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Biotic Flows",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+bioalter
 ###########################################################################################
 ### Do figures on each flow type #############################################################################
 #######################################################################################
