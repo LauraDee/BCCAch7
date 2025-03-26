@@ -1,0 +1,29 @@
+"","ID_DOI_by_Flow","X2.1.Flow.Type","X2.2.Subtype","DOI","driver","impact","direction","impact.group","altered_flow","alteration","count_driver_alteredflow_impact_direction"
+"1",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Location","Complex change",2
+"2",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Direction","Complex change",2
+"3",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Feedbacks","Complex change",12
+"4",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Quantity","Complex change",3
+"5",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Location","Complex change",13
+"6",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Direction","Complex change",13
+"7",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Quantity","Complex change",13
+"8",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Speed","Increase",11
+"9",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Duration","Increase",11
+"10",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Frequency","Increase",9
+"11",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Timing","Complex change",8
+"12",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Duration","Increase",1
+"13",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Distance","Increase",7
+"14",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Timing","Complex change",3
+"15",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Mechanism","Complex change",12
+"16",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Distance","Increase",1
+"17",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Habitat Loss","Decrease","bad","Frequency","Increase",3
+"18",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Location","Complex change",9
+"19",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Frequency","Increase",6
+"20",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Mechanism","Complex change",1
+"21",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Quantity","Complex change",8
+"22",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Frequency","Increase",2
+"23",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Direction","Complex change",8
+"24",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Speed","Increase",1
+"25",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Timing","Complex change",12
+"26",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Connectivity","Decrease","good","Distance","Increase",12
+"27",1,"Human movement","displacement","10.1177/01979183221074343","Climate.change..generic.","Habitat Loss","Decrease","bad","Feedbacks","Complex change",2
+"28",1,"Human movement","displacement","10.1177/01979183221074343","Drought","Connectivity","Decrease","good","Feedbacks","Complex change",8

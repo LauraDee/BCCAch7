@@ -187,7 +187,6 @@ driver_data = driver_data[driver =="extreme.weather", driver := "Extreme Event"]
 driver_data = driver_data[driver =="heat.waves", driver := "Extreme Event"]
 driver_data = driver_data[driver =="natural.disasters", driver := "Extreme Event"]
 
-
 #calc ecosystem type
 driver_perc <- driver_data %>%
   group_by(driver) %>%
@@ -318,11 +317,13 @@ tab <- table(data$X2.2.Subtype)
 tab_s <- sort(tab)
 # extract 10 most frequent nationalities
 top10 <- tail(names(tab_s), 10)
+top5 <- tail(names(tab_s), 5)
 # subset of data frame
 i_s <- subset(data, X2.2.Subtype %in% top10)
-
+i_s <- subset(data, X2.2.Subtype %in% top5)
 # order factor levels
 i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top10))
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top5))
 list(unique(i_s$X2.2.Subtype))
 
 #clean a couple of things
@@ -430,9 +431,9 @@ hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
 hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
-# to do Alluvial diagram (as the one above) showing the
-# links and weight of connections among climate change drivers,
-# type of flow changes, and human well-being dimensions.
+#do for the top subflows 
+
+
 
 #############################################################
 ### ALTERED FLOW SUMMARIES ###########################################
@@ -538,14 +539,12 @@ driver_flow_impact %>%
   ggplot(aes(driver, impact)) +
   geom_raster(aes(fill = count_driver_impact))
 
-
 driver_flow_impact[,count_alteredflow_impact:=.N, by=.(altered_flow, impact)]
 
 driver_flow_impact %>%
   ggplot(aes(altered_flow, impact)) +
   geom_raster(aes(fill = count_alteredflow_impact), na.rm = TRUE) + 
   facet_wrap(~X2.1.Flow.Type, scales = "fixed")
-
 
 ###########################################################################################
 ### ALLUVIALS #############################################################################
@@ -668,3 +667,25 @@ driver_to_impact <- ggplot(d_s, aes(axis1 = driver, axis2 = impact))+
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) 
 
 driver_to_impact + facet_wrap(~X2.1.Flow.Type, scale = "free")
+
+
+
+# to do Alluvial diagram (as the one above) showing the
+# links and weight of connections among climate change drivers,
+# type of flow changes, and human well-being dimensions.
+
+
+
+#extract unique combinations
+driver_to_impact
+
+driver_to_impact = driver_flow_impact[,count_driver_alteredflow_impact_direction:=.N, by=.(driver, altered_flow, impact, direction)]
+
+driver_to_impact_subtype = driver_flow_impact[,count_driver_alteredflow_impact_direction_sub:=.N, by=.(X2.2.Subtype,driver, altered_flow, impact, direction)]
+
+
+extract = driver_to_impact[unique(count_driver_alteredflow_impact_direction)]
+write.csv(extract, "unique_driver_flow_impact_paths.csv")
+
+extract_subtype = driver_to_impact[unique(count_driver_alteredflow_impact_direction_sub)]
+
