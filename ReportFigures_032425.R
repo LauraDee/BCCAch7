@@ -106,6 +106,8 @@ driver_impact_hwb = merge(driver_impact_data,
 ##### Basic Summary Stat Figures ########
 ########################################
 
+reshaped_data$V1 = NULL
+reshaped_data$X = NULL
 ## Summary Stats on the Flow and Subflow:
 subflowcount <- reshaped_data %>%
   ggplot(aes(x = fct_infreq(X2.2.Subtype), fill = X2.1.Flow.Type)) +
@@ -114,7 +116,8 @@ subflowcount <- reshaped_data %>%
        title = "Count of Papers by Subflow Type",
        y = "Count") + coord_flip() +
   scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
-subflowcount <-subflowcount +labs(fill ="Flow Type")
+subflowcount
+subflowcount <-subflowcount + labs(fill ="Flow Type")
 subflowcount
 jpeg(file="subflowcount.jpeg")
 
@@ -145,7 +148,6 @@ subflow_perc  <- reshaped_data %>%
   mutate(prop = n / sum(n))
 
 subflow_perc 
-print(subflow_perc, max.levels = NULL)
 
 write.csv(subflow_perc, "subflow_type_percent.csv")
 
@@ -173,6 +175,7 @@ ecotype <- ggplot(reshaped_data, aes(x = fct_infreq(X2.14.Ecosystem.Type)), fill
   scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
 ecotype <- ecotype + labs(fill ="Flow Type")
 ecotype
+
 ####################################################
 #### Figures summarizing Drivers ##################
 ###################################################
@@ -225,10 +228,21 @@ data <- driver_impact_data
 # for this visuals for now - group : 
 # "extreme.weather" and "hurricanes" and heat.waves
 # Hurricanes,  natural.disasters 
-driver_impact_data = driver_impact_data[driver == "Hurricanes", driver := "Extreme Event"]
-driver_impact_data = driver_impact_data[driver =="extreme.weather", driver := "Extreme Event"]
-driver_impact_data = driver_impact_data[driver =="heat.waves", driver := "Extreme Event"]
-driver_impact_data = driver_impact_data[driver =="natural.disasters", driver := "Extreme Event"]
+driver_impact_data = driver_impact_data[driver == "Hurricanes", driver := "Extreme Events"]
+driver_impact_data = driver_impact_data[driver =="extreme.weather", driver := "Extreme Events"]
+driver_impact_data = driver_impact_data[driver =="heat.waves", driver := "Extreme Events"]
+driver_impact_data = driver_impact_data[driver =="natural.disasters", driver := "Extreme Events"]
+
+
+driver_impact_data$driver <- gsub("\\.", " ", driver_impact_data$driver)
+#grouping extreme events 
+driver_extremesgrouped_count <- ggplot(driver_impact_data, aes(x = fct_infreq(driver))) +
+  geom_bar() +  theme_minimal() + coord_flip() +
+  labs(
+    title = "Count of drivers surveyed in the review",
+    x = "Driver",
+    y = "Count")
+driver_extremesgrouped_count
 
 ## flow alterations first
 # calculate frequencies
@@ -489,8 +503,14 @@ bioalter
 ###########################################################################################
 ### COMBINATIONS and COUNTS  - HEAT MAPS AND ALLUVIALS ###########################################
 #######################################################################################
+
+###########################################################################################
+### PREP DATA  ###########################################
+#######################################################################################
 #get combos https://stackoverflow.com/questions/15475832/count-number-of-time-combination-of-events-appear-in-dataframe-columns-ext
 ### NOW NEED TO GET COMBINATIONS and COUNTS 
+
+ncp_rangeshift = NCP_data[X2.2.Subtype == "range-shift", ]
 
 #*** TO DO FOR TOP SUBFLOWS
 head(driver_flow_impact)
@@ -500,70 +520,6 @@ summary(driver_flow_impact$count_driver_alteredflow)
 driver_flow_impact[,count_driver_alteration:=.N, by=.(driver, altered_flow,  alteration)]
 summary(driver_flow_impact$count_driver_alteration)
 
-# driver by flow counts
-ggplot(driver_flow_impact, aes(driver, altered_flow, fill= count_driver_alteredflow)) + 
-  geom_tile() +
-  scale_fill_gradient(low="white", high="blue") + coord_flip()
-
-ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteredflow)) +
-  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
-  scale_size_continuous(range = c(1, 10)) +  # Adjust size range for better visibility
-  labs(
-    title = "Interaction Between Altered Flows and Impacts",
-    x = "Altered Flow",
-    y = "Impact",
-    size = "Count"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
-  )
-
-#with directionality of how flow is altered
-driver_impact <-  ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
-  geom_point(alpha = 0.4) +  # Add points with alpha transparency
-  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
-  scale_size_continuous(range = c(1, 5)) +  # Adjust size range
-  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
-  labs(
-    title = "Driver alteration of flow",
-    x = "Driver",
-    y = "Impact",
-    size = "Count",
-    color = "Impact Direction"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
-  )
-driver_impact
-
-driver_impact + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
-
-
-#do for connections between driver-->altered flow--> biodiv impact
-
-driver_flow_impact[,count_driver_altflow_bdimpact:=.N, by=.(driver, altered_flow, impact)]
-summary(driver_flow_impact$count_driver_altflow_bdimpact)
-
-driver_flow_impact[,count_driver_impact:=.N, by=.(driver, impact)]
-
-driver_flow_impact %>%
-  ggplot(aes(driver, impact)) +
-  geom_raster(aes(fill = count_driver_impact))
-
-driver_flow_impact[,count_alteredflow_impact:=.N, by=.(altered_flow, impact)]
-
-driver_flow_impact %>%
-  ggplot(aes(altered_flow, impact)) +
-  geom_raster(aes(fill = count_alteredflow_impact), na.rm = TRUE) + 
-  facet_wrap(~X2.1.Flow.Type, scales = "fixed")
-
-###########################################################################################
-### ALLUVIALS #############################################################################
-#######################################################################################
 #PREP DATA: to do the alluvials, we need fewer categories
 
 # calculate driver frequencies
@@ -614,12 +570,229 @@ top5_driver
 top7_impact
 
 ## subset the data to make the alluvials
-d_s <- subset(driver_flow_impact, driver %in% top5_driver)
+d_s <- subset(driver_flow_impact, driver %in% top10_driver)
 d_s <- subset(d_s, impact %in% top7_impact)
 d_s$driver <- gsub("\\.", " ", d_s$driver)
 
 
-ncp_rangeshift = NCP_data[X2.2.Subtype == "range-shift", ]
+##### HEAT MAPS #######################
+# driver by flow counts for all
+ggplot(driver_flow_impact, aes(driver, altered_flow, fill= count_driver_alteredflow)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="white", high="blue") + coord_flip()
+
+ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteredflow)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +   # Adjust size range for better visibility
+  labs(
+    title = "Interaction Between Altered Flows and Impacts",
+    x = "Altered Flow",
+    y = "Impact",
+    size = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+
+# FOR USE IN REPORT #
+#with directionality of how flow is altered
+driver_alter <-  ggplot(d_s, aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of flow",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_alter
+
+driver_alter +  scale_size_continuous(range = c(1, 5)) + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+
+# for range shifts only
+driver_alter <-  ggplot(d_s[X2.2.Subtype == "range-shift",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of range shifts",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_alter
+
+#for knowledge transfer only
+driver_alter <-  ggplot(d_s[X2.2.Subtype == "knowledge transfer",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of knowledge transfer",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_alter
+
+#FOR DISEASE
+driver_alter <-  ggplot(d_s[X2.2.Subtype == "disease spread",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of disease spread",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_alter
+
+#p + geom_point(aes(shape = factor(cyl)))
+driver_impact <-  ggplot(i_s, aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 5)) +  # Adjust size range
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "NoChange" = "grey70")) + 
+  labs(
+    title = "Driver alteration of flow",
+    x = "Driver",
+    y = "Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_impact
+
+#do for connections between driver-->altered flow--> biodiv impact
+driver_flow_impact[,count_driver_altflow_bdimpact:=.N, by=.(driver, altered_flow, impact)]
+summary(driver_flow_impact$count_driver_altflow_bdimpact)
+
+driver_flow_impact[,count_driver_impact:=.N, by=.(driver, impact)]
+
+driver_flow_impact %>%
+  ggplot(aes(driver, impact)) +
+  geom_raster(aes(fill = count_driver_impact))
+
+driver_flow_impact[,count_alteredflow_impact:=.N, by=.(altered_flow, impact)]
+
+driver_flow_impact %>%
+  ggplot(aes(altered_flow, impact)) +
+  geom_raster(aes(fill = count_alteredflow_impact), na.rm = TRUE) + 
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+
+driver_flow_impact %>%
+  ggplot(aes(altered_flow, impact, color = direction, size = count_driver_alteration)) +
+  geom_point(aes(fill = count_alteredflow_impact), na.rm = TRUE) + 
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed")
+
+
+###########################################################################################
+### BD and NCP impact heat maps ############################################################################
+#######################################################################################
+
+# need to clean up the driver names - show fewer in the main and put the missing ones in the SI?
+driver_flow_impact$driver <- gsub("\\.", " ", driver_flow_impact$driver)
+
+
+
+driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = driver, y = impact, size = count_driver_impact, color = direction)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~direction, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +  # Adjust size range and breaks
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) + 
+  labs(
+    title = "Driver-Biodiversity Impact",
+    x = "Driver",
+    y = "Biodiversity Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_bdimpact
+
+driver_bdimpact + facet_wrap(~impact.group, scale = fixed)
+
+
+#for just range shifts
+driver_bdimpact <-  ggplot(driver_flow_impact[X2.2.Subtype == "range-shift",], aes(x = driver, y = impact, size = count_driver_impact, color = direction)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~direction, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) +  # Adjust size range and breaks
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) + 
+  labs(
+    title = "Driver-Biodiversity Impact",
+    x = "Driver",
+    y = "Biodiversity Impact",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_bdimpact
+
+###########################################################################################
+### ALLUVIALS #############################################################################
+#######################################################################################
 
 ## Make Figures ## 
 # all drivers and impacts but for Biotic 
