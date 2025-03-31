@@ -446,6 +446,80 @@ hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
 hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
+table(hwb_data$hwb)
+# Cohesion    Justice    Other Relational    Welfare 
+# 18         21          7         31         76 
+table(hwb_data$X2.2.Subtype, hwb_data$hwb_direction)
+
+#calc % - this is overall but should be done by HWB dimension
+hwb_perc <- hwb_data %>%
+  group_by(hwb, hwb_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(hwb_perc) 
+
+#cohesion 
+cohesion = hwb_data[hwb == "Cohesion",]
+cohension_perc <- cohesion %>%
+  group_by(hwb_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(cohension_perc) 
+
+#cohesion by flow
+cohesion = hwb_data[hwb == "Cohesion",]
+cohension_perc <- cohesion %>%
+  group_by(hwb_direction, X2.1.Flow.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(cohension_perc) 
+
+#welfare
+welfare = hwb_data[hwb == "Welfare",]
+welfare_perc <- welfare %>%
+  group_by(hwb_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(welfare_perc) 
+
+#welfare by flow
+welfare = hwb_data[hwb == "Welfare",]
+welfare_perc <- welfare %>%
+  group_by(hwb_direction,  X2.1.Flow.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(welfare_perc) 
+
+# Relational 
+relational = hwb_data[hwb == "Relational",]
+relational_perc <- relational %>%
+  group_by(hwb_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(relational_perc) 
+#relational by flow
+relational = hwb_data[hwb == "Relational",]
+relational_perc <- relational %>%
+  group_by(hwb_direction, X2.1.Flow.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(relational_perc) 
+
+#Justice
+Justice = hwb_data[hwb == "Justice",]
+Justice_perc <- Justice %>%
+  group_by(hwb_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(Justice_perc) 
+
+#Justice by flow
+Justice = hwb_data[hwb == "Justice",]
+Justice_perc <- Justice %>%
+  group_by(hwb_direction, X2.1.Flow.Type) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(Justice_perc) 
 
 ############################################################################################
 ### DO NCP and HWB Impacts FOR TOP SUBFLOWS ONLY ###########################################
