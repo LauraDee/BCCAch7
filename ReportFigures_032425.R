@@ -446,7 +446,12 @@ hwb + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 #broken out by subflow
 hwb + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
-#do for the top subflows 
+
+############################################################################################
+### DO NCP and HWB Impacts FOR TOP SUBFLOWS ONLY ###########################################
+#######################################################################################
+#do for the top subflows only
+
 
 
 
@@ -473,7 +478,6 @@ alter
 #this doesnt have the more aggregated physical categories that were fixed
 alter + facet_wrap(~X2.2.Subtype, scales = "fixed")
 
-
 #do for just biotic 
 bioalter <- ggplot(altered_flow_data[X2.1.Flow.Type == "Biotic",], aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
@@ -487,6 +491,66 @@ bioalter <- ggplot(altered_flow_data[X2.1.Flow.Type == "Biotic",], aes(x = alter
     size = "Count",
     fill = "Impact Direction")
 bioalter
+bioalter + facet_wrap(~X2.2.Subtype)
+
+#do for just physical 
+
+#* drop ocean and wind, and combine glacial and snow melt for the figure
+#* 
+phys_altered_flow_data = altered_flow_data[X2.1.Flow.Type == "Physical",]
+phys_altered_flow_data = phys_altered_flow_data[X2.2.Subtype == "glacial melt", X2.2.Subtype := "glacial and snow melt"]
+phys_altered_flow_data = phys_altered_flow_data[X2.2.Subtype == "snow melt runoff", X2.2.Subtype := "glacial and snow melt"]
+
+#drop wind and current
+phys_altered_flow_data = phys_altered_flow_data[X2.2.Subtype != "wind",]
+phys_altered_flow_data = phys_altered_flow_data[X2.2.Subtype != "ocean current",]
+  
+physalter <- ggplot(phys_altered_flow_data, aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Physical Flows",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+physalter
+physalter + facet_wrap(~X2.2.Subtype)
+
+# do for human
+
+#do for just human
+humanalter <- ggplot(altered_flow_data[X2.1.Flow.Type == "Human movement",], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Human movement Flows",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+humanalter
+humanalter + facet_wrap(~X2.2.Subtype)
+
+#do for just socio
+socioalter <- ggplot(altered_flow_data[X2.1.Flow.Type == "Sociocultural",], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  facet_wrap(~X2.1.Flow.Type, scales = "fixed") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Sociocultural Flows",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+socioalter
+socioalter + facet_wrap(~X2.2.Subtype)
+
 ###########################################################################################
 ### Do figures on each flow type #############################################################################
 #######################################################################################
@@ -519,6 +583,9 @@ summary(driver_flow_impact$count_driver_alteredflow)
 
 driver_flow_impact[,count_driver_alteration:=.N, by=.(driver, altered_flow,  alteration)]
 summary(driver_flow_impact$count_driver_alteration)
+
+driver_flow_impact[,count_driver_bd_impactdirection:=.N, by=.(driver, impact, direction)]
+
 
 #PREP DATA: to do the alluvials, we need fewer categories
 
