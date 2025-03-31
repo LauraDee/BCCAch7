@@ -555,7 +555,29 @@ socioalter + facet_wrap(~X2.2.Subtype)
 ### Do figures on each flow type #############################################################################
 #######################################################################################
 
+# do for just range shift 
+ggplot(altered_flow_data[X2.2.Subtype == "range-shift", ], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Range Shifts",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
 
+# vs migration
+ggplot(altered_flow_data[X2.2.Subtype == "migration", ], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Animal Migrations",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
 
 ###########################################################################################
 ### Do figures by top driver(s) #############################################################################
