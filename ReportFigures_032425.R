@@ -156,7 +156,6 @@ multiflow <- reshaped_data %>%
   group_by(Another.Flow.) %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
-
 multiflow
 
 #calc ecosystem type
@@ -854,6 +853,7 @@ driver_alter <-  ggplot(d_s[X2.2.Subtype == "disease spread",], aes(x = driver, 
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 driver_alter
+driver_alter + facet_wrap(~driver)
 
 #p + geom_point(aes(shape = factor(cyl)))
 driver_impact <-  ggplot(i_s, aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
