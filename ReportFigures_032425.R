@@ -121,6 +121,7 @@ subflowcount <-subflowcount + labs(fill ="Flow Type")
 subflowcount
 jpeg(file="subflowcount.jpeg")
 
+table(driver_data$X2.1.Flow.Type, driver_data$X2.2.Subtype)
 
 # by flow and calculate percents for the report
 #do as % :
@@ -143,7 +144,7 @@ ggplot(flow_percent, aes(as.factor(X2.1.Flow.Type), prop)) +
   scale_fill_manual(values = c("Biotic" = "burlywood", "Physical" = "darkturquoise", "Human movement" = "firebrick1", "Sociocultural" = "darkmagenta", "NA" = "white"))
 
 subflow_perc  <- reshaped_data %>%
-  group_by(X2.2.Subtype) %>%
+  group_by(X2.2.Subtype,X2.1.Flow.Type ) %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
 
@@ -306,7 +307,87 @@ Impacts_by_flow
 
 Impacts_by_subflow <- Impacts + facet_wrap(~X2.2.Subtype, scales = "free") 
 Impacts_by_subflow
-# write.csv(impact_data, "data/impact_data_for_Anna.csv")
+#write.csv(impact_data, "data/impact_data_for_Anna.csv")
+
+#most studied types of impacts
+impact_perc <- impact_data %>%
+  group_by(impact) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(impact_perc[order(-impact_perc$n),])
+
+#breakdown of types of impacts
+impact_perc <- impact_data %>%
+  group_by(impact, direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+a <- print(impact_perc[order(-impact_perc$n),])
+a
+
+##what % of disease and invasion show increases vs decreases?
+dis <- impact_data[impact == "Disease",]
+inv <- impact_data[impact == "Invasion",]
+abund <- impact_data[impact == "Abundance",]
+habitat <- impact_data[impact == "Habitat Loss",]
+loss <-  impact_data[impact == "Loss",]
+urb <- impact_data[impact == "Urbanization",]
+comp <- impact_data[impact == "Composition",]
+trophic <- impact_data[impact == "Trophic",]
+connect <- impact_data[impact == "Connectivity",]
+
+connect_perc <- connect %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+connect_perc
+
+comp_perc <- comp %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+comp_perc
+
+trophic_perc <- trophic %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+trophic_perc
+
+dis_perc <- dis %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+dis_perc
+
+inv_perc <- inv %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+inv_perc
+
+abund_perc <- abund %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+abund_perc
+
+h_perc <- habitat %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+h_perc
+
+loss_perc <- loss %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+loss_perc
+
+urb_perc <- urb %>%
+  group_by(direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+urb_perc
 
 #What are the top ten impacts reported?
 data <- impact_data
@@ -343,7 +424,7 @@ list(unique(i_s$X2.2.Subtype))
 #clean a couple of things
 i_s$impact <- gsub("\\.", " ", i_s$impact)
 
-Impacts_top10_subflow <- ggplot(i_s, aes(x = fct_infreq(impact), fill = direction)) +
+Impacts_top5_subflow <- ggplot(i_s, aes(x = fct_infreq(impact), fill = direction)) +
   geom_bar() +  theme_minimal() +
   facet_grid(~X2.2.Subtype) +
   scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
@@ -353,7 +434,7 @@ Impacts_top10_subflow <- ggplot(i_s, aes(x = fct_infreq(impact), fill = directio
     y = "count",
     size = "Count",
     color = "Impact Direction") + coord_flip()
-Impacts_top10_subflow  
+Impacts_top5_subflow  
 
 #############################################################
 ### NCP Impacts ###########################################
@@ -449,6 +530,35 @@ table(hwb_data$hwb)
 # Cohesion    Justice    Other Relational    Welfare 
 # 18         21          7         31         76 
 table(hwb_data$X2.2.Subtype, hwb_data$hwb_direction)
+
+#HWB by top 5 subflows
+data <- hwb_data
+# calculate frequencies
+tab <- table(data$X2.2.Subtype)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+top5 <- tail(names(tab_s), 5)
+# subset of data frame
+i_s <- subset(data, X2.2.Subtype %in% top10)
+i_s <- subset(data, X2.2.Subtype %in% top5)
+# order factor levels
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top10))
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top5))
+
+# hwb by top subflows
+
+hwb_top5_sub <- ggplot(i_s, aes(x = fct_infreq(hwb), fill = hwb_direction)) +
+  geom_bar(position= "stack") +  coord_flip() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  theme_minimal() + labs(
+    title = "Impacts to human well-being",
+    x = "Human Well-being Dimension",
+    size = "Count",
+    fill = "Impact Direction")
+hwb_top5_sub + facet_wrap(~X2.2.Subtype)
+
 
 #calc % - this is overall but should be done by HWB dimension
 hwb_perc <- hwb_data %>%
