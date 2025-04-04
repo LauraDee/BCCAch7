@@ -503,6 +503,33 @@ ncp_by_subflow2 <- ggplot(reduced_ncp_data, aes(x = fct_infreq(ncp), fill = ncp_
     fill = "Impact Direction") + facet_wrap(~X2.2.Subtype, scales = "fixed")
 ncp_by_subflow2
 
+#HWB by top 5 subflows
+data <- NCP_data
+# calculate frequencies
+tab <- table(data$X2.2.Subtype)
+# sort
+tab_s <- sort(tab)
+# extract 10 most frequent nationalities
+top10 <- tail(names(tab_s), 10)
+top5 <- tail(names(tab_s), 5)
+# subset of data frame
+i_s <- subset(data, X2.2.Subtype %in% top10)
+i_s <- subset(data, X2.2.Subtype %in% top5)
+# order factor levels
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top10))
+i_s$X2.2.Subtype <- factor(i_s$X2.2.Subtype, levels = rev(top5))
+
+ncp_by_subflow3 <- ggplot(i_s, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
+  geom_bar(position= "stack") +
+  coord_flip() + theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey")) +
+  theme_minimal() + labs(
+    title = "Impacts to Nature's Contribution to People (NCP)",
+    x = "NCP",
+    y = "Count",
+    fill = "Impact Direction") + facet_wrap(~X2.2.Subtype, scales = "fixed")
+ncp_by_subflow3
+
 #############################################################
 ### HWB Impacts ###########################################
 #########################################################
@@ -762,6 +789,18 @@ ggplot(altered_flow_data[X2.2.Subtype == "migration", ], aes(x = altered_flow, f
     size = "Count",
     fill = "Impact Direction")
 
+# vs disease spread
+ggplot(altered_flow_data[X2.2.Subtype == "disease spread", ], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Transboundary Disease Spread",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+
 ###########################################################################################
 ### Do figures by top driver(s) #############################################################################
 #######################################################################################
@@ -957,8 +996,7 @@ driver_alter <-  ggplot(d_s[X2.2.Subtype == "disease spread",], aes(x = driver, 
     size = "Count",
     color = "Impact Direction"
   ) +
-  theme_minimal() +
-  theme(
+  theme_minimal() + theme(
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
@@ -1014,8 +1052,6 @@ driver_flow_impact %>%
 
 # need to clean up the driver names - show fewer in the main and put the missing ones in the SI?
 driver_flow_impact$driver <- gsub("\\.", " ", driver_flow_impact$driver)
-
-
 
 driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = driver, y = impact, size = count_driver_impact, color = direction)) +
   geom_point(alpha = 0.4) +  # Add points with alpha transparency
