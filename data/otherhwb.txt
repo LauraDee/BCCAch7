@@ -1,0 +1,115 @@
+"x"
+"1" "Food shortages; relocation of tribal communities; Cultural heritage; Connection to ancestral lands"
+"2" ""
+"3" "Food security; cultural knowledge; social capital; economic vulnerability; community well-being"
+"4" "recently, private regimes aim to provide public orderly systems in addition to the private company’s profits, since companies incorporate climate-related actions into their core business activities (Porter and Reinhardt 2007); Even though the implementation of standards in a private company can be effective, endorsement by international
+organizations or third parties is needed to establish norms, reviews, and monitoring
+mechanisms (Darnall and Carmin 2005; Green 2014); Klingebiel and Paulo (2015) state that
+governments and international organizations will be orchestrators by providing instruments.
+Abbott and Hale (2014) stress that the orchestrator must possess four characteristics:
+legitimacy, focality, resources, and organizational culture; under conditions
+of uncertainty or risk, companies will respond to climate change in industry-specific
+ways and base their visions of climate-related actions on rigorous scenario analyses. Industry associations—working together with international organizations and third parties—will be well positioned to guide companies in the development of these critical scenarios."
+"5" NA
+"6" "food security; sovereignty; nutrition; biocultural well-being; intertribal networking; knowledge sharing; cultural significance; stewardship; care; relationship with cultural foods"
+"7" "increase human–bear conflicts"
+"8" "water security; physical security"
+"9" "health"
+"10" "hydroelectric power generation ;; water supply ;; government flood warning"
+"11" "a major health threat; adverse health effects in humans; causing a $3.3 billion loss to the US economy; cultural and relational impacts"
+"12" "\"\"\"\"\"\"\"\"The ideal climate for tourism should provide basic levels of comfort, enjoyment, and safety\"\"\"\"\"\"\"\""
+"13" "aesthetic values; recreational hunting; subsistence hunting"
+"14" "water supply, food security"
+"15" "food security"
+"16" "Livelihoods tied to forest industry;; respiratory health"
+"17" "Livelihood and income security"
+"18" "1.5 million water-related jobs, $62 million in wages"
+"19" "Enjoyment of natural beauty; Shelter"
+"20" "food security; Livelihood and income security"
+"21" "cultural services related to aestheticism and cultural meaningfulness ;; social acceptability of forestry practices;; feedstock sovereignty"
+"22" "In the United States, society benefits from the estimated $3 billion that the livestock industry saves annually by having the country free of cattle fever ticks and bovine babesiosis since 1943, through the efforts of the Cattle Fever Tick Eradication Program (Perez de Leon et al., 2010, 2012). In contrast, recent studies suggest that infestation with the southern cattle fever tick, Rhipicephalus microplus, costs $3.24 billion annually in losses to the Brazilian livestock industry (Grisi et al., 2014), and $573.61 million to producers in Mexico (Rodr´ıguez-Vivas et al., 2016a). Regarding public health, it has been estimated that in the United States, between $712 million and $1.3 billion are spent annually in direct medical expenses attributed to Lyme disease (LD), which is tick-borne and considered to be the most prevalent human arthropod-borne disease in the United States and Europe (Adrion et al., 2015)."
+"23" "Economic livelihoods; Treaty-based water rights; Social cohesion from collaborative processes; Cultural significance of endangered and threatened fish species for Native American tribes"
+"24" "water rights"
+"25" "These principles – either drawn from the evolution of key-concepts within the “water box” or derived from general environmental and social ethics – represent the basics for achieving ethical responsibility in integrated, sustainable, and equitable water resource development, particularly for agricultural use."
+"26" "exotic mosquito-borne disease"
+"27" "Eastern white pine is considered a “cultural keystone species” that greatly shaped the identity of Native American Tribes and European settlers (Uprety et al., 2013). The Kitcisakik Algonquin community of Canada places high value on the ecological restoration of this species on their ancestral land (Asselin, 2015, Uprety et al., 2013), as does the Menominee community of northern Wisconsin (Wood and Dewhurst, 1998). The Iroquoians of the Saint Lawrence Valley considered it a “Tree of Peace” (Quenneville, 2007). Eastern white pine was a key component of daily living such that the resin, bark, wood, and needles were used for construction, food, and medicine (Krochmal et al., 1969). This tree is also an integral part of Native Americans’ traditional stories and myths, and art forms (Asselin, 2015). At the time of European Settlement, eastern white pine trees captured the imagination of many European explorers, naturalists, and writers. Currently, eastern white pine is the state tree of Maine and Michigan, U.S., the provincial tree of Ontario, Canada, and it continues to be an important cultural icon for eastern North American forests (Ontario-MNRF., 2014, USDA-USNA., 2016)."
+"28" "primary food source"
+"29" "chronic disease; infectious disease"
+"30" "global public health;; morbidity ;; mortality"
+"31" "disease"
+"32" "food, shelter, recreation"
+"33" "Most of the human infectious diseases, especially caused by the viral pathogens that are surfacing recently, originate from animals and presents a significant global health burden. The total number of confirmed cases are 27,19,185 (Figure 1) as of 25th April 2020 declared by WHO. In European region the number of incidences is highest with 13,14,666 cases, followed by the Region of America with 10,47,508 cases. "
+"34" "human disease"
+"35" "Now, thousands of human WNV cases are reported annually, representing what is likely to be just a small fraction of the true incidence rate (Petersen and Hayes 2004)."
+"36" "More tick borne disease in some geographic locations"
+"37" "economic obstacles; recreational opportunities; carbon sequestered per unit of land area; return on investment; soil erosion; employment; tourism; cost of treatment for ecological damages"
+"38" "agricultural yield; livelihoods; higher vulnerability in developing countries"
+"39" "human health, risk mitigation, drinking water quality"
+"40" "Orthobunyaviruses are the second leading cause of morbidity from domestic arboviral infections in both Canada and the United States, and can predispose patients to
+chronic sequelae (Fagre et al., 2023; Public Health Agency of Canada, 2023; Soto et al., 2022; Vahey et al., 2021). Infections are likely underdiagnosed (Dimitrova et al., 2011;
+Makowski et al., 2011), and since reporting is based on passive surveillance, the true health burden of orthobunyaviral diseases is unknown (Totten et al., 2019)."
+"41" "food production; equity/access to benefits"
+"42" "provision of community drinking water supply; recreational water uses; domestic use; industrial uses; ecotourism; angling; fish supply; Religious, recreational, educational, and tourism uses"
+"43" "subsistence; sustenance; drinking water; hunting; fishing; travel; spiritual purposes; recreation; feeding dog sled teams"
+"44" "Thirteen cases contributed to just transitions. Most used multiple
+strategies, mainly protest and civil disobedience, which was reported
+most frequently in relation to this outcome (77%). The term ‘justice
+and energy transition’ in the literature has several connotations. These
+movements aim to achieve justice by confronting hydrocarbon regimes
+from different perspectives: intergenerational justice, justice for
+indigenous and tribal peoples, and justice for ethnic minorities. Just
+transition thus requires the involvement of the local communities, local
+workers and indigenous people directly affected by the projects.
+Moreover, justice is pursuable when the activist’s values and responses
+towards the hydrocarbon regime are supported by the resistance culture
+of a particular group of people who were oppressed or negatively
+affected by the hydrocarbon economy.
+
+Moreover, studies based on the global Environmental Justice Atlas (EJAtlas) (P´erez-Rinc´on et al., 2019; Scheidel et al., 2020; Temper et al., 2020) have explored how mobilisations
+around fossil fuel conflicts can positively contribute to more just and sustainable transitions."
+"45" "Health implications; economic impact; food supply; water supply"
+"46" "Tropical fisheries substantially contribute to the well-being of societies in both the tropics and the extratropics, the latter through ‘telecoupling’ — linkages between distant human–natural systems. ;; trans- boundary fisheries resources ;; employment opportunities of fish-processing industries"
+"47" "threaten human life; threaten infrastructure, imperiled natural and cultural resources"
+"48" "human health after consumption"
+"49" "Chronic exposure in pregnant women via fish consump- tion, even at the modest levels, can impact intellectual development in infants, which is considered as a global environmental health issue. "
+"50" "The human impact of mercury exposure is wide- spread throughout the world, causing a variety of neurological health consequences, primarily through consumption of fish and shellfish (USEPA 2018). Many of the fish species with advisories are popular for anglers who feed themselves and their families with locally caught fish. Indeed, for many communi- ties and families experiencing financial hardship, eat- ing locally caught fish is an essential protein source (Quimby et al. 2020). Additionally, catching and con- suming fish is a sovereign right for the Tribal Nations marking an essential social practice and source of economic sustenance for indigenous communities (Cantzler and Huyn 2016). Thus, the widespread mer- cury contamination of fish populations across the U.S. marks a stark environmental justice issue"
+"51" "livelihoods; public health; human lives at risk; current [water] supplies"
+"52" "public health ;; water supply ;; water recreational use ;; water purification ;; agriculture ;; energy production"
+"53" "\"\"\"\"\"\"\"\"curbing deforestation, sus- taining increased seafood yields, improving livelihoods, empowering concession holders, and reducing conflicts with the large-scale shrimp industry\"\"\"\"\"\"\"\""
+"54" "Harvest and use of wild native species represents a significant component of the culture"
+"55" "human food security"
+"56" "subsistence hunting; indigenous lifestyles"
+"57" "Examples of such surprises include zoonotic disease outbreaks (such as the recent Zika virus crisis) or food price shocks such as the 2008–09 “food crisis” (Galaz et al., 2011)."
+"58" "Physical health, risk of disease"
+"59" "Impact on human health"
+"60" "Public health"
+"61" "emerging infectious diseases"
+"62" "vector borne disease"
+"63" "public health"
+"64" "Borrelia burgdorferi is a bacterial species that causes an emerging zoonotic tick-borne disease known as Lyme borreliosis."
+"65" "This species is the primary vector for Rickettsia rickettsii—the bacterium causing Rocky Mountain spotted fever in humans and domestic or companion animals. It also is reportedly capable of transmitting Coxiella burnetii and Francisella tularensis [13]. Consequently, expansion of its geographic range poses a significant public health problem in areas previously free of this vector species [14]."
+"66" "lower socioeconomic status from job and tourism losses; possible displacement"
+"67" "The impacts of insects on forests extend beyond the levels of tree mortality caused and associated cascading ecological effects. For example, bark beetle epidemics may increase water yield yet diminish water quality because of pulses of concentrated nutrients and suspended sediment loads (Mikkelson et al. 2013), as well as degrade air quality by the release of volatile organic compounds and biogenic aerosols (Berg et al. 2013). Landscape aesthetics are important drivers of naturebased tourism and may be negatively affected (Morris et al. 2018). In the wildlandurban interface, concerns are often more practical and focused on property values, hazard trees, and fire risk (Cohen and other 2016). Interestingly, a notable western pine beetle outbreak in southern California affected how homes were advertised and sold (Fettig 2019). "
+"68" "food security; attachment to place; living environment; economic wealth"
+"69" "sustaining cultures and knowledge"
+"70" "Food; air; water quality"
+"71" "\"\"\"\"\"\"\"\"spiritual connection and sense of place\"\"\"\"\"\"\"\""
+"72" "economically and culturally important species; commercial fishing portfolios"
+"73" "Food security; cultural knowledge; social capital; economic vulnerability; community well-being; infrastructure development; freedom to adapt in place; cultural and spiritual practices; access to ancestral lands"
+"74" "food security; sovereignty; nutrition; biocultural well-being; cultural ceremonies; traditional diets; medicinal practices; intertribal networking; knowledge sharing; relationship with the land and its stories; cultural identity"
+"75" "distribution and productivity of fisheries;; dependability on hydropower;; desirable tourism activities;; availability of shellfish that support locally important subsistence and personal use fisheries;; Conflicts among fisheries may emerge if potentially negative impacts reduce the allowable catch;; Wild food sources remain vital to cultural activities for residents, especially in remote First Nation and Alaskan Native communities"
+"76" "drinking water; fish supply; recreational water uses; spiritual tradition, peoples’ identity, and aesthetic and recreational values of the landscape"
+"77" "food security;  human health"
+"78" "This species is the primary vector for a greater variety of tick-borne diseases than any human or animal biting tick in North America, including the bacteria causing Lyme disease, human granulocytic anaplasmosis, tick-borne relapsing fever, human babesiosis, ehrlichiosis [1] and the virus causing Powassan illness."
+"79" "food security; spiritual values"
+"80" "Reduced food security; health risk"
+"81" "“Planned resettlement to reduce climate change vulnerability will often involve sub stantial risks to health and wellbeing. Where necessary, the social and health costs of resettlement can be minimized by allowing adequate time for community consultation and planning, paying compensation at a level equal to the standard of housing and materi als in the host community, ensuring that the money and resources made available to assist communities to relocate is spent on those communities, avoiding payments to inter mediaries, employing the people being moved wherever labor is required, and providing sup port for housing, health services, mental health services, employment, and education. As far as is possible, populations must want to move and must have active influence in all stages of the decisionmaking and resettlement pro cesses (Barnett and Webber 2010; Biermann and Boas 2008; Cernea 1997; Cernea and McDowell 2000; Johnson and Krishnamurthy 2010).” ([McMichael et al., 2012, p. 651](zotero://select/library/items/ULVSWDCU)) ([pdf](zotero://open-pdf/library/items/2888YDQ2?page=6&annotation=LUQ42XNB))"
+"82" "hunting;; tourism activities"
+"83" " country and traditional foods have important cultural, spiritual, and social values to northern communities "
+"84" "learning"
+"85" "indigenous livelihoods; traditional skills and knowledge"
+"86" "food sovereignty"
+"87" "subsistence; sustenance; drinking water; hunting; fishing; travel; spiritual purposes; recreation; feeding dog sled teams; building houses; driftwood collection"
+"88" "\"\"\"\"\"\"\"\"Access to, or loss of benefits from, biodiversity and nature's contributions to people on which their livelihoods depend\"\"\"\"\"\"\"\"; \"\"\"\"\"\"\"\"Cultural connections to biodiversity, as emphasized in the post-2020 Global Biodiversity Framework\"\"\"\"\"\"\"\"; \"\"\"\"\"\"\"\"Equity and justice by ensuring Indigenous communities have a voice in governance\"\"\"\"\"\"\"\"; \"\"\"\"\"\"\"\"Participatory approaches and decentralized governance structures that bring communities together\"\"\"\"\"\"\"\"; \"\"\"\"\"\"\"\"Integrating Indigenous and Local Knowledge (ILK) in biodiversity conservation strategies enhances understanding and management\"\"\"\"\"\"\"\"."
+"89" "agricultural production"
+"90" "drinking water source quality"

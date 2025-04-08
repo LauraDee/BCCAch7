@@ -13,6 +13,7 @@ library(dplyr)
 library(plyr)
 library(cowplot)
 library(data.table)
+library(fields)
 
 "%notin%" <- Negate("%in%")
 
@@ -105,9 +106,9 @@ driver_impact_hwb = merge(driver_impact_data,
 ##########################################
 ##### Basic Summary Stat Figures ########
 ########################################
-
 reshaped_data$V1 = NULL
 reshaped_data$X = NULL
+
 ## Summary Stats on the Flow and Subflow:
 subflowcount <- reshaped_data %>%
   ggplot(aes(x = fct_infreq(X2.2.Subtype), fill = X2.1.Flow.Type)) +
@@ -232,7 +233,6 @@ driver_impact_data = driver_impact_data[driver == "Hurricanes", driver := "Extre
 driver_impact_data = driver_impact_data[driver =="extreme.weather", driver := "Extreme Events"]
 driver_impact_data = driver_impact_data[driver =="heat.waves", driver := "Extreme Events"]
 driver_impact_data = driver_impact_data[driver =="natural.disasters", driver := "Extreme Events"]
-
 
 driver_impact_data$driver <- gsub("\\.", " ", driver_impact_data$driver)
 #grouping extreme events 
@@ -530,6 +530,101 @@ ncp_by_subflow3 <- ggplot(i_s, aes(x = fct_infreq(ncp), fill = ncp_direction)) +
     fill = "Impact Direction") + facet_wrap(~X2.2.Subtype, scales = "fixed")
 ncp_by_subflow3
 
+
+### count summary stats
+table(NCP_data$ncp)
+#which had less than 10
+#Acidication (3), Air quality (6),Energy (7), Pollination (7), Medicicanl n=8 
+
+food = NCP_data[ncp == "Food Feed",]
+food_perc <- food %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(food_perc) 
+
+#habitat = 41
+hab = NCP_data[ncp == "Habitat",]
+data = hab
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+#freshwater = 34
+fw = NCP_data[ncp == "Freshwater",]
+data = fw
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+wq = NCP_data[ncp == "Water Quality",]
+data = wq
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+# 22 for organisms
+org = NCP_data[ncp == "Organisms",]
+data = org
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+#22 for identities 
+Identities = NCP_data[ncp == "Identities",]
+data = Identities
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+# n btwn 10-19 materials experiences options, hazards, soil protection, learning 
+exp = NCP_data[ncp == "Experiences",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Options",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Hazards",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Learning",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Soil Protection",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Materials",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
 #############################################################
 ### HWB Impacts ###########################################
 #########################################################
@@ -586,8 +681,14 @@ hwb_top5_sub <- ggplot(i_s, aes(x = fct_infreq(hwb), fill = hwb_direction)) +
     fill = "Impact Direction")
 hwb_top5_sub + facet_wrap(~X2.2.Subtype)
 
+#calc % of each HWB dimension
+hwb_perc <- hwb_data %>%
+  group_by(hwb) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(hwb_perc) 
 
-#calc % - this is overall but should be done by HWB dimension
+
 hwb_perc <- hwb_data %>%
   group_by(hwb, hwb_direction) %>%
   dplyr::summarise(n = n()) %>%
@@ -625,6 +726,45 @@ welfare_perc <- welfare %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
 print(welfare_perc) 
+welfare_perc$Percent <- welfare_perc$prop*100
+
+#Welfare Trends by Flow Type
+ggplot(welfare_perc, aes(X2.1.Flow.Type, hwb_direction, fill= Percent)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="grey", high="black") + coord_flip() + theme_classic() +
+  labs(
+    title = "Impacts to Human Welfare from Altered Flow",
+    x = "Flow Type",
+    y = "Trends of change",
+    fill = "Weight of Evidence (%)")
+
+#welfare by subflow
+welfare = hwb_data[hwb == "Welfare",]
+welfare_perc <- welfare %>%
+  group_by(hwb_direction,  X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(welfare_perc) 
+
+length(unique(welfare_perc$X2.2.Subtype))
+# 18 unique subflows associated with welfare change
+welfare_perc$Percent <- welfare_perc$prop*100
+
+## Welfare Trends by Subflow Type 
+ggplot(welfare_perc, aes(X2.2.Subtype, hwb_direction, fill= Percent)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="grey", high="black") + coord_flip() + theme_classic() +
+  labs(
+    title = "Impacts to Human Welfare from Altered Flow",
+    x = "Flow Type",
+    y = "Trends of change",
+    fill = "Weight of Evidence (%)")
 
 # Relational 
 relational = hwb_data[hwb == "Relational",]
@@ -632,7 +772,8 @@ relational_perc <- relational %>%
   group_by(hwb_direction) %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
-print(relational_perc) 
+print(relational_perc)
+
 #relational by flow
 relational = hwb_data[hwb == "Relational",]
 relational_perc <- relational %>%
@@ -640,6 +781,45 @@ relational_perc <- relational %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
 print(relational_perc) 
+
+relational_perc$Percent <- relational_perc$prop
+
+## Relational Well-being Trends by Flow Type 
+ggplot(relational_perc, aes( X2.1.Flow.Type, hwb_direction, fill= Percent)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="grey", high="black") + coord_flip() + theme_classic() +
+  labs(
+    title = "Impacts to Relational Well-being from Altered Flow",
+    x = "Flow Type",
+    y = "Trends of change",
+    fill = "Weight of Evidence (%)")
+
+#relational by subflow
+relational = hwb_data[hwb == "Relational",]
+relational_perc <- relational %>%
+  group_by(hwb_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(relational_perc) 
+
+relational_perc$Percent <- relational_perc$prop*100
+print(relational_perc) 
+
+## Relational Well-being Trends by Subflow Type 
+ggplot(relational_perc, aes(X2.2.Subtype, hwb_direction, fill= Percent)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="grey", high="black") + coord_flip() + theme_classic() +
+  labs(
+    title = "Impacts to Relational Well-being from Altered Flow",
+    x = "Flow Type",
+    y = "Trends of change",
+    fill = "Weight of Evidence (%)")
 
 #Justice
 Justice = hwb_data[hwb == "Justice",]
@@ -657,12 +837,37 @@ Justice_perc <- Justice %>%
   mutate(prop = n / sum(n))
 print(Justice_perc) 
 
+Justice = hwb_data[hwb == "Justice",]
+Justice_perc <- Justice %>%
+  group_by(hwb_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+print(Justice_perc) 
+
+Justice_perc$Percent <- Justice_perc$prop*100
+
+ggplot(Justice_perc, aes(X2.2.Subtype, hwb_direction, fill= Percent)) + 
+  geom_tile() +
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 75, 150, 225, 300)) + 
+  scale_fill_gradient(low="grey", high="black") + coord_flip() + theme_classic() +
+  labs(
+    title = "Impacts to well-being from justice from Altered Flow",
+    x = "Flow Type",
+    y = "Trends of change",
+    fill = "Weight of Evidence (%)")
+
+
+#what are the other human well-being dimensions 
+print(unique(reshaped_data$X2.21.Well.being.List))
+other_hwb <- print(unique(reshaped_data$X2.21.Well.being.List))
+write.table(other_hwb, file ="data/otherhwb.txt")
+
 ############################################################################################
 ### DO NCP and HWB Impacts FOR TOP SUBFLOWS ONLY ###########################################
 #######################################################################################
 #do for the top subflows only
-
-
 
 
 #############################################################
@@ -885,32 +1090,31 @@ d_s <- subset(driver_flow_impact, driver %in% top10_driver)
 d_s <- subset(d_s, impact %in% top7_impact)
 d_s$driver <- gsub("\\.", " ", d_s$driver)
 
-
 ##### HEAT MAPS #######################
 # driver by flow counts for all
-ggplot(driver_flow_impact, aes(driver, altered_flow, fill= count_driver_alteredflow)) + 
-  geom_tile() +
-  scale_size_continuous(range = c(1, 8), 
-                        limits = c(0, 300), 
-                        breaks=c(1, 75, 150, 225, 300)) + 
-  scale_fill_gradient(low="white", high="blue") + coord_flip()
-
-ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteredflow)) +
-  geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
-  scale_size_continuous(range = c(1, 8), 
-                        limits = c(0, 300), 
-                        breaks=c(1, 75, 150, 225, 300)) +   # Adjust size range for better visibility
-  labs(
-    title = "Interaction Between Altered Flows and Impacts",
-    x = "Altered Flow",
-    y = "Impact",
-    size = "Count"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
-  )
+# ggplot(driver_flow_impact, aes(driver, altered_flow, fill= count_driver_alteredflow)) + 
+#   geom_tile() +
+#   scale_size_continuous(range = c(1, 8), 
+#                         limits = c(0, 300), 
+#                         breaks=c(1, 75, 150, 225, 300)) + 
+#   scale_fill_gradient(low="white", high="blue") + coord_flip()
+# 
+# ggplot(driver_flow_impact, aes(x = driver, y = altered_flow, size = count_driver_alteredflow)) +
+#   geom_point(color = "blue", alpha = 0.7) +  # Use points to represent combinations
+#   scale_size_continuous(range = c(1, 8), 
+#                         limits = c(0, 300), 
+#                         breaks=c(1, 75, 150, 225, 300)) +   # Adjust size range for better visibility
+#   labs(
+#     title = "Interaction Between Altered Flows and Impacts",
+#     x = "Altered Flow",
+#     y = "Impact",
+#     size = "Count"
+#   ) +
+#   theme_minimal() +
+#   theme(
+#     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+#     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+#   )
 
 # FOR USE IN REPORT #
 #with directionality of how flow is altered
@@ -937,6 +1141,46 @@ driver_alter
 
 driver_alter +  scale_size_continuous(range = c(1, 5)) + facet_wrap(~X2.1.Flow.Type, scales = "fixed")
 
+
+### do with the rainbow colors to color by weight of evidence
+
+d_s  <- d_s %>%
+  mutate(reorder_driver = fct_infreq(driver))
+
+d_s$reorder_driver <- factor(d_s$reorder_driver,
+                      levels= rev(levels(d_s$reorder_driver)))
+
+driver_altered_flow_final <- ggplot(d_s, 
+                              aes(x = altered_flow, y = reorder_driver, size = count_driver_alteration, color = count_driver_alteration)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks
+  labs(
+    title = "Changes to flow from climate drivers",
+    x = "Alteration of Flow",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_altered_flow_final
+
+
+### do for subflows
+
 # for range shifts only
 driver_alter <-  ggplot(d_s[X2.2.Subtype == "range-shift",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
   geom_point(alpha = 0.4) +  # Add points with alpha transparency
@@ -958,6 +1202,7 @@ driver_alter <-  ggplot(d_s[X2.2.Subtype == "range-shift",], aes(x = driver, y =
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 driver_alter
+
 
 #for knowledge transfer only
 driver_alter <-  ggplot(d_s[X2.2.Subtype == "knowledge transfer",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
@@ -1029,6 +1274,8 @@ summary(driver_flow_impact$count_driver_altflow_bdimpact)
 
 driver_flow_impact[,count_driver_impact:=.N, by=.(driver, impact)]
 
+driver_flow_impact[,count_driver_impact_direction:=.N, by=.(driver, impact, direction)]
+
 driver_flow_impact %>%
   ggplot(aes(driver, impact)) +
   geom_raster(aes(fill = count_driver_impact))
@@ -1053,7 +1300,7 @@ driver_flow_impact %>%
 # need to clean up the driver names - show fewer in the main and put the missing ones in the SI?
 driver_flow_impact$driver <- gsub("\\.", " ", driver_flow_impact$driver)
 
-driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = driver, y = impact, size = count_driver_impact, color = direction)) +
+driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = impact, y = driver, size = count_driver_impact_direction, color = direction)) +
   geom_point(alpha = 0.4) +  # Add points with alpha transparency
   facet_wrap(~direction, scales = "fixed") +  # Create facets for each NCP direction
   scale_size_continuous(range = c(1, 8), 
@@ -1062,8 +1309,8 @@ driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = driver, y = impact, size 
   scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey70")) + 
   labs(
     title = "Driver-Biodiversity Impact",
-    x = "Driver",
-    y = "Biodiversity Impact",
+    x = "Biodiversity Impact",
+    y = "Driver",
     size = "Count",
     color = "Impact Direction"
   ) +
@@ -1075,6 +1322,44 @@ driver_bdimpact <-  ggplot(driver_flow_impact, aes(x = driver, y = impact, size 
 driver_bdimpact
 
 driver_bdimpact + facet_wrap(~impact.group, scale = fixed)
+
+## CREATE FACTOR TO ORDER
+driver_flow_impact <- driver_flow_impact %>%
+  mutate(reorder_driver = fct_infreq(driver))
+
+driver_flow_impact$reorder_driver <- factor(driver_flow_impact$reorder_driver,
+                                            levels= rev(levels(driver_flow_impact$reorder_driver)))
+
+## FINAL 
+#rainbow color by weight of evidence 
+final_driver_impact <- ggplot(driver_flow_impact, 
+       aes(x = impact, y = reorder_driver, size = count_driver_impact_direction, color = count_driver_impact_direction)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~direction, scales = "fixed") + # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks
+  # scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey70")) + 
+  labs(
+    title = "Driver Impacts to Biodiversity",
+    x = "Biodiversity Dimension",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+final_driver_impact 
 
 
 #for just range shifts
@@ -1098,6 +1383,85 @@ driver_bdimpact <-  ggplot(driver_flow_impact[X2.2.Subtype == "range-shift",], a
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 driver_bdimpact
+
+###################################################################
+## NCP Impacts - heat maps for NCP##############################
+##########################################################################################
+#data prep 
+
+#clean a couple of things
+driver_impact_ncp$driver <- gsub("\\.", " ", driver_impact_ncp$driver)
+driver_impact_ncp$ncp <- gsub("\\.", " ", driver_impact_ncp$ncp)
+
+#create counts of different dimensions
+driver_impact_ncp[,count_driver_ncp:=.N, by=.(driver, ncp)]
+driver_impact_ncp[,count_driver_ncp_direction:=.N, by=.(driver, ncp,  ncp_direction)]
+
+# combo of BD impact and NCP impact
+driver_impact_ncp[,count_BDimpact_NCPimpact:=.N, by=.(impact, direction, ncp,  ncp_direction)]
+#that with driver
+driver_impact_ncp[,count_driver_BDimpact_NCPimpact:=.N, by=.(driver, impact, direction, ncp,  ncp_direction)]
+summary(driver_impact_ncp$count_driver_BDimpact_NCPimpact)
+
+driver_heat_NCP <- ggplot(driver_impact_ncp, aes(x = ncp, y = driver, size = count_driver_ncp_direction, color = ncp_direction)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~ncp_direction, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8), 
+                        limits = c(0, 300), 
+                        breaks=c(1, 15, 30, 50, 120)) +  # Adjust size range and breaks
+  scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey70")) + 
+  labs(
+    title = "Driver Impacts to Nature's Contribution to People",
+    x = "Nature's Contribution to People",
+    y = "Driver",
+    size = "Count",
+    color = "Impact Direction"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_heat_NCP 
+
+
+## CREATE FACTOR TO ORDER
+driver_impact_ncp <- driver_impact_ncp %>%
+  mutate(reorder_driver = fct_infreq(driver))
+
+driver_impact_ncp$reorder_driver <- factor(driver_impact_ncp$reorder_driver,
+                                            levels= rev(levels(driver_impact_ncp$reorder_driver)))
+
+
+driver_heat_NCP <- ggplot(driver_impact_ncp, 
+                          aes(x = ncp, y = reorder_driver, size = count_driver_ncp_direction, color = count_driver_ncp_direction)) +
+  geom_point(alpha = 0.4) +  # Add points with alpha transparency
+  facet_wrap(~ncp_direction, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks
+  # scale_color_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex Change" = "goldenrod1", "No change (measured)" = "grey70")) + 
+  labs(
+    title = "Driver Impacts to Nature's Contribution to People",
+    x = "Nature's Contribution to People",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+  )
+driver_heat_NCP 
+
 
 ###########################################################################################
 ### ALLUVIALS #############################################################################
