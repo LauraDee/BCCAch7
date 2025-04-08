@@ -1,0 +1,115 @@
+"","impact","direction","X2.1.Flow.Type","n","prop"
+"1","Composition","Complex change","Biotic",41,0.0715532286212914
+"2","Disease","Increase","Biotic",32,0.0558464223385689
+"3","Abundance","Decrease","Biotic",31,0.0541012216404887
+"4","Abundance","Complex change","Biotic",29,0.0506108202443281
+"5","Invasion","Increase","Biotic",27,0.0471204188481675
+"6","Richness","Complex change","Biotic",23,0.0401396160558464
+"7","Trophic","Complex change","Biotic",18,0.031413612565445
+"8","Loss","Complex change","Biotic",14,0.0244328097731239
+"9","Loss","Increase","Biotic",14,0.0244328097731239
+"10","Abundance","Increase","Biotic",11,0.0191972076788831
+"11","Habitat Loss","Increase","Biotic",11,0.0191972076788831
+"12","Management","Complex change","Biotic",11,0.0191972076788831
+"13","Connectivity","Decrease","Biotic",10,0.0174520069808028
+"14","Richness","Decrease","Biotic",10,0.0174520069808028
+"15","Composition","Complex change","Physical",9,0.0157068062827225
+"16","Composition","Increase","Biotic",9,0.0157068062827225
+"17","Genetics","Complex change","Biotic",9,0.0157068062827225
+"18","Connectivity","Complex change","Biotic",8,0.0139616055846422
+"19","Other","Increase","Physical",8,0.0139616055846422
+"20","Abundance","Complex change","Physical",7,0.012216404886562
+"21","Abundance","Decrease","Physical",7,0.012216404886562
+"22","Composition","Increase","Physical",7,0.012216404886562
+"23","Genetics","Decrease","Biotic",7,0.012216404886562
+"24","Habitat Loss","Increase","Human movement",7,0.012216404886562
+"25","Trophic","Increase","Biotic",7,0.012216404886562
+"26","Composition","Complex change","Sociocultural",6,0.0104712041884817
+"27","Invasion","Complex change","Biotic",6,0.0104712041884817
+"28","Management","Increase","Biotic",6,0.0104712041884817
+"29","Abundance","Decrease","Sociocultural",5,0.0087260034904014
+"30","Disease","Complex change","Biotic",5,0.0087260034904014
+"31","Management","Increase","Sociocultural",5,0.0087260034904014
+"32","Richness","Complex change","Physical",5,0.0087260034904014
+"33","Trophic","Increase","Physical",5,0.0087260034904014
+"34","Urbanization","Increase","Biotic",5,0.0087260034904014
+"35","Abundance","Increase","Physical",4,0.00698080279232112
+"36","Disease","No change (measured)","Biotic",4,0.00698080279232112
+"37","Genetics","No change (measured)","Biotic",4,0.00698080279232112
+"38","Habitat Restoration","Complex change","Biotic",4,0.00698080279232112
+"39","Habitat Restoration","Decrease","Biotic",4,0.00698080279232112
+"40","Indigenous Knowledge","Increase","Sociocultural",4,0.00698080279232112
+"41","Loss","Increase","Physical",4,0.00698080279232112
+"42","Management","Complex change","Sociocultural",4,0.00698080279232112
+"43","Trophic","Complex change","Physical",4,0.00698080279232112
+"44","Composition","No change (measured)","Biotic",3,0.00523560209424084
+"45","Connectivity","Decrease","Sociocultural",3,0.00523560209424084
+"46","Habitat Loss","Decrease","Biotic",3,0.00523560209424084
+"47","Habitat Restoration","Increase","Biotic",3,0.00523560209424084
+"48","Invasion","Increase","Physical",3,0.00523560209424084
+"49","Loss","Decrease","Biotic",3,0.00523560209424084
+"50","Loss","Increase","Sociocultural",3,0.00523560209424084
+"51","Loss","No change (measured)","Biotic",3,0.00523560209424084
+"52","Other","Complex change","Biotic",3,0.00523560209424084
+"53","Other","Decrease","Physical",3,0.00523560209424084
+"54","Other","Increase","Biotic",3,0.00523560209424084
+"55","Other","Increase","Human movement",3,0.00523560209424084
+"56","Richness","Increase","Biotic",3,0.00523560209424084
+"57","Trophic","No change (measured)","Physical",3,0.00523560209424084
+"58","Urbanization","Increase","Human movement",3,0.00523560209424084
+"59","Abundance","Complex change","Sociocultural",2,0.00349040139616056
+"60","Abundance","Increase","Sociocultural",2,0.00349040139616056
+"61","Connectivity","Decrease","Human movement",2,0.00349040139616056
+"62","Connectivity","Decrease","Physical",2,0.00349040139616056
+"63","Connectivity","Increase","Biotic",2,0.00349040139616056
+"64","Connectivity","Increase","Sociocultural",2,0.00349040139616056
+"65","Habitat Loss","Complex change","Biotic",2,0.00349040139616056
+"66","Habitat Restoration","Increase","Sociocultural",2,0.00349040139616056
+"67","Indigenous Knowledge","Complex change","Biotic",2,0.00349040139616056
+"68","Indigenous Knowledge","Decrease","Sociocultural",2,0.00349040139616056
+"69","Indigenous Knowledge","No change (measured)","Biotic",2,0.00349040139616056
+"70","Invasion","No change (measured)","Biotic",2,0.00349040139616056
+"71","Loss","Decrease","Sociocultural",2,0.00349040139616056
+"72","Management","Complex change","Physical",2,0.00349040139616056
+"73","Other","Decrease","Biotic",2,0.00349040139616056
+"74","Richness","Increase","Physical",2,0.00349040139616056
+"75","Richness","No change (measured)","Biotic",2,0.00349040139616056
+"76","Trophic","Complex change","Sociocultural",2,0.00349040139616056
+"77","Trophic","Decrease","Sociocultural",2,0.00349040139616056
+"78","Trophic","No change (measured)","Biotic",2,0.00349040139616056
+"79","Urbanization","No change (measured)","Biotic",2,0.00349040139616056
+"80","Abundance","Decrease","Human movement",1,0.00174520069808028
+"81","Composition","Complex change","Human movement",1,0.00174520069808028
+"82","Composition","Decrease","Biotic",1,0.00174520069808028
+"83","Composition","Decrease","Physical",1,0.00174520069808028
+"84","Connectivity","Complex change","Physical",1,0.00174520069808028
+"85","Connectivity","Increase","Physical",1,0.00174520069808028
+"86","Connectivity","No change (measured)","Biotic",1,0.00174520069808028
+"87","Disease","Increase","Sociocultural",1,0.00174520069808028
+"88","Genetics","Increase","Biotic",1,0.00174520069808028
+"89","Genetics","Increase","Sociocultural",1,0.00174520069808028
+"90","Habitat Loss","Decrease","Human movement",1,0.00174520069808028
+"91","Habitat Loss","Decrease","Physical",1,0.00174520069808028
+"92","Habitat Loss","Increase","Sociocultural",1,0.00174520069808028
+"93","Habitat Loss","No change (measured)","Biotic",1,0.00174520069808028
+"94","Habitat Restoration","Complex change","Physical",1,0.00174520069808028
+"95","Habitat Restoration","Increase","Human movement",1,0.00174520069808028
+"96","Habitat Restoration","No change (measured)","Biotic",1,0.00174520069808028
+"97","Indigenous Knowledge","Complex change","Sociocultural",1,0.00174520069808028
+"98","Indigenous Knowledge","Decrease","Human movement",1,0.00174520069808028
+"99","Invasion","Increase","Sociocultural",1,0.00174520069808028
+"100","Loss","Complex change","Sociocultural",1,0.00174520069808028
+"101","Loss","Decrease","Physical",1,0.00174520069808028
+"102","Loss","No change (measured)","Physical",1,0.00174520069808028
+"103","Management","Decrease","Sociocultural",1,0.00174520069808028
+"104","Management","No change (measured)","Biotic",1,0.00174520069808028
+"105","Management","No change (measured)","Physical",1,0.00174520069808028
+"106","Management","No change (measured)","Sociocultural",1,0.00174520069808028
+"107","Other","Complex change","Human movement",1,0.00174520069808028
+"108","Other","Complex change","Physical",1,0.00174520069808028
+"109","Other","No change (measured)","Biotic",1,0.00174520069808028
+"110","Other","No change (measured)","Physical",1,0.00174520069808028
+"111","Richness","Decrease","Physical",1,0.00174520069808028
+"112","Trophic","Complex change","Human movement",1,0.00174520069808028
+"113","Urbanization","Complex change","Human movement",1,0.00174520069808028
+"114","Urbanization","Decrease","Biotic",1,0.00174520069808028
