@@ -4,6 +4,14 @@ graphics.off()
 
 #Figures of drivers by flow and impacts and NCP
 
+#notes to self April 7 2025
+# To do if time: heat map with drivers and NCP?
+#   Breaking impacts out by the most studied-subflows, we see:
+#   Alluvial diagram (as the one above) showing the links and weight of connections among climate change drivers, type of flow changes, and NCP categories
+# Alluvial diagram (as the one above) showing the links and weight of connections among climate change drivers, type of flow changes, and human well-being dimensions.
+# Heat maps of gaps and impact directions - 
+# Driver-Impact, Driver - NCP, Driver-HWB by flow .
+
 #load libraries
 library(ggplot2)
 library(tidyverse)
@@ -688,7 +696,6 @@ hwb_perc <- hwb_data %>%
   mutate(prop = n / sum(n))
 print(hwb_perc) 
 
-
 hwb_perc <- hwb_data %>%
   group_by(hwb, hwb_direction) %>%
   dplyr::summarise(n = n()) %>%
@@ -1172,11 +1179,12 @@ driver_altered_flow_final <- ggplot(d_s,
     color = "Count"
   ) +
   theme_minimal() +
-  theme(
+theme(
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
   )
-driver_altered_flow_final
+driver_altered_flow_final 
 
 
 ### do for subflows
@@ -1357,7 +1365,8 @@ final_driver_impact <- ggplot(driver_flow_impact,
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
   )
 final_driver_impact 
 
@@ -1458,7 +1467,8 @@ driver_heat_NCP <- ggplot(driver_impact_ncp,
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-    panel.grid.major = element_line(color = "grey80", linetype = "dotted")
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
   )
 driver_heat_NCP 
 
@@ -1483,7 +1493,7 @@ ggplot(data = driver_flow_impact,
        aes(axis1 = driver, axis2 = altered_flow, axis3 = impact,
            y = count_driver_altflow_bdimpact)) +
   scale_x_discrete(limits = c("Driver", "Altered Flow", "Impact"), expand = c(.2, .05)) +
-  xlab("Causal sequence") +
+  xlab("Pathway to Impact") +
   geom_alluvium(aes(fill = direction)) +
   geom_stratum() +
   geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
@@ -1530,12 +1540,15 @@ driver_to_impact <- ggplot(d_s, aes(axis1 = driver, axis2 = impact))+
 driver_to_impact + facet_wrap(~X2.1.Flow.Type, scale = "free")
 
 
-
 # to do Alluvial diagram (as the one above) showing the
 # links and weight of connections among climate change drivers,
 # type of flow changes, and human well-being dimensions.
 
 
+###################################################################
+## Pathways to Impact Summary Stats##############################
+##########################################################################################
+#data prep
 
 #extract unique combinations
 driver_to_impact
@@ -1544,9 +1557,15 @@ driver_to_impact = driver_flow_impact[,count_driver_alteredflow_impact_direction
 
 driver_to_impact_subtype = driver_flow_impact[,count_driver_alteredflow_impact_direction_sub:=.N, by=.(X2.2.Subtype,driver, altered_flow, impact, direction)]
 
-
 extract = driver_to_impact[unique(count_driver_alteredflow_impact_direction)]
 write.csv(extract, "unique_driver_flow_impact_paths.csv")
 
 extract_subtype = driver_to_impact[unique(count_driver_alteredflow_impact_direction_sub)]
 
+### order them - use the paste function to make a categorical variable of paths
+extract  <- extract  %>%
+  mutate(pathway = fct_infreq(count_driver_alteredflow_impact_direction))
+# 
+# driver_impact_ncp$reorder_driver <- factor(driver_impact_ncp$reorder_driver,
+#                                            levels= rev(levels(driver_impact_ncp$reorder_driver)))
+table(driver_to_impact$count_driver_alteredflow_impact_direction) #this doesnt seem right
