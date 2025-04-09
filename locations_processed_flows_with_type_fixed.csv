@@ -1,0 +1,39 @@
+Flow,Flow_Type,Count
+USA -> CAN,Biotic,44
+CAN <-> USA,Biotic,36
+FIRST PEOPLES <-> CAN,Biotic,5
+TRIBAL <-> USA,Biotic,3
+TRIBAL -> USA,Biotic,1
+specify directionality,Biotic,25
+USA <-> MEX,Biotic,16
+CAN <-> MEX <-> USA,Biotic,5
+CAN <-> MEX,Biotic,5
+MEX -> USA,Biotic,9
+MEX -> CAN,Biotic,2
+CAN -> FIRST PEOPLES,Biotic,3
+CAN -> USA,Biotic,4
+USA -> TRIBAL,Biotic,1
+MEX -> USA,Human movement,10
+TRIBAL -> USA,Human movement,3
+specify directionality,Human movement,9
+FIRST PEOPLES -> CAN,Human movement,1
+USA -> MEX,Human movement,1
+CAN <-> USA,Human movement,2
+CAN <-> USA,Physical,30
+FIRST PEOPLES <-> CAN,Physical,1
+USA -> MEX,Physical,3
+CAN -> USA,Physical,4
+USA <-> MEX,Physical,3
+TRIBAL <-> USA,Physical,2
+USA -> TRIBAL,Physical,1
+CAN -> FIRST PEOPLES,Physical,1
+specify directionality,Physical,1
+specify directionality,Sociocultural,19
+TRIBAL -> USA,Sociocultural,4
+CAN <-> USA,Sociocultural,4
+USA <-> MEX,Sociocultural,2
+TRIBAL <-> USA,Sociocultural,4
+FIRST PEOPLES <-> CAN,Sociocultural,7
+CAN <-> MEX <-> USA,Sociocultural,2
+USA -> CAN,Sociocultural,1
+FIRST PEOPLES -> CAN,Sociocultural,1

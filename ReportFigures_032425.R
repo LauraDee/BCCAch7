@@ -30,6 +30,10 @@ setwd("/Users/lade8828/Library/CloudStorage/OneDrive-UCB-O365/Documents/GitHub/B
 reshaped_data <- fread("data/008_preppedata_forsynthesis.csv")
 impact.group <- fread("data/data_cleaning/impact_group.csv")
 
+# print list of papers for Appendix - Citations and DOI
+cites = subset(reshaped_data, select = c("Citation","DOI"))
+write_csv(cites, "appendix2.5.SystematicReviewPapers.csv")
+
 ## reshape data 
 driver_data = melt(reshaped_data,
                    id.vars=c("ID_DOI_by_Flow", "X2.1.Flow.Type", "X2.2.Subtype","DOI"),
@@ -526,6 +530,9 @@ Impacts_top5_subflow <- ggplot(i_s, aes(x = fct_infreq(impact), fill = direction
     color = "Impact Direction") + coord_flip()
 Impacts_top5_subflow  
 
+#https://ggplot2.tidyverse.org/reference/facet_grid.html
+Impacts_top5_subflow  + facet_grid(rows = vars(X2.2.Subtype))
+
 #############################################################
 ### NCP Impacts #############################################
 ##############################################################
@@ -699,6 +706,11 @@ data %>%
   group_by(ncp_direction) %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
 
 exp = NCP_data[ncp == "Soil Protection",]
 data = exp
@@ -714,6 +726,53 @@ data %>%
   dplyr::summarise(n = n()) %>%
   mutate(prop = n / sum(n))
 
+exp = NCP_data[ncp == "Materials",]
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+# for gaps section
+exp = NCP_data[ncp == "Pollination",]
+data = exp
+data %>%
+  group_by(ncp_direction) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Acidification",]
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Air Quality",]
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Medicinal",]
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
+
+exp = NCP_data[ncp == "Soil Protection",]
+data = exp
+data %>%
+  group_by(ncp_direction, X2.2.Subtype) %>%
+  dplyr::summarise(n = n()) %>%
+  mutate(prop = n / sum(n))
 #############################################################
 ### HWB Impacts ###########################################
 #########################################################
@@ -1058,7 +1117,7 @@ socioalter + facet_wrap(~X2.2.Subtype)
 #######################################################################################
 
 # do for just range shift 
-ggplot(altered_flow_data[X2.2.Subtype == "range-shift", ], aes(x = altered_flow, fill = alteration)) +
+range = ggplot(altered_flow_data[X2.2.Subtype == "range-shift", ], aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   theme_minimal() +
@@ -1068,9 +1127,10 @@ ggplot(altered_flow_data[X2.2.Subtype == "range-shift", ], aes(x = altered_flow,
     x = "Changes to Flow",
     size = "Count",
     fill = "Impact Direction")
+range
 
 # vs migration
-ggplot(altered_flow_data[X2.2.Subtype == "migration", ], aes(x = altered_flow, fill = alteration)) +
+migration = ggplot(altered_flow_data[X2.2.Subtype == "migration", ], aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   theme_minimal() +
@@ -1080,9 +1140,10 @@ ggplot(altered_flow_data[X2.2.Subtype == "migration", ], aes(x = altered_flow, f
     x = "Changes to Flow",
     size = "Count",
     fill = "Impact Direction")
+migration
 
 # vs disease spread
-ggplot(altered_flow_data[X2.2.Subtype == "disease spread", ], aes(x = altered_flow, fill = alteration)) +
+dis = ggplot(altered_flow_data[X2.2.Subtype == "disease spread", ], aes(x = altered_flow, fill = alteration)) +
   geom_bar(position= "stack") +
   coord_flip() +
   theme_minimal() +
@@ -1092,6 +1153,8 @@ ggplot(altered_flow_data[X2.2.Subtype == "disease spread", ], aes(x = altered_fl
     x = "Changes to Flow",
     size = "Count",
     fill = "Impact Direction")
+dis
+
 
 ###########################################################################################
 ### Do figures by top driver(s) #############################################################################
