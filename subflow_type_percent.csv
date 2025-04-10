@@ -1,23 +1,24 @@
-"","X2.2.Subtype","n","prop"
-"1","biome-shift",5,0.024390243902439
-"2","diplomatic/financial aid",1,0.0048780487804878
-"3","disease spread",30,0.146341463414634
-"4","displacement",3,0.0146341463414634
-"5","gene flow",4,0.0195121951219512
-"6","glacial melt",3,0.0146341463414634
-"7","governance",18,0.0878048780487805
-"8","groundwater",3,0.0146341463414634
-"9","knowledge transfer",14,0.0682926829268293
-"10","migration",31,0.151219512195122
-"11","nutrient and sediment flow",5,0.024390243902439
-"12","ocean current",1,0.0048780487804878
-"13","pollution flow",7,0.0341463414634146
-"14","range-shift",56,0.273170731707317
-"15","relocation",3,0.0146341463414634
-"16","sea ice retreat",2,0.00975609756097561
-"17","snow melt runoff",2,0.00975609756097561
-"18","surface water quantity",9,0.0439024390243902
-"19","tourism",1,0.0048780487804878
-"20","trade",1,0.0048780487804878
-"21","wildfire",5,0.024390243902439
-"22","wind",1,0.0048780487804878
+"","X2.2.Subtype","X2.1.Flow.Type","n","prop"
+"1","biome-shift","Biotic",5,0.024390243902439
+"2","diplomatic/financial aid","Sociocultural",1,0.0048780487804878
+"3","disease spread","Biotic",30,0.146341463414634
+"4","displacement","Human movement",3,0.0146341463414634
+"5","gene flow","Biotic",4,0.0195121951219512
+"6","glacial melt","Physical",3,0.0146341463414634
+"7","governance","Sociocultural",18,0.0878048780487805
+"8","groundwater","Physical",3,0.0146341463414634
+"9","knowledge transfer","Sociocultural",14,0.0682926829268293
+"10","migration","Biotic",18,0.0878048780487805
+"11","migration","Human movement",13,0.0634146341463415
+"12","nutrient and sediment flow","Physical",5,0.024390243902439
+"13","ocean current","Physical",1,0.0048780487804878
+"14","pollution flow","Physical",7,0.0341463414634146
+"15","range-shift","Biotic",56,0.273170731707317
+"16","relocation","Human movement",3,0.0146341463414634
+"17","sea ice retreat","Physical",2,0.00975609756097561
+"18","snow melt runoff","Physical",2,0.00975609756097561
+"19","surface water quantity","Physical",9,0.0439024390243902
+"20","tourism","Human movement",1,0.0048780487804878
+"21","trade","Human movement",1,0.0048780487804878
+"22","wildfire","Physical",5,0.024390243902439
+"23","wind","Physical",1,0.0048780487804878

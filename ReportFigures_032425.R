@@ -1161,8 +1161,6 @@ dis
 #######################################################################################
 
 
-
-
 ###########################################################################################
 ### COMBINATIONS and COUNTS  - HEAT MAPS AND ALLUVIALS ###########################################
 #######################################################################################
@@ -1303,7 +1301,9 @@ d_s$reorder_driver <- factor(d_s$reorder_driver,
 #   group_by(driver,altered_flow,X2.1.Flow.Type, alteration)%>%
 #   dplyr::summarize(sum_driver_alteration = sum(count_driver_alteration))
 
-### something is wrong...VERY WRONG - way too many observations
+## ## ## ## ## ## ## ## ## ## ## ## ## 
+## Driver -- Flow Change Heat maps ## 
+## ## ## ## ## ## ## ## ## ## ## ## ## 
 driver_altered_flow_final <- ggplot(d_s, 
                               aes(x = altered_flow, y = reorder_driver, 
                                   size = count_driver_alteration, 
@@ -1376,7 +1376,7 @@ biotic.driver_altered_flow_final <- ggplot(d_s[X2.1.Flow.Type == "Biotic",],
                        name = "Count", 
                        guide = "legend") +
   labs(
-    title = "Changes to biotic flow from climate drivers",
+    title = "Changes to Biotic flow from climate drivers",
     x = "Alteration of Flow",
     y = "Driver",
     size = "Count",
@@ -1391,6 +1391,123 @@ biotic.driver_altered_flow_final <- ggplot(d_s[X2.1.Flow.Type == "Biotic",],
 biotic.driver_altered_flow_final 
 
 
+## do for physical 
+
+phys_altered_flow_final <- ggplot(d_s[X2.1.Flow.Type == "Physical",], 
+                                           aes(x = altered_flow, y = reorder_driver, 
+                                               size = count_driver_alteration, 
+                                               color = count_driver_alteration,
+                                               fill = count_driver_alteration,)) +
+  geom_point(alpha = 0.4,shape= 21) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks+
+  scale_fill_gradientn(colors = tim.colors(10), 
+                       breaks=c(1, 15, 30, 50, 120), 
+                       limits = c(1, 300),
+                       trans = "log", 
+                       name = "Count", 
+                       guide = "legend") +
+  labs(
+    title = "Changes to Physical flow from climate drivers",
+    x = "Alteration of Flow",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
+  )
+phys_altered_flow_final 
+
+## to do for human
+human_altered_flow_final <- ggplot(d_s[X2.1.Flow.Type == "Human movement",], 
+                                           aes(x = altered_flow, y = reorder_driver, 
+                                               size = count_driver_alteration, 
+                                               color = count_driver_alteration,
+                                               fill = count_driver_alteration,)) +
+  geom_point(alpha = 0.4,shape= 21) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks+
+  scale_fill_gradientn(colors = tim.colors(10), 
+                       breaks=c(1, 15, 30, 50, 120), 
+                       limits = c(1, 300),
+                       trans = "log", 
+                       name = "Count", 
+                       guide = "legend") +
+  labs(
+    title = "Changes to Human movement and Trade flow from climate drivers",
+    x = "Alteration of Flow",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
+  )
+human_altered_flow_final 
+
+## do for socio
+socio_altered_flow_final <- ggplot(d_s[X2.1.Flow.Type == "Sociocultural",], 
+                                           aes(x = altered_flow, y = reorder_driver, 
+                                               size = count_driver_alteration, 
+                                               color = count_driver_alteration,
+                                               fill = count_driver_alteration,)) +
+  geom_point(alpha = 0.4,shape= 21) +  # Add points with alpha transparency
+  facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks+
+  scale_fill_gradientn(colors = tim.colors(10), 
+                       breaks=c(1, 15, 30, 50, 120), 
+                       limits = c(1, 300),
+                       trans = "log", 
+                       name = "Count", 
+                       guide = "legend") +
+  labs(
+    title = "Changes to Sociocultural flow from climate drivers",
+    x = "Alteration of Flow",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
+  )
+socio_altered_flow_final 
 
 # for range shifts only
 driver_alter <-  ggplot(d_s[X2.2.Subtype == "range-shift",], aes(x = driver, y = altered_flow, size = count_driver_alteration, color = alteration)) +
@@ -1538,7 +1655,6 @@ driver_bdimpact
 
 driver_bdimpact + facet_wrap(~impact.group, scale = fixed)
 
-driver_bdimpact + (~X2.1., scale = fixed)
 
 ## CREATE FACTOR TO ORDER
 driver_flow_impact <- driver_flow_impact %>%
@@ -1577,7 +1693,6 @@ final_driver_impact <- ggplot(driver_flow_impact,
     panel.border = element_rect(colour= "black", fill= NA)
   )
 final_driver_impact 
-
 final_driver_impact  +  facet_wrap(~X2.1.Flow.Type, scales = "fixed")  
 
 
