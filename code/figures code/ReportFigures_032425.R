@@ -932,7 +932,7 @@ print(relational_perc)
 relational_perc$Percent <- relational_perc$prop
 
 ## Relational Well-being Trends by Flow Type 
-ggplot(relational_perc, aes(X2.1.Flow.Type, hwb_direction, fill= Percent)) + 
+ggplot(relational_perc, aes( X2.1.Flow.Type, hwb_direction, fill= Percent)) + 
   geom_tile() +
   scale_size_continuous(range = c(1, 8), 
                         limits = c(0, 300), 
