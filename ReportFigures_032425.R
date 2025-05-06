@@ -312,6 +312,33 @@ Impacts <- ggplot(impact_data, aes(x = fct_infreq(impact), fill = direction)) +
     color = "Impact Direction") + coord_flip()
 Impacts
 
+Impactsgood <- ggplot(impact_data[impact.group == "Desirable",], aes(x = fct_infreq(impact), fill = direction)) +
+  geom_bar() +  theme_minimal() +
+ # facet_grid(~impact.group) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  labs(
+    title = "Biodiversity Impact",
+    x = "Impact to Biodiversity",
+    y = "count",
+    size = "Count",
+    color = "Impact Direction") + coord_flip()
+Impactsgood
+
+Impactsbad <- ggplot(impact_data[impact.group == "Undesirable",], aes(x = fct_infreq(impact), fill = direction)) +
+  geom_bar() +  theme_minimal() +
+  # facet_grid(~impact.group) +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1", "No change (measured)" = "grey")) +
+  labs(
+    title = "Biodiversity Impact",
+    x = "Impact to Biodiversity",
+    y = "count",
+    size = "Count",
+    color = "Impact Direction") + coord_flip()
+Impactsbad
+
+plot_grid(Impactsbad, Impactsgood)
+
+
 Impacts_by_flow <- Impacts + facet_wrap(~X2.1.Flow.Type, scales = "fixed") 
 Impacts_by_flow
 
@@ -332,6 +359,8 @@ BioticImpacts <- ggplot(impact_data[X2.1.Flow.Type == "Biotic",], aes(x = fct_in
     size = "Count",
     color = "Impact Direction") + coord_flip()
 BioticImpacts
+BioticImpacts + facet_wrap(~X2.2.Subtype)
+
 
 #physical
 PhyImpacts <- ggplot(impact_data[X2.1.Flow.Type == "Physical",], aes(x = fct_infreq(impact), fill = direction)) +
@@ -358,6 +387,7 @@ socioImpacts <- ggplot(impact_data[X2.1.Flow.Type == "Sociocultural",], aes(x = 
     size = "Count",
     color = "Impact Direction") + coord_flip()
 socioImpacts
+socioImpacts + facet_wrap(~X2.2.Subtype)
 
 #human
 humImpacts <- ggplot(impact_data[X2.1.Flow.Type == "Human movement",], aes(x = fct_infreq(impact), fill = direction)) +
@@ -371,6 +401,7 @@ humImpacts <- ggplot(impact_data[X2.1.Flow.Type == "Human movement",], aes(x = f
     size = "Count",
     color = "Impact Direction") + coord_flip()
 humImpacts
+humImpacts + facet_wrap(~X2.2.Subtype)
 
 # make a 4 panel grid 
 plot_grid(BioticImpacts, PhyImpacts,  humImpacts, socioImpacts)
@@ -1155,6 +1186,29 @@ dis = ggplot(altered_flow_data[X2.2.Subtype == "disease spread", ], aes(x = alte
     fill = "Impact Direction")
 dis
 
+# phys
+ ggplot(altered_flow_data[X2.2.Subtype == "nutrient and sediment flow", ], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Water Flow",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+
+water <- ggplot(altered_flow_data[X2.2.Subtype == "surface water quantity", ], aes(x = altered_flow, fill = alteration)) +
+  geom_bar(position= "stack") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_manual(values = c("Increase" = "dodgerblue3", "Decrease" = "deeppink3", "Complex change" = "goldenrod1")) +
+  labs(
+    title = "Changes to Water Flow",
+    x = "Changes to Flow",
+    size = "Count",
+    fill = "Impact Direction")
+water
 
 ###########################################################################################
 ### Do figures by top driver(s) #############################################################################
@@ -1348,6 +1402,54 @@ lengths <- d_s %>%
 
 driver_altered_flow_final 
 driver_altered_flow_final 
+
+## do for each direction of change 
+
+driver_altered_increase <- ggplot(d_s, 
+                                    aes(x = altered_flow[alteration == "Increase"], y = reorder_driver, 
+                                        size = count_driver_alteration, 
+                                        color = count_driver_alteration,
+                                        fill = count_driver_alteration,)) +
+  geom_point(alpha = 0.4,shape= 21) +  # Add points with alpha transparency
+  # facet_wrap(~alteration, scales = "fixed") +  # Create facets for each NCP direction
+  scale_size_continuous(range = c(1, 8),
+                        limits = c(1, 300),
+                        breaks=c(1, 15, 30, 50, 120),
+                        name = "Count") +
+  scale_colour_gradientn(colors = tim.colors(10), 
+                         breaks=c(1, 15, 30, 50, 120), 
+                         limits = c(1, 300),
+                         trans = "log", 
+                         name = "Count", 
+                         guide = "legend") +# Adjust size range and breaks+
+  scale_fill_gradientn(colors = tim.colors(10), 
+                       breaks=c(1, 15, 30, 50, 120), 
+                       limits = c(1, 300),
+                       trans = "log", 
+                       name = "Count", 
+                       guide = "legend") +
+  labs(
+    title = "Changes to flow from climate drivers",
+    x = "Alteration of Flow",
+    y = "Driver",
+    size = "Count",
+    color = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+    panel.grid.major = element_line(color = "grey80", linewidth=0.05),
+    panel.border = element_rect(colour= "black", fill= NA)
+  )
+driver_altered_increase
+
+lengths <- d_s %>% 
+  data.frame()%>%
+  group_by(driver,altered_flow,X2.1.Flow.Type, alteration)%>%
+  dplyr::summarize(length= length(driver))
+
+driver_altered_flow_final 
+
 
 
 ### do for subflows
