@@ -25,26 +25,27 @@ final = fread('review_462040_included_csv_20250424044203.csv', header = T)
 #and print that list
 # compare biotic csv - biotic_full_v1 vs biotic_v1
 # 
-# d_s <- subset(driver_impact_ncp, driver %in% top10)
+# subset(b, !(y %in% a$x))
+
 biotic_v1_doi <- list(biotic_v1$DOI)
 biotic_full_v1_doi <- list(biotic_full_v1$DOI)
 length(unique(biotic_v1$DOI)) #185
 length(unique(biotic_full_v1$DOI)) #231
+biotic <- subset(biotic_full_v1, !(DOI %in% biotic_v1$DOI))
+length(unique(biotic$DOI)) #check this should be 46!
 
-biotic <- subset(biotic_full_v1, DOI == biotic_v1_doi)
-
-length(unique(biotic$DOI)) #231 but this should be 46!
+write.csv(biotic, "remainingbiotic_nov1_papers.csv")
 
 #then identify the new papers added since the first Covidence extraction
 # compare docs to the final 
-doc_DOI <- list(doc$DOI)
+# subset(b, !(y %in% a$x))
 
-data <- final %>% 
- filter(DOI) %notin% doc_DOI
+data = subset(final, !(DOI %in% doc$DOI))
 
-# assign those papers to the groups
-
-
+#############################################
+##### assign those papers to the groups #####
+#############################################
+# check this to make sure code is working - docs=final
 #column names for each tag
 docs = data
 tags = unique(trimws(unlist(strsplit(docs$Tags, split=";"))))
@@ -83,14 +84,14 @@ write.csv(IK, "IK_May9extraction.csv")
 
 #write out original study files to check whether they should be excluded
 og = docs[Original_study == "TRUE",] 
-write.csv(og, "og_check_final.csv")
+write.csv(og, "og_check_finalmay9.csv")
 
 ## Now filter to allocate per group 
 #numbers of tags per flow type (including tags in multiple types 
 # this number drops considerably below)
-table(docs$Sociocultural) #82 (10 co-tagged with human movement)
-table(docs$Biotic) #320 (with 26 co-tagged with sociocultural)
-table(docs$Biophysical) #121
+table(docs$Sociocultural) #83 (10 co-tagged with human movement)
+table(docs$Biotic) # 392 .... (with 26 co-tagged with sociocultural)
+table(docs$Biophysical) #151 - final 
 table(docs$Human_movement)  #51 
 
 # counts of co-tags out of curiosity 
