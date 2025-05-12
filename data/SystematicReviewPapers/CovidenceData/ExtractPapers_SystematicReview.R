@@ -34,7 +34,7 @@ length(unique(biotic_full_v1$DOI)) #231
 biotic <- subset(biotic_full_v1, !(DOI %in% biotic_v1$DOI))
 length(unique(biotic$DOI)) #check this should be 46!
 
-write.csv(biotic, "remainingbiotic_nov1_papers.csv")
+# write.csv(biotic, "remainingbiotic_nov1_papers.csv")
 
 #then identify the new papers added since the first Covidence extraction
 # compare docs to the final 
@@ -47,6 +47,8 @@ data = subset(final, !(DOI %in% doc$DOI))
 #############################################
 # check this to make sure code is working - docs=final
 #column names for each tag
+list(unique(data$Tags))
+
 docs = data
 tags = unique(trimws(unlist(strsplit(docs$Tags, split=";"))))
 for(tag in tags) {
@@ -54,7 +56,7 @@ for(tag in tags) {
   set(docs, i=grep(tag, docs$Tags), j=tag, value=T)
 }
 setcolorder(docs, 
-            neworder=c("Sociocultural",
+            neworder=c( "Sociocultural",
                        "Human movement",
                        "Biophysical",
                        "Biotic",
@@ -64,18 +66,18 @@ setcolorder(docs,
                        "save for other sections",
                        "Transboundary unclear",
                        "Original study",
-                       "Perspective paper"),
+                        "Perspective paper"),
             after = "Tags")
 
 #remain column names with spaces
-docs$Human_movement = docs$`Human movement`
+# docs$Human_movement = docs$`Human movement`
 docs$Original_study = docs$`Original study`
 docs$`Original study` = NULL
-docs$`Human movement` = NULL
+# docs$`Human movement` = NULL
 
 #write out full reshaped data file 
 # write.csv(docs, "full_extractedpapers_May92025.csv")
-write.csv(docs, "new_only_extractedpapers_May92025.csv")
+ write.csv(docs, "new_only_extractedpapers_May92025.csv")
 
 #Before filtering the data, write out these files for other teams to look at:
 intervention = docs[Intervention == "TRUE",]
@@ -122,18 +124,21 @@ write.csv(human, "human_May9extraction.csv")
 
 # Next step: exclude sociocultural (already done above) and human movement, then filter with ANY physical flow
 docs3 = docs[Human_movement == "FALSE",]
+
 physical = docs[Biophysical == "TRUE",]
-table(physical$Biophysical) #112  --> #142 --> 30 left. in the final... but it shoudlnt include original so this isnt working
+table(physical$Biophysical) #112 --> 24; new --> #142 . in the final... but it shoudlnt include original so this isnt working
 #how many left are physical co-tagged with biotic?
 physical[, biotic_physical :=  Biotic == "TRUE" & Biophysical == "TRUE",]
-table(physical$biotic_physical) #31 vs 35  ... 4 in final co-tagged. 
+table(physical$biotic_physical) #31 vs 35  ... co-tagged 4 in final co-tagged. 
 write.csv(physical, "physical_May9extraction.csv")
 
 # Next step: exclude all but biotic then write out biotic
 biotic2 = docs[Biophysical == "FALSE",] 
-biotic2 = biotic[Biotic == "TRUE",]
-head(biotic2)
-table(biotic2$Biotic) #256 --> 54 in the new that wasnt in the old
+biotic2 = biotic2[Biotic == "TRUE",]
+glimpse(biotic2)
+
+table(biotic2$Biotic) #256 -->  54 in the new that wasnt in the old
+
 
 
 #combine biotic2 and biotic -- need to expand to add tags to biotic
