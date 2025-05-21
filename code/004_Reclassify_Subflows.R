@@ -96,8 +96,8 @@ list_nomatching_phys
 list_recode <- df4_updated %>% select(Citation,X2.1.Flow.Type,X2.2.Subtype) %>% filter(X2.1.Flow.Type=="Recode")
 list_remove <- df4_updated %>% select(Citation,X2.1.Flow.Type,X2.2.Subtype) %>% filter(X2.1.Flow.Type=="Remove")
 
-
-list_remove_handpicked <- c("Chen, 2011, Journal of Sustainable Development","Nielsen, 2015, Global Change Biology","Vaddey, 2010, Watershed Management", "Perry, 2007, Climate Change 2007")
+#check if Perry or Parry
+list_remove_handpicked <- c("Chen, 2011, Journal of Sustainable Development","Nielsen, 2015, Global Change Biology","Vaddey, 2010, Watershed Management", "Parry, 2007, Climate Change 2007")
 list_recode_handpicked <- c("Jenkins et al., 2013, Advances in Parasitology",
                     "Noyes, 2009, Environment International",
                     "Covich et al., 1997, Hydrological Processes", "de la Fontaine,  2018, Ecology")
